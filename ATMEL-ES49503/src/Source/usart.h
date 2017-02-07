@@ -11,6 +11,7 @@
 
 #include "asf.h"
 #include "stdio_serial.h"
+#include "global.h"
 
 #define OS_DEBUG
 

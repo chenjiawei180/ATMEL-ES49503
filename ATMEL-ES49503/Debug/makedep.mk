@@ -4,6 +4,8 @@
 
 src\Source\flash.c
 
+src\Source\power.c
+
 src\Source\spi.c
 
 src\Source\wdt.c

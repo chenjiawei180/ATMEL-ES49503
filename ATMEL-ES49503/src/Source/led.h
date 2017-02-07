@@ -10,6 +10,7 @@
 #define LED_H_
 
 #include "asf.h"
+#include "global.h"
 
 /********************************* LED0 **********************************************/
 #define LED0_PIN                  PIN_PA27

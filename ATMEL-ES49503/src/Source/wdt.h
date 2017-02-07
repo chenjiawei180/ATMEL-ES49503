@@ -10,6 +10,7 @@
 #define WDT_H_
 
 #include "asf.h"
+#include "global.h"
 
 extern void Configure_Wdt(void);
 extern void Wdt_Clear(void);

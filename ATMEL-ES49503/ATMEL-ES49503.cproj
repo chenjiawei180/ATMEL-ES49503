@@ -673,10 +673,25 @@
     <Folder Include="src\Source" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Source\AN49503.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\Source\flash.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\Source\flash.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\global.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\power.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\power.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\soc.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\Source\spi.c">

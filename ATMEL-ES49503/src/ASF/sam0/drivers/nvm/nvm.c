@@ -556,10 +556,10 @@ enum status_code nvm_read_buffer(
 #endif
 	}
 
-	/* Check if the read address is not aligned to the start of a page */
-	if (source_address & (_nvm_dev.page_size - 1)) {
-		return STATUS_ERR_BAD_ADDRESS;
-	}
+	///* Check if the read address is not aligned to the start of a page */
+	//if (source_address & (_nvm_dev.page_size - 1)) {
+		//return STATUS_ERR_BAD_ADDRESS;
+	//}
 
 	/* Check if the write length is longer than an NVM page */
 	if (length > _nvm_dev.page_size) {
