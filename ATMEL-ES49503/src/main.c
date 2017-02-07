@@ -39,6 +39,7 @@
 #include "Source/spi.h"
 #include "Source/flash.h"
 #include "Source/power.h"
+#include "Source/afe_wr.h"
 
 
 int main (void)
@@ -73,9 +74,16 @@ int main (void)
 	SYS_EEPROM_Init();
 	g_sys_cap.val.full_cap = cap_update;
 	
+	/* 初始化AFE */
+    AFE_Init();
+	delay_ms(300);
+	
+    sleep_delay_cycle = 0;
+    sys_states.val.sys_sw_lowpower_flag = 0 ;          //低功耗模式 1关闭所有功能zzy20161101
+	
 	/* Insert application code here, after the board has been initialized. */
 	while (1)
 	{
-		
+		AFE_Reg_Read();
 	}
 }

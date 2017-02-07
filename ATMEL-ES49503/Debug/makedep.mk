@@ -2,9 +2,17 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\Source\ad_dat.c
+
+src\Source\afe_wr.c
+
 src\Source\flash.c
 
+src\Source\history.c
+
 src\Source\power.c
+
+src\Source\protect.c
 
 src\Source\spi.c
 

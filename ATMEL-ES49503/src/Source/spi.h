@@ -23,6 +23,18 @@
 #define SDI_PIN					PIN_PB16
 #define SDI1_GetValue()         port_pin_get_input_level(SDI_PIN)
 
+/********************************* SHDN **********************************************/
+#define SHDN               PIN_PA07
+#define SHDN_Low()         port_pin_set_output_level(SHDN, false)
+#define SHDN_High()        port_pin_set_output_level(SHDN, true)
+#define SHDN_Toggle()      port_pin_toggle_output_level(SHDN)
+
+/********************************* STB **********************************************/
+#define STB               PIN_PA10
+#define STB_Low()         port_pin_set_output_level(STB, false)
+#define STB_High()        port_pin_set_output_level(STB, true)
+#define STB_Toggle()      port_pin_toggle_output_level(STB)
+
 #define	MAC_SPI_RW_WRITE		(uint8_t)0x00
 #define	MAC_SPI_RW_READ			(uint8_t)0x01
 #define	MAC_SPI_TRANS_SINGLE	(uint8_t)0x00

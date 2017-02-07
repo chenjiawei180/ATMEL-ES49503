@@ -673,6 +673,18 @@
     <Folder Include="src\Source" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Source\ad_dat.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\ad_dat.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\afe_wr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\afe_wr.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\Source\AN49503.h">
       <SubType>compile</SubType>
     </Compile>
@@ -685,10 +697,22 @@
     <Compile Include="src\Source\global.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\Source\history.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\history.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\Source\power.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\Source\power.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\protect.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\protect.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\Source\soc.h">

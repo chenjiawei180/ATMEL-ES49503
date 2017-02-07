@@ -12,9 +12,8 @@ struct spi_slave_inst slave;
 
 static uint8_t	ucSPI_SendData[5];						/* send data 5byte	*/
 static uint8_t	ucSPI_RecvData[3];						/* receive data 3byte	*/
-uint8_t	 ucSPI_Conti_RecvData[MAC_AN49503_READ_CNT*2+3];	/* receive continuous data 174byte+CRC(1Byte)	 MAC_AN49503_READ_CNT*2+1 */
 uint8_t  afe_lost_cnt =0;
-uint16_t PWR_VALUE =0;
+
 
 const uint8_t ucCRC_tCalc[] ={
 	0x00,0xd5,0x7f,0xaa,0xfe,0x2b,0x81,0x54,0x29,0xfc,0x56,0x83,0xd7,0x02,0xa8,0x7d,
@@ -65,6 +64,15 @@ void Configure_Spi_Master(void)
 	port_get_config_defaults(&pin_conf);
 	pin_conf.input_pull = PORT_PIN_PULL_NONE;
 	port_pin_set_config(SDI_PIN, &pin_conf);
+	
+	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
+	port_pin_set_config(SHDN, &pin_conf);
+	port_pin_set_output_level(SHDN, true);
+
+	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
+	port_pin_set_config(STB, &pin_conf);
+	port_pin_set_output_level(STB, true);
+	
 }
 
 /**
