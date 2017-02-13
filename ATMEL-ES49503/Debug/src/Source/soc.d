@@ -1,5 +1,5 @@
-src/Source/protect.d src/Source/protect.o: ../src/Source/protect.c \
- ../src/Source/protect.h ../src/asf.h ../src/ASF/sam0/drivers/adc/adc.h \
+src/Source/soc.d src/Source/soc.o: ../src/Source/soc.c \
+ ../src/Source/soc.h ../src/asf.h ../src/ASF/sam0/drivers/adc/adc.h \
  ../src/ASF/sam0/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\5.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h ../src/ASF/sam0/utils/status_codes.h \
@@ -158,10 +158,9 @@ src/Source/protect.d src/Source/protect.o: ../src/Source/protect.c \
  ../src/ASF/common/services/serial/serial.h \
  ../src/ASF/common/services/serial/sam0_usart/usart_serial.h \
  ../src/ASF/sam0/drivers/wdt/wdt.h ../src/Source/global.h \
- ../src/Source/afe_wr.h ../src/Source/AN49503.h ../src/Source/ad_dat.h \
- ../src/Source/led.h ../src/Source/soc.h
+ ../src/Source/history.h ../src/Source/protect.h ../src/Source/flash.h
 
-../src/Source/protect.h:
+../src/Source/soc.h:
 
 ../src/asf.h:
 
@@ -495,12 +494,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/Source/global.h:
 
-../src/Source/afe_wr.h:
+../src/Source/history.h:
 
-../src/Source/AN49503.h:
+../src/Source/protect.h:
 
-../src/Source/ad_dat.h:
-
-../src/Source/led.h:
-
-../src/Source/soc.h:
+../src/Source/flash.h:

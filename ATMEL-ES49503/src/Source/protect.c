@@ -8,6 +8,9 @@
 #include "protect.h"
 #include "afe_wr.h"
 #include "ad_dat.h"
+#include "led.h"
+#include "soc.h"
+
 
 uint16_t OCC_TIMEOUT = 0;
 uint16_t OCD_TIMEOUT = 0;
@@ -27,6 +30,7 @@ uint16_t cell_alarm_cnt=0;
 volatile uint8_t Balanc_index = 0;
 uint8_t soft_pcb_ot_cnt =0;
 
+uint8_t advance_delay=0;
 
 /****************************************************************************
 FUNCTION		: AFE_Control
@@ -448,6 +452,117 @@ void PCB_Protect(void)
 			{
 				sys_states.val.sys_pcb_ot_flag =0;
 			}
+		}
+	}
+}
+
+/****************************************************************************
+FUNCTION		: Sys_250ms_tick
+DESCRIPTION		: 系统250ms计数
+INPUT			: None
+OUTPUT			: None
+NOTICE			:
+DATE			: 2016/06/24
+*****************************************************************************/
+void Sys_250ms_tick(void)
+{
+	sys_250ms_cnt++;
+	advance_delay++;
+
+	SOC();
+	if(afe_flags.val.afe_ocd_flag == 1)
+	{
+		AFE_OC_DELAY_CNT++;
+	}
+	else
+	{
+		if(AFE_OC_DELAY_CNT!=45)//zzy20161026 仅仅只有当插入充电器才会达到45，保存不变，进入恢复
+		{
+			AFE_OC_DELAY_CNT =0;
+		}
+	}
+	if(afe_flags.val.afe_scd_flag == 1)
+	{
+		AFE_SCD_DELAY_CNT++;
+	}
+	else
+	{
+		if(AFE_SCD_DELAY_CNT!=45)//仅仅只有当插入充电器才会达到45，保存不变，进入恢复
+		{
+			AFE_SCD_DELAY_CNT =0;
+		}
+	}
+	if(afe_flags.val.afe_occ_flag == 1)
+	{
+		AFE_OCC_DELAY_CNT++;
+	}
+	else
+	{
+		if(AFE_OCC_DELAY_CNT!=45)//仅仅只有当拔插充电器与短按键时才会达到45，保存不变，进入恢复
+		{
+			AFE_OCC_DELAY_CNT =0;
+		}
+	}
+	if(sys_states.val.sys_software_odc == 1)
+	{
+		OCD_TIMEOUT++;
+	}
+	else
+	{
+		OCD_TIMEOUT =0;
+	}
+	if(sys_states.val.sys_software_occ == 1)
+	{
+		OCC_TIMEOUT++;
+	}
+	else
+	{
+		OCC_TIMEOUT =0;
+	}
+	
+	SysLED_Display();
+}
+
+/****************************************************************************
+FUNCTION		: SOC
+DESCRIPTION		: 容量计量（库伦法）
+INPUT			: None
+OUTPUT			: None
+NOTICE			: TMIER里面记录
+DATE			: 2016/06/24
+*****************************************************************************/
+void SOC(void)
+{
+
+	int tmp_cap=0;
+	int32_t cur;
+	cur = nADC_CURRENT*180000;
+	cur >>= 15;
+	g_sys_cap.val.cap_cnt+=cur;
+	tmp_cap=(int)(g_sys_cap.val.cap_cnt/CAP_CNT_VAL);
+	g_sys_cap.val.cap_cnt=g_sys_cap.val.cap_cnt-(long)(tmp_cap)*CAP_CNT_VAL;
+	
+
+	if(tmp_cap>-30)
+	{
+		g_sys_cap.val.cap_val+=tmp_cap;
+		
+	}
+	//    if(g_sys_cap.val.cap_val <0)
+	//    {
+	//        g_sys_cap.val.cap_val =0;
+	//    }
+	if(g_sys_cap.val.cap_val >0)//修正soc值20161010zzysoc4 如果容量值小于等于零，就使用 g_sys_cap.val.cap_val3储存负容量值
+	{
+		g_sys_cap.val.cap_val3 = 0;
+	}
+	else
+	{
+		g_sys_cap.val.cap_val3 +=  g_sys_cap.val.cap_val ;
+		g_sys_cap.val.cap_val =0;
+		if(g_sys_cap.val.cap_val3  <-1200 )
+		{
+			g_sys_cap.val.cap_val3  = -1200;
 		}
 	}
 }

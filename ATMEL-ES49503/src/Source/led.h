@@ -29,5 +29,9 @@
 #define Bsp_LED1_Toggle()         port_pin_toggle_output_level(LED1_PIN)
 
 extern void Configure_Led(void);
+extern void SysLED_Display(void);
+extern void SysLED_RunProtect(void);
+extern void SysLED_ChgNormal(void);
+extern void SysLED_RunNormal(void);
 
 #endif /* LED_H_ */

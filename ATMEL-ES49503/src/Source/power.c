@@ -35,6 +35,10 @@ void PowerOn_Init(void)
 	g_bal_state.VAL = 0;
 	g_bal_need.VAL = 0;
 	PWR_VALUE = 0;
+	Total_VBAT = 0;
+	AFE_OC_DELAY_CNT = 0;
+	AFE_SCD_DELAY_CNT = 0;
+	AFE_OCC_DELAY_CNT = 0;
 	
     sys_states.val.sys_sw_nconnect_flag=1;//zzy20161021 初始值为断开连接
     g_sys_cap.val.cycle_record_flag =0;

@@ -14,6 +14,8 @@ src\Source\power.c
 
 src\Source\protect.c
 
+src\Source\soc.c
+
 src\Source\spi.c
 
 src\Source\wdt.c

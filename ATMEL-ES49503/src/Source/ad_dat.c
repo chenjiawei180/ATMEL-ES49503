@@ -18,7 +18,6 @@ uint8_t cell_index = 0;
 uint16_t nADC_VPACK = 0;
 uint16_t nADC_VBAT = 0;
 uint16_t nADC_VCHG = 0;
-uint16_t Total_VBAT = 0;
 uint8_t ave_cnt = 0;
 
 int8_t TEMP_1_PCB;

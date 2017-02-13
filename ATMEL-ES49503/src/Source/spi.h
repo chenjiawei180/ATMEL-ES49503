@@ -35,6 +35,17 @@
 #define STB_High()        port_pin_set_output_level(STB, true)
 #define STB_Toggle()      port_pin_toggle_output_level(STB)
 
+/********************************* ADIRQ2 **********************************************/
+#define ADIRQ2_PIN               PIN_PA08
+#define ADIRQ2_ACTIVE            false
+#define ADIRQ2_INACTIVE          true
+#define ADIRQ2_EIC_PIN           PIN_PA08A_EIC_NMI
+#define ADIRQ2_EIC_MUX           MUX_PA08A_EIC_NMI
+#define ADIRQ2_EIC_PINMUX        PINMUX_PA08A_EIC_NMI
+#define ADIRQ2_EIC_LINE          8
+#define ADIRQ2_EIC_PULL_UP       EXTINT_PULL_NONE
+#define ADIRQ2_EIC_DETECT        EXTINT_DETECT_FALLING
+
 #define	MAC_SPI_RW_WRITE		(uint8_t)0x00
 #define	MAC_SPI_RW_READ			(uint8_t)0x01
 #define	MAC_SPI_TRANS_SINGLE	(uint8_t)0x00
@@ -54,5 +65,7 @@ extern uint8_t ucSPI_Write(uint8_t ucdev, uint8_t ucreg, uint16_t undata);
 extern uint8_t ucSPI_Read(uint8_t ucdev, uint8_t ucreg, uint16_t* pundata);
 extern uint8_t ucSPI_Continue_Read(uint8_t ucdev, uint8_t ucreg, uint8_t uctime);
 extern uint8_t ucCRC_Calc(uint8_t ucsize,uint8_t* pucdt);
+
+extern void ADIRQ2_Extint_Callback(void);
 
 #endif /* SPI_H_ */

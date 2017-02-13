@@ -14,6 +14,13 @@ static uint8_t	ucSPI_SendData[5];						/* send data 5byte	*/
 static uint8_t	ucSPI_RecvData[3];						/* receive data 3byte	*/
 uint8_t  afe_lost_cnt =0;
 
+static void Configure_Extint_ADIRQ2(void);
+static void Configure_Extint_Callbacks_ADIRQ2(void);
+
+void ADIRQ2_Extint_Callback(void)
+{
+	sys_flags.val.afe_adirq2_flag =1;
+}
 
 const uint8_t ucCRC_tCalc[] ={
 	0x00,0xd5,0x7f,0xaa,0xfe,0x2b,0x81,0x54,0x29,0xfc,0x56,0x83,0xd7,0x02,0xa8,0x7d,
@@ -73,6 +80,26 @@ void Configure_Spi_Master(void)
 	port_pin_set_config(STB, &pin_conf);
 	port_pin_set_output_level(STB, true);
 	
+	Configure_Extint_ADIRQ2();
+	Configure_Extint_Callbacks_ADIRQ2();
+	
+}
+
+void Configure_Extint_ADIRQ2(void)
+{
+	struct extint_chan_conf config_extint_chan;
+	extint_chan_get_config_defaults(&config_extint_chan);
+	config_extint_chan.gpio_pin           = ADIRQ2_EIC_PIN;
+	config_extint_chan.gpio_pin_mux       = ADIRQ2_EIC_MUX;
+	config_extint_chan.gpio_pin_pull      = ADIRQ2_EIC_PULL_UP;
+	config_extint_chan.detection_criteria = ADIRQ2_EIC_DETECT;
+	extint_chan_set_config(ADIRQ2_EIC_LINE, &config_extint_chan);
+}
+
+void Configure_Extint_Callbacks_ADIRQ2(void)
+{
+	extint_register_callback(ADIRQ2_Extint_Callback,	ADIRQ2_EIC_LINE,	EXTINT_CALLBACK_TYPE_DETECT);
+	extint_chan_enable_callback(ADIRQ2_EIC_LINE,	EXTINT_CALLBACK_TYPE_DETECT);
 }
 
 /**

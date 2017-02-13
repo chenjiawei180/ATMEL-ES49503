@@ -70,6 +70,8 @@ int main (void)
 	/* 上电变量初始化 */
 	PowerOn_Init();
 	
+	system_interrupt_enable_global();
+	
 	/* 从EEPROM恢复各变量的值 */
 	SYS_EEPROM_Init();
 	g_sys_cap.val.full_cap = cap_update;

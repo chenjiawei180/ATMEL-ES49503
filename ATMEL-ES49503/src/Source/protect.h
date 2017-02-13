@@ -19,10 +19,6 @@
 #define PROTECT_DELAY_30S  120
 #define PROTECT_DELAY_60S  240
 
-#define LED_RED_ON()      LED1_SetHigh()
-#define LED_RED_OFF()      LED1_SetLow()
-#define LED_GREEN_ON()      LED2_SetHigh()
-#define LED_GREEN_OFF()      LED2_SetLow()
 
 #define AFE_OPEN_ADVANCE            0x0002
 #define AFE_CLOSE_ADVANCE           0x0000
@@ -103,5 +99,6 @@ extern void SoftwareProtection(void);
 extern void SoftMeansureControl(void);
 extern void Cell_Balance(void);
 extern void PCB_Protect(void);
+extern void SOC(void);
 
 #endif /* PROTECT_H_ */

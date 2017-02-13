@@ -715,6 +715,9 @@
     <Compile Include="src\Source\protect.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\Source\soc.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\Source\soc.h">
       <SubType>compile</SubType>
     </Compile>

@@ -120,6 +120,7 @@ C_SRCS +=  \
 ../src/Source/history.c \
 ../src/Source/power.c \
 ../src/Source/protect.c \
+../src/Source/soc.c \
 ../src/Source/spi.c \
 ../src/Source/wdt.c \
 ../src/ASF/common2/services/delay/sam0/systick_counter.c \
@@ -165,6 +166,7 @@ src/Source/flash.o \
 src/Source/history.o \
 src/Source/power.o \
 src/Source/protect.o \
+src/Source/soc.o \
 src/Source/spi.o \
 src/Source/wdt.o \
 src/ASF/common2/services/delay/sam0/systick_counter.o \
@@ -203,6 +205,7 @@ src/Source/flash.o \
 src/Source/history.o \
 src/Source/power.o \
 src/Source/protect.o \
+src/Source/soc.o \
 src/Source/spi.o \
 src/Source/wdt.o \
 src/ASF/common2/services/delay/sam0/systick_counter.o \
@@ -241,6 +244,7 @@ src/Source/flash.d \
 src/Source/history.d \
 src/Source/power.d \
 src/Source/protect.d \
+src/Source/soc.d \
 src/Source/spi.d \
 src/Source/wdt.d \
 src/ASF/common2/services/delay/sam0/systick_counter.d \
@@ -279,6 +283,7 @@ src/Source/flash.d \
 src/Source/history.d \
 src/Source/power.d \
 src/Source/protect.d \
+src/Source/soc.d \
 src/Source/spi.d \
 src/Source/wdt.d \
 src/ASF/common2/services/delay/sam0/systick_counter.d \
@@ -325,6 +330,8 @@ LINKER_SCRIPT_DEP+=  \
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

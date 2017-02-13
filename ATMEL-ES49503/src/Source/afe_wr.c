@@ -13,9 +13,6 @@
 #include "wdt.h"
 
 	
-volatile uint8_t AFE_OC_DELAY_CNT =0;
-volatile uint8_t AFE_SCD_DELAY_CNT =0;
-volatile uint8_t AFE_OCC_DELAY_CNT =0;
 volatile uint8_t AFE_OC_DELAY_CNT_LIMIT =0;         //zzy20161026
 volatile uint8_t AFE_SCD_DELAY_CNT_LIMIT =0;        //zzy20161026
 volatile uint8_t AFE_OCC_DELAY_CNT_LIMIT =0;        //zzy20161026
@@ -65,9 +62,7 @@ void AFE_Init(void)
 ******************************************************************************/
 void AFE_Reg_Read(void)
 {
-
 	SPI_AllReg_WR();        //zzy20161101 除此之外为增加项目
-	
 }
 
 /****************************************************************************
@@ -141,8 +136,9 @@ void SPI_AllReg_WR(void)
 	    }
 	    SPI_Slave_Low();
 	    delay_ms(3);
-#ifdef CHENJIAWEI	    
+    
 	    NormalCapacityProc();//容量更新
+#ifdef CHENJIAWEI	
 	    Sys_250ms_tick();    //系统250ms更新
 #endif	    
 	    //        if(low_power_cnt>8)         //zzy20161101  运行3次（11-8）

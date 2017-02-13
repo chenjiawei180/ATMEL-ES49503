@@ -248,5 +248,9 @@ OS_EXT int16_t nADC_CURRENT;
 OS_EXT uint16_t nADC_Cell_Value[RAM_P_CELL_SEREIES];
 OS_EXT uint16_t PWR_VALUE;
 OS_EXT uint16_t spi_read_value[2];
+OS_EXT uint16_t Total_VBAT;
+OS_EXT volatile uint8_t AFE_OC_DELAY_CNT;
+OS_EXT volatile uint8_t AFE_SCD_DELAY_CNT;
+OS_EXT volatile uint8_t AFE_OCC_DELAY_CNT;
 
 #endif /* GLOBAL_H_ */
