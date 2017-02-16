@@ -158,7 +158,7 @@ src/Source/history.d src/Source/history.o: ../src/Source/history.c \
  ../src/ASF/common/services/serial/serial.h \
  ../src/ASF/common/services/serial/sam0_usart/usart_serial.h \
  ../src/ASF/sam0/drivers/wdt/wdt.h ../src/Source/global.h \
- ../src/Source/flash.h
+ ../src/Source/usart.h ../src/Source/flash.h
 
 ../src/Source/history.h:
 
@@ -493,5 +493,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/sam0/drivers/wdt/wdt.h:
 
 ../src/Source/global.h:
+
+../src/Source/usart.h:
 
 ../src/Source/flash.h:

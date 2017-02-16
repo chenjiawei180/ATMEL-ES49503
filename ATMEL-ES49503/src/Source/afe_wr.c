@@ -78,6 +78,9 @@ void SPI_AllReg_WR(void)
 {
     if(sys_flags.val.afe_adirq2_flag == 1)
     {
+		#ifdef OS_DEBUG
+		Usart_process();
+		#endif
 	    sys_flags.val.afe_adirq2_flag =0;
 	    sys_flags.val.afe_connect_flag =0;
 	    Wdt_Clear(); //应该在AFE响应一次以后喂狗，以防AFE复位导致芯片无法跟AFE契合工作
@@ -109,7 +112,7 @@ void SPI_AllReg_WR(void)
 		    }
 	    }
 	    else
-	    {
+	    {	
 		    ucSPI_Write(MAC_SPI_DEV,OP_MODE_ADDR,AFE_AVD_LATCH);   //END AD
 		    
 		    ucSPI_Read(MAC_SPI_DEV,STAT_ADDR,spi_read_value);
@@ -117,6 +120,7 @@ void SPI_AllReg_WR(void)
 		    ucSPI_Write(MAC_SPI_DEV,STAT_ADDR,AFE_VAD_DONE);   //clear VAD_DONE
 		    delay_us(100);
 		    //确实是AD完成,读取数据
+
 		    if((spi_read_value[0]&0x0005) == 0x0005)
 		    {
 			    ucSPI_Continue_Read(MAC_SPI_DEV,MAC_AN49503_READ_ADR,MAC_AN49503_READ_CNT);
@@ -138,9 +142,8 @@ void SPI_AllReg_WR(void)
 	    delay_ms(3);
     
 	    NormalCapacityProc();//容量更新
-#ifdef CHENJIAWEI	
 	    Sys_250ms_tick();    //系统250ms更新
-#endif	    
+   
 	    //        if(low_power_cnt>8)         //zzy20161101  运行3次（11-8）
 	    //            {
 	    //                low_power_cnt++;

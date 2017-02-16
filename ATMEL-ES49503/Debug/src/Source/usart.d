@@ -157,7 +157,8 @@ src/Source/usart.d src/Source/usart.o: ../src/Source/usart.c \
  ../src/ASF/sam0/utils/stdio/stdio_serial/stdio_serial.h \
  ../src/ASF/common/services/serial/serial.h \
  ../src/ASF/common/services/serial/sam0_usart/usart_serial.h \
- ../src/ASF/sam0/drivers/wdt/wdt.h ../src/Source/global.h
+ ../src/ASF/sam0/drivers/wdt/wdt.h ../src/Source/global.h \
+ ../src/Source/ad_dat.h
 
 ../src/Source/usart.h:
 
@@ -492,3 +493,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/sam0/drivers/wdt/wdt.h:
 
 ../src/Source/global.h:
+
+../src/Source/ad_dat.h:

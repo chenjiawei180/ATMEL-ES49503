@@ -57,6 +57,7 @@ void Configure_Spi_Master(void)
 	spi_attach_slave(&slave, &slave_dev_config);
 	
 	spi_get_config_defaults(&config_spi_master);
+	config_spi_master.transfer_mode = SPI_TRANSFER_MODE_1;
 	config_spi_master.mux_setting = CONF_MASTER_MUX_SETTING;
 	config_spi_master.pinmux_pad0 = CONF_MASTER_PINMUX_PAD0;
 	config_spi_master.pinmux_pad1 = CONF_MASTER_PINMUX_PAD1;
@@ -69,6 +70,7 @@ void Configure_Spi_Master(void)
 	
 	struct port_config pin_conf;
 	port_get_config_defaults(&pin_conf);
+	pin_conf.direction = PORT_PIN_DIR_INPUT;
 	pin_conf.input_pull = PORT_PIN_PULL_NONE;
 	port_pin_set_config(SDI_PIN, &pin_conf);
 	
@@ -79,6 +81,11 @@ void Configure_Spi_Master(void)
 	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
 	port_pin_set_config(STB, &pin_conf);
 	port_pin_set_output_level(STB, true);
+	
+	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
+	port_pin_set_config(VPC, &pin_conf);
+	port_pin_set_output_level(VPC, false);
+
 	
 	Configure_Extint_ADIRQ2();
 	Configure_Extint_Callbacks_ADIRQ2();
@@ -94,6 +101,7 @@ void Configure_Extint_ADIRQ2(void)
 	config_extint_chan.gpio_pin_pull      = ADIRQ2_EIC_PULL_UP;
 	config_extint_chan.detection_criteria = ADIRQ2_EIC_DETECT;
 	extint_chan_set_config(ADIRQ2_EIC_LINE, &config_extint_chan);
+
 }
 
 void Configure_Extint_Callbacks_ADIRQ2(void)
@@ -338,7 +346,7 @@ uint8_t ucSPI_Continue_Read(uint8_t ucdev, uint8_t ucreg, uint8_t uctime)
 		delay_us(100);
 		if(SDI_VAL ==1)
 		{
-			SPI_Read_Buff( ucSPI_RecvData,( (MAC_AN49503_READ_CNT*2) + 1 ) );
+			SPI_Read_Buff( ucSPI_Conti_RecvData+2,( (MAC_AN49503_READ_CNT*2) + 1 ) );
 			
 			SPI_Slave_Low();
 			vSPI_Wait();						/* Wait so as not to High SEM immediately */

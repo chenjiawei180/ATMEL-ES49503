@@ -10,6 +10,7 @@
 #include "AN49503.h"
 #include "history.h"
 #include "afe_wr.h"
+#include "usart.h"
 
 
 uint16_t Cell_Value[4][RAM_P_CELL_SEREIES];
@@ -261,7 +262,7 @@ void vAPI_CalcCell(void)
     Total_VBAT = total_volt / 13; //zzy20161020 
     nADC_CELL_MAX = Cell_Volt_temp[15]; // max cell voltage
     nADC_CELL_MIN = Cell_Volt_temp[3]; // min cell voltage 改为9
-
+	
     // 平均电流
     if (nADC_CURRENT < 0) 
 	{
@@ -372,6 +373,9 @@ void vAPI_ADC_Read_Data(void) {
         unvol = ((uint16_t) ucSPI_Conti_RecvData[(CV01_AD_ADDR + uci)*2] << 8) +
                 ((uint16_t) ucSPI_Conti_RecvData[(CV01_AD_ADDR + uci)*2 + 1]);
         nADC_Cell_Value[uci] = unvol;
+	//#ifdef OS_DEBUG
+		//printf("nADC_Cell_Value[%d] is %d. \r\n",uci,nADC_Cell_Value[uci]*305/1000);	
+	//#endif
     }
     /* Thermistor */
     unvol = ((uint16_t) ucSPI_Conti_RecvData[(TMONI1_AD_ADDR)*2] << 8) +
@@ -394,6 +398,14 @@ void vAPI_ADC_Read_Data(void) {
             ((uint16_t) ucSPI_Conti_RecvData[(TMONI5_AD_ADDR)*2 + 1]);
     TEMP_5_BAT = vAPI_IndexNtcTemp(unvol);
 
+	//#ifdef OS_DEBUG
+	//printf("温度1 is %d ℃. \r\n",TEMP_1_PCB);
+	//printf("温度2 is %d ℃. \r\n",TEMP_2_PCB);
+	//printf("温度3 is %d ℃. \r\n",TEMP_3_BAT);
+	//printf("温度4 is %d ℃. \r\n",TEMP_4_BAT);
+	//printf("温度5 is %d ℃. \r\n",TEMP_5_BAT);
+	//#endif
+
     //	/* VDD50 */
     //	unvol	= ((uint16_t)ucSPI_Conti_RecvData[(VDD50_AD_ADDR)*2] << 8 ) +
     //			  ((uint16_t)ucSPI_Conti_RecvData[(VDD50_AD_ADDR)*2 + 1]);
@@ -406,6 +418,9 @@ void vAPI_ADC_Read_Data(void) {
     unvol = ((uint16_t) ucSPI_Conti_RecvData[(VPAC_AD_ADDR)*2] << 8) +
             ((uint16_t) ucSPI_Conti_RecvData[(VPAC_AD_ADDR)*2 + 1]);
     nADC_VPACK = unvol; //nADC_VBAT
+	//#ifdef OS_DEBUG
+	//printf("nADC_VPACK is %d. \r\n",nADC_VPACK*610/100);
+	//#endif
     /* GPIO1 输出端*/
     //	unvol	= ((uint16_t)ucSPI_Conti_RecvData[(GPIO1_AD_ADDR)*2] << 8 ) +
     //			  ((uint16_t)ucSPI_Conti_RecvData[(GPIO1_AD_ADDR)*2 + 1]);
@@ -492,4 +507,49 @@ uint8_t AFE_HardwareProtection_Write(void)
 		}
 	}
 	return 1;
+}
+
+/****************************************************************************
+#ifdef DOC
+FUNCTION		: vAPI_Uart_Load
+DESCRIPTION		: Uart Load
+INPUT			: None
+OUTPUT			: None
+UPDATE			:
+DATE			: 14/09/11
+#endif
+ *****************************************************************************/
+void vAPI_Uart_Load(void) 
+{
+    uint8_t uci;
+    /* Cell Voltage */
+    for (uci = 0; uci < RAM_P_CELL_SEREIES; uci++) {
+        TxBuffer[uci * 2 + 10] = nADC_Cell_Value[uci] >> 8;
+        TxBuffer[uci * 2 + 10 + 1] = nADC_Cell_Value[uci];
+    }
+    //TEST
+    //    TxBuffer[10] = nADC_CELL_MIN>>8;
+    //    TxBuffer[11] = nADC_CELL_MIN;
+
+    /* Thermistor */
+    TxBuffer[50] = TEMP_1_PCB; //nADC_TMONT_Value[0]>>8
+    TxBuffer[51] = TEMP_2_PCB; //nADC_TMONT_Value[0]
+    TxBuffer[52] = TEMP_3_BAT;
+    TxBuffer[53] = TEMP_4_BAT;
+    TxBuffer[54] = TEMP_5_BAT;
+    /* VDD50 */
+    //    TxBuffer[44] = nADC_VDD50>>8;
+    //    TxBuffer[45] = nADC_VDD50;
+    /* VCHG */
+    TxBuffer[44] = nADC_VCHG >> 8;
+    TxBuffer[45] = nADC_VCHG;
+    /* Current */
+    TxBuffer[48] = nADC_CURRENT >> 8;
+    TxBuffer[49] = nADC_CURRENT;
+    /* VPAC */
+    TxBuffer[46] = nADC_VPACK >> 8;
+    TxBuffer[47] = nADC_VPACK;
+    /* GPIO1 */
+    TxBuffer[42] = nADC_VBAT >> 8; //nADC_VBAT
+    TxBuffer[43] = nADC_VBAT;
 }

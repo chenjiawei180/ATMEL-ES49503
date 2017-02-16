@@ -220,6 +220,8 @@ typedef union
 #define 	MAC_AN49503_READ_CNT        (uint8_t)0x56		/* from 0x00 to 0x100 */
 #define     MAC_SPI_DEV                 (uint8_t)0xE0
 
+#include "usart.h"
+
 OS_EXT SystemFlags sys_flags;
 OS_EXT SystemStates sys_states;
 //CellBalance cell_balance;
@@ -252,5 +254,10 @@ OS_EXT uint16_t Total_VBAT;
 OS_EXT volatile uint8_t AFE_OC_DELAY_CNT;
 OS_EXT volatile uint8_t AFE_SCD_DELAY_CNT;
 OS_EXT volatile uint8_t AFE_OCC_DELAY_CNT;
+
+
+// for debug
+#define UartTxLength 68
+OS_EXT uint8_t TxBuffer[UartTxLength];
 
 #endif /* GLOBAL_H_ */

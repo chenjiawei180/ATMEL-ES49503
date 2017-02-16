@@ -35,16 +35,22 @@
 #define STB_High()        port_pin_set_output_level(STB, true)
 #define STB_Toggle()      port_pin_toggle_output_level(STB)
 
+/********************************* VPC **********************************************/
+#define VPC               PIN_PB17
+#define VPC_Low()         port_pin_set_output_level(VPC, false)
+#define VPC_High()        port_pin_set_output_level(VPC, true)
+#define VPC_Toggle()      port_pin_toggle_output_level(VPC)
+
 /********************************* ADIRQ2 **********************************************/
-#define ADIRQ2_PIN               PIN_PA08
+#define ADIRQ2_PIN               PIN_PA13
 #define ADIRQ2_ACTIVE            false
 #define ADIRQ2_INACTIVE          true
-#define ADIRQ2_EIC_PIN           PIN_PA08A_EIC_NMI
-#define ADIRQ2_EIC_MUX           MUX_PA08A_EIC_NMI
-#define ADIRQ2_EIC_PINMUX        PINMUX_PA08A_EIC_NMI
-#define ADIRQ2_EIC_LINE          8
+#define ADIRQ2_EIC_PIN           PIN_PA13A_EIC_EXTINT13
+#define ADIRQ2_EIC_MUX           MUX_PA13A_EIC_EXTINT13
+#define ADIRQ2_EIC_PINMUX        PINMUX_PA13A_EIC_EXTINT13
+#define ADIRQ2_EIC_LINE          13
 #define ADIRQ2_EIC_PULL_UP       EXTINT_PULL_NONE
-#define ADIRQ2_EIC_DETECT        EXTINT_DETECT_FALLING
+#define ADIRQ2_EIC_DETECT        EXTINT_DETECT_RISING
 
 #define	MAC_SPI_RW_WRITE		(uint8_t)0x00
 #define	MAC_SPI_RW_READ			(uint8_t)0x01

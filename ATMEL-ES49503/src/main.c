@@ -53,6 +53,8 @@ int main (void)
 	#ifdef OS_DEBUG
 	/*  Init Usart */
 	Configure_Usart();
+	//uint8_t string[] = "Hello World!\r\n";
+	//Usart_send_buff(string,12);
 	#endif // DEBUG
 	
 	/*  Init LED  */
@@ -70,7 +72,12 @@ int main (void)
 	/* 上电变量初始化 */
 	PowerOn_Init();
 	
+	VPC_High();
+	delay_ms(50);
+	VPC_Low();
+
 	system_interrupt_enable_global();
+
 	
 	/* 从EEPROM恢复各变量的值 */
 	SYS_EEPROM_Init();
@@ -83,9 +90,14 @@ int main (void)
     sleep_delay_cycle = 0;
     sys_states.val.sys_sw_lowpower_flag = 0 ;          //低功耗模式 1关闭所有功能zzy20161101
 	
+	Bsp_LED0_Off();
+	Bsp_LED1_On();
+	
 	/* Insert application code here, after the board has been initialized. */
 	while (1)
 	{
 		AFE_Reg_Read();
+
+		//printf("Cell 0 is %d. \r\n",nADC_Cell_Value[0]);
 	}
 }

@@ -20,5 +20,7 @@ extern void vAPI_CalcCell(void);
 extern void vAPI_CalcTempture(void);
 extern uint8_t AFE_HardwareProtection_Write(void);
 
+//for debug
+extern void vAPI_Uart_Load(void);
 
 #endif /* AD_DAT_H_ */
