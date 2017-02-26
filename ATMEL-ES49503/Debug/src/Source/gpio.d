@@ -1,5 +1,5 @@
-src/Source/afe_wr.d src/Source/afe_wr.o: ../src/Source/afe_wr.c \
- ../src/Source/afe_wr.h ../src/asf.h ../src/ASF/sam0/drivers/adc/adc.h \
+src/Source/gpio.d src/Source/gpio.o: ../src/Source/gpio.c \
+ ../src/Source/gpio.h ../src/asf.h ../src/ASF/sam0/drivers/adc/adc.h \
  ../src/ASF/sam0/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\5.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h ../src/ASF/sam0/utils/status_codes.h \
@@ -158,11 +158,9 @@ src/Source/afe_wr.d src/Source/afe_wr.o: ../src/Source/afe_wr.c \
  ../src/ASF/common/services/serial/serial.h \
  ../src/ASF/common/services/serial/sam0_usart/usart_serial.h \
  ../src/ASF/sam0/drivers/wdt/wdt.h ../src/Source/global.h \
- ../src/Source/usart.h ../src/Source/AN49503.h ../src/Source/spi.h \
- ../src/Source/ad_dat.h ../src/Source/protect.h ../src/Source/soc.h \
- ../src/Source/wdt.h ../src/Source/adc.h ../src/Source/gpio.h
+ ../src/Source/usart.h
 
-../src/Source/afe_wr.h:
+../src/Source/gpio.h:
 
 ../src/asf.h:
 
@@ -497,19 +495,3 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/Source/global.h:
 
 ../src/Source/usart.h:
-
-../src/Source/AN49503.h:
-
-../src/Source/spi.h:
-
-../src/Source/ad_dat.h:
-
-../src/Source/protect.h:
-
-../src/Source/soc.h:
-
-../src/Source/wdt.h:
-
-../src/Source/adc.h:
-
-../src/Source/gpio.h:

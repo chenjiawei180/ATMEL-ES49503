@@ -114,9 +114,11 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../src/Source/adc.c \
 ../src/Source/ad_dat.c \
 ../src/Source/afe_wr.c \
 ../src/Source/flash.c \
+../src/Source/gpio.c \
 ../src/Source/history.c \
 ../src/Source/power.c \
 ../src/Source/protect.c \
@@ -160,9 +162,11 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+src/Source/adc.o \
 src/Source/ad_dat.o \
 src/Source/afe_wr.o \
 src/Source/flash.o \
+src/Source/gpio.o \
 src/Source/history.o \
 src/Source/power.o \
 src/Source/protect.o \
@@ -199,9 +203,11 @@ src/ASF/sam0/utils/syscalls/gcc/syscalls.o \
 src/main.o
 
 OBJS_AS_ARGS +=  \
+src/Source/adc.o \
 src/Source/ad_dat.o \
 src/Source/afe_wr.o \
 src/Source/flash.o \
+src/Source/gpio.o \
 src/Source/history.o \
 src/Source/power.o \
 src/Source/protect.o \
@@ -238,9 +244,11 @@ src/ASF/sam0/utils/syscalls/gcc/syscalls.o \
 src/main.o
 
 C_DEPS +=  \
+src/Source/adc.d \
 src/Source/ad_dat.d \
 src/Source/afe_wr.d \
 src/Source/flash.d \
+src/Source/gpio.d \
 src/Source/history.d \
 src/Source/power.d \
 src/Source/protect.d \
@@ -277,9 +285,11 @@ src/ASF/sam0/utils/syscalls/gcc/syscalls.d \
 src/main.d
 
 C_DEPS_AS_ARGS +=  \
+src/Source/adc.d \
 src/Source/ad_dat.d \
 src/Source/afe_wr.d \
 src/Source/flash.d \
+src/Source/gpio.d \
 src/Source/history.d \
 src/Source/power.d \
 src/Source/protect.d \
@@ -330,6 +340,10 @@ LINKER_SCRIPT_DEP+=  \
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 

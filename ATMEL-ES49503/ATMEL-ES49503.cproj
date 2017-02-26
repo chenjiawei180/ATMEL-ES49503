@@ -689,6 +689,12 @@
     <Folder Include="src\Source" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Source\adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\adc.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\Source\ad_dat.c">
       <SubType>compile</SubType>
     </Compile>
@@ -711,6 +717,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\Source\global.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\gpio.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\Source\gpio.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\Source\history.c">

@@ -2,11 +2,15 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\Source\adc.c
+
 src\Source\ad_dat.c
 
 src\Source\afe_wr.c
 
 src\Source\flash.c
+
+src\Source\gpio.c
 
 src\Source\history.c
 

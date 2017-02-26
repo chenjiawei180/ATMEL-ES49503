@@ -40,6 +40,8 @@
 #include "Source/flash.h"
 #include "Source/power.h"
 #include "Source/afe_wr.h"
+#include "Source/adc.h"
+#include "Source/gpio.h"
 
 
 int main (void)
@@ -68,6 +70,12 @@ int main (void)
 	
 	/*  Init flash  */
 	Configure_Flash();
+	
+	/* Init ADC0 */
+	Configure_Adc();
+	
+	/* Init GPIO */
+	Configure_GPIO();
 	
 	/* 上电变量初始化 */
 	PowerOn_Init();

@@ -12,6 +12,10 @@
 #include "soc.h"
 #include "wdt.h"
 
+#ifdef OS_DEBUG
+#include "adc.h"
+#include "gpio.h"
+#endif
 	
 volatile uint8_t AFE_OC_DELAY_CNT_LIMIT =0;         //zzy20161026
 volatile uint8_t AFE_SCD_DELAY_CNT_LIMIT =0;        //zzy20161026
@@ -79,7 +83,19 @@ void SPI_AllReg_WR(void)
     if(sys_flags.val.afe_adirq2_flag == 1)
     {
 		#ifdef OS_DEBUG
-		Usart_process();
+		//Usart_process();
+		MCU_STOP_Toggle();
+		ID_OUT_Toggle();
+		COM_RES_Low();
+		if(ID_IN_Read()) printf("ID_IN ธ฿. \r\n");
+		else printf("ID_IN ตอ. \r\n");
+		if(ID_END_Read()) printf("ID_END ธ฿. \r\n");
+		else printf("ID_END ตอ. \r\n");
+		if(SOV_Read()) printf("SOV ธ฿. \r\n");
+		else printf("SOV ตอ. \r\n");
+		uint16_t adc_value = 0;
+		Adc_Read_AdcValue(&adc_value);
+		printf("ADC = %d. \r\n",adc_value);
 		#endif
 	    sys_flags.val.afe_adirq2_flag =0;
 	    sys_flags.val.afe_connect_flag =0;

@@ -160,7 +160,7 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/Source/usart.h ../src/Source/global.h ../src/Source/usart.h \
  ../src/Source/led.h ../src/Source/wdt.h ../src/Source/spi.h \
  ../src/Source/flash.h ../src/Source/power.h ../src/Source/afe_wr.h \
- ../src/Source/AN49503.h
+ ../src/Source/AN49503.h ../src/Source/adc.h ../src/Source/gpio.h
 
 ../src/asf.h:
 
@@ -513,3 +513,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/Source/afe_wr.h:
 
 ../src/Source/AN49503.h:
+
+../src/Source/adc.h:
+
+../src/Source/gpio.h:
