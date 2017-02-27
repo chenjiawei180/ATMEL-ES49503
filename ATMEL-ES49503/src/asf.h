@@ -126,7 +126,8 @@
 // From module: USART - Serial interface- SAM implementation for devices with only USART
 #include <serial.h>
 
-// From module: WDT - Watchdog Timer (Polled APIs)
+// From module: WDT - Watchdog Timer (Callback APIs)
 #include <wdt.h>
+#include <wdt_callback.h>
 
 #endif // ASF_H

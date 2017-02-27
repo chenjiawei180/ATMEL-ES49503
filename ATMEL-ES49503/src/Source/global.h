@@ -220,6 +220,8 @@ typedef union
 #define 	MAC_AN49503_READ_CNT        (uint8_t)0x56		/* from 0x00 to 0x100 */
 #define     MAC_SPI_DEV                 (uint8_t)0xE0
 
+#define BOOTLOADER_FLAG            0x0003fd00
+
 #include "usart.h"
 
 OS_EXT SystemFlags sys_flags;

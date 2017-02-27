@@ -99,7 +99,7 @@ void SPI_AllReg_WR(void)
 		#endif
 	    sys_flags.val.afe_adirq2_flag =0;
 	    sys_flags.val.afe_connect_flag =0;
-	    Wdt_Clear(); //应该在AFE响应一次以后喂狗，以防AFE复位导致芯片无法跟AFE契合工作
+	    //Wdt_Clear(); //应该在AFE响应一次以后喂狗，以防AFE复位导致芯片无法跟AFE契合工作
 		STB_Low();
 		SPI_Slave_High();		//开启通信需要延迟2ms以上
 	    delay_ms(3);

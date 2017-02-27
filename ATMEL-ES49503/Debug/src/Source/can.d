@@ -1,5 +1,5 @@
-src/Source/led.d src/Source/led.o: ../src/Source/led.c \
- ../src/Source/led.h ../src/asf.h ../src/ASF/sam0/drivers/adc/adc.h \
+src/Source/can.d src/Source/can.o: ../src/Source/can.c \
+ ../src/Source/can.h ../src/asf.h ../src/ASF/sam0/drivers/adc/adc.h \
  ../src/ASF/sam0/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\5.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h ../src/ASF/sam0/utils/status_codes.h \
@@ -163,7 +163,7 @@ src/Source/led.d src/Source/led.o: ../src/Source/led.c \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h ../src/Source/global.h \
  ../src/Source/usart.h
 
-../src/Source/led.h:
+../src/Source/can.h:
 
 ../src/asf.h:
 

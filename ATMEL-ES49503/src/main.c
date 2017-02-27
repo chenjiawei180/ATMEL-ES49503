@@ -42,10 +42,16 @@
 #include "Source/afe_wr.h"
 #include "Source/adc.h"
 #include "Source/gpio.h"
+#include "Source/can.h"
+
+static volatile unsigned char flash_data[] __attribute__((section(".physicalsection")))={"const data"};
 
 
 int main (void)
 {
+	uint16_t temp = flash_data[0] ;
+	temp = temp;
+	
 	system_init();
 	
 	/* Initialize the delay driver */
@@ -77,6 +83,11 @@ int main (void)
 	/* Init GPIO */
 	Configure_GPIO();
 	
+	/* Init CAN */
+	configure_can();
+	can_set_standard_filter_1();
+	buff_init();
+	
 	/* 上电变量初始化 */
 	PowerOn_Init();
 	
@@ -104,8 +115,8 @@ int main (void)
 	/* Insert application code here, after the board has been initialized. */
 	while (1)
 	{
+		can_process();
 		AFE_Reg_Read();
-
 		//printf("Cell 0 is %d. \r\n",nADC_Cell_Value[0]);
 	}
 }

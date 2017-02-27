@@ -2,11 +2,15 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\ASF\sam0\drivers\wdt\wdt_callback.c
+
 src\Source\adc.c
 
 src\Source\ad_dat.c
 
 src\Source\afe_wr.c
+
+src\Source\can.c
 
 src\Source\flash.c
 

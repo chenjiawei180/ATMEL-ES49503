@@ -128,6 +128,7 @@ src/ASF/sam0/drivers/wdt/wdt.d src/ASF/sam0/drivers/wdt/wdt.o: \
  ../src/ASF/sam0/drivers/system/clock/clock.h \
  ../src/ASF/sam0/drivers/system/clock/gclk.h \
  ../src/ASF/sam0/drivers/system/clock/clock_samc20_c21/clock_feature.h \
+ ../src/ASF/sam0/drivers/wdt/wdt_callback.h \
  ../src/ASF/sam0/drivers/system/system.h \
  ../src/ASF/sam0/drivers/system/pinmux/pinmux.h \
  ../src/ASF/sam0/drivers/system/power/power_sam_c/power.h \
@@ -392,6 +393,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/sam0/drivers/system/clock/gclk.h:
 
 ../src/ASF/sam0/drivers/system/clock/clock_samc20_c21/clock_feature.h:
+
+../src/ASF/sam0/drivers/wdt/wdt_callback.h:
 
 ../src/ASF/sam0/drivers/system/system.h:
 
