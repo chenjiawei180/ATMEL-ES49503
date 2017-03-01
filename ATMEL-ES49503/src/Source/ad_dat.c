@@ -16,16 +16,11 @@
 uint16_t Cell_Value[4][RAM_P_CELL_SEREIES];
 uint8_t cell_index = 0;
 
-uint16_t nADC_VPACK = 0;
+
 uint16_t nADC_VBAT = 0;
 uint16_t nADC_VCHG = 0;
 uint8_t ave_cnt = 0;
 
-int8_t TEMP_1_PCB;
-int8_t TEMP_2_PCB;
-int8_t TEMP_3_BAT;
-int8_t TEMP_4_BAT;
-int8_t TEMP_5_BAT;
 
 const uint16_t TEMP_AD_TABLE [142] = 
 {

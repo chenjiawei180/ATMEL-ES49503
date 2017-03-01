@@ -37,9 +37,17 @@ extern void can_send_standard_message(uint32_t id_value, uint8_t *data,uint32_t 
 extern void buff_init(void);
 extern void write_byte(uint8_t byte);
 extern void read_bytes(uint8_t * buffer, uint32_t byteCount);
-extern int read_packet(uint8_t *buffer, uint8_t idx);
+//extern int read_packet(uint8_t *buffer, uint8_t idx);
 extern uint8_t check_sum(uint8_t *buffer, uint8_t idx);
 extern void send_message(uint8_t * buffer, uint8_t idx);
 extern void can_process(void);
+
+extern void address_answer(void);
+extern void profile_answer(void);
+extern void battery_answer(void);
+extern void latch_answer(void);
+extern void profile_load(void);
+extern void battery_load(void);
+
 
 #endif /* CAN_H_ */

@@ -162,7 +162,7 @@ src/Source/power.d src/Source/power.o: ../src/Source/power.c \
  ../src/ASF/sam0/drivers/wdt/wdt.h \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h ../src/Source/global.h \
  ../src/Source/usart.h ../src/Source/soc.h ../src/Source/led.h \
- ../src/Source/spi.h
+ ../src/Source/spi.h ../src/Source/history.h
 
 ../src/Source/power.h:
 
@@ -511,3 +511,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/Source/led.h:
 
 ../src/Source/spi.h:
+
+../src/Source/history.h:

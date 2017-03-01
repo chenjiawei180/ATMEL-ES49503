@@ -43,14 +43,15 @@
 #include "Source/adc.h"
 #include "Source/gpio.h"
 #include "Source/can.h"
+#include "Source/history.h"
 
-static volatile unsigned char flash_data[] __attribute__((section(".physicalsection")))={"const data"};
+//static volatile unsigned char flash_data[] __attribute__((section(".physicalsection")))={"const data"};
 
 
 int main (void)
 {
-	uint16_t temp = flash_data[0] ;
-	temp = temp;
+	//uint16_t temp = flash_data[0] ;
+	//temp = temp;
 	
 	system_init();
 	

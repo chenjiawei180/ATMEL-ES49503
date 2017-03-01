@@ -204,3 +204,151 @@ void EEPROM_Write_DATA(uint16_t index,uint16_t val,uint8_t mode)
 		Bsp_Write_Buffer(EEPROM_SYS_BK_BEGIN,flash_ram_buffer,EEPROM_SYS_DATA_LEN);
 	}
 }
+
+void Write_Time_or_mAh(uint32_t value,uint8_t type)
+{
+	uint32_t address = DCH_FLAG_START;
+	uint8_t i = 0;
+	uint8_t buff[8];
+	switch(type)    //根据类型区分地址
+	{
+		case DCH_FLAG: address = DCH_FLAG_START;break;
+		case CHG_FLAG: address = CHG_FLAG_START;break;
+		case TIME_FLAG: address = TIME_FLAG_START;break;
+		default:address = DCH_FLAG_START;break;
+	}
+	Bsp_Read_Buffer(address+256,buff,8);
+	if (buff[0] == 0xff) //第二扇区没有数据 直接从第一扇区开始找
+	{
+		for (i=0;i<64;i++)
+		{
+			Bsp_Read_Buffer(address+(i<<3),buff,8);
+			if (buff[0] == 0xff)
+			{
+				buff[0] = 0x00;
+				buff[1] = 0x00;
+				buff[2] = value>>24;
+				buff[3] = value>>16;
+				buff[4] = value>>8;
+				buff[5] = value;
+				buff[6] = 0x00;
+				buff[7] = 0x00;
+				Bsp_Write_Buffer(address+(i<<3),buff,8);
+				if (i == 16)
+				{
+					Bsp_Erase_Row(address+256);
+				}
+				break;
+			}
+		}
+	}
+	else //第二商区有数据，先找第二扇区
+	{
+		for (i=0;i<32;i++)
+		{
+			Bsp_Read_Buffer(address+256+(i<<3),buff,8);
+			if (buff[0] == 0xff)
+			{
+				buff[0] = 0x00;
+				buff[1] = 0x00;
+				buff[2] = value>>24;
+				buff[3] = value>>16;
+				buff[4] = value>>8;
+				buff[5] = value;
+				buff[6] = 0x00;
+				buff[7] = 0x00;
+				Bsp_Write_Buffer(address+256+(i<<3),buff,8);
+				if (i == 16)
+				{
+					Bsp_Erase_Row(address);
+				}
+				break;
+			}
+		}
+		if (i == 32)
+		{
+			for (i=0;i<32;i++)
+			{
+				Bsp_Read_Buffer(address+(i<<3),buff,8);
+				if (buff[0] == 0xff)
+				{
+					buff[0] = 0x00;
+					buff[1] = 0x00;
+					buff[2] = value>>24;
+					buff[3] = value>>16;
+					buff[4] = value>>8;
+					buff[5] = value;
+					buff[6] = 0x00;
+					buff[7] = 0x00;
+					Bsp_Write_Buffer(address+(i<<3),buff,8);
+					if (i == 16)
+					{
+						Bsp_Erase_Row(address+256);
+					}
+					break;
+				}
+			}
+		}
+	}
+}
+
+uint32_t Read_Time_or_mAh(uint8_t type) 
+{
+	uint32_t address = DCH_FLAG_START;
+	uint32_t val_temp = 0;
+	uint8_t i = 0;
+	uint8_t buff[8] = {0};
+	switch(type)    //根据类型区分地址
+	{
+		case DCH_FLAG: address = DCH_FLAG_START;break;
+		case CHG_FLAG: address = CHG_FLAG_START;break;
+		case TIME_FLAG: address = TIME_FLAG_START;break;
+		default:address = DCH_FLAG_START;break;
+	}
+	Bsp_Read_Buffer(address,buff,8);// 第一字节为FF表示无数据  第二字节无效  第 3 4 5 6 为32位数据 7 8 字节无效
+	if (buff[0] == 0xff)
+	{
+		address = address + 256;
+		Bsp_Read_Buffer(address,buff,8);
+		if (buff[0] == 0xff)
+		{
+			//flash没数据 重新初始化
+		}
+		else
+		{
+			for (i=0;i<32;i++)
+			{
+				Bsp_Read_Buffer(address+(i<<3),buff,8);
+				if (buff[0] == 0xff || i == 31)
+				{
+					if (i == 31)
+					{
+						Bsp_Read_Buffer(address+(i<<3),buff,8);
+					}
+					else
+					{
+						Bsp_Read_Buffer(address+((i-1)<<3),buff,8);
+					}
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		for (i=0;i<64;i++)
+		{
+			Bsp_Read_Buffer(address+(i<<3),buff,8);
+			if (buff[0] == 0xff)
+			{
+				Bsp_Read_Buffer(address+((i-1)<<3),buff,8);
+				break;
+			}
+		}
+	}
+	
+	val_temp = buff[2]<<24 | buff[3]<<16 | buff[4]<<8 | buff[5];
+	if(val_temp == 0XFFFFFFFF) val_temp = 0;
+	
+	return val_temp;
+}

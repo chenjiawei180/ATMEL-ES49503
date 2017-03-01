@@ -26,6 +26,9 @@ static struct can_rx_element_fifo_0 rx_element_fifo_0;
 static uint8_t callback_buffer[XMODEM_BUFLEN];
 volatile static uint32_t readOffset, writeOffset;
 
+uint8_t battery_data[64] = {0};
+uint8_t profile_data[128] = {0};
+
 void configure_can(void)
 {
 	/* Set up the CAN TX/RX pins */
@@ -81,10 +84,8 @@ void can_send_standard_message(uint32_t id_value, uint8_t *data,uint32_t data_le
 
 void CAN0_Handler(void)
 {
-	volatile uint32_t status, i, rx_buffer_index;
-	uint32_t download_address = 0;
+	volatile uint32_t status, i;
 	status = can_read_interrupt_status(&can_instance);
-	uint8_t write_buffer[4] = {0} ;
 
 	//if (status & CAN_RX_BUFFER_NEW_MESSAGE) {
 	//can_clear_interrupt_status(&can_instance, CAN_RX_BUFFER_NEW_MESSAGE);
@@ -300,8 +301,10 @@ void can_process(void)
 {
 	uint8_t buffer[XMODEM_BUFLEN];
 	uint8_t ch;
+	uint8_t checksum = 0;
 	if (readOffset != writeOffset)
 	{
+		CanTxBuffer[0] = 0x55;
 		read_bytes(&ch,1);
 		if (ch == 0x55)  //找到第一个字节 0x55
 		{
@@ -327,8 +330,151 @@ void can_process(void)
 					}
 				}
 			}
+			else if(ch == ID_address || ch == 0xff )  //地址
+			{
+				read_bytes(&Sequence_ID,1);   //取出定序ID
+				read_bytes(buffer,1);   //第四个字节 数据长
 
+				if(buffer[0] <= 4)
+				{
+					read_bytes(buffer+1,buffer[0]+2);
+					checksum = check_sum(buffer,buffer[0]+3);
+					if ( checksum == (buffer[buffer[0]+2]) )
+					{
+						switch(buffer[1])
+						{
+							case 0xCE:
+								Latch_id = buffer[2];
+								latch_answer();
+								break;
+							case 0xC5:
+								battery_answer();
+								break;
+							case 0xC6:
+								profile_answer();
+								break;
+							case 0x48:
+								address_answer();
+								break;
+							default:
+								break;
+						}	
+					}
+				}
+			}
 		}
 	}
+}
+
+void address_answer(void)
+{
+	uint8_t Send_buffer[10];
+	Send_buffer[0] = 0x55;
+	Send_buffer[1] = ID_address;
+	Send_buffer[2] = Sequence_ID;
+	Send_buffer[3] = 0x01;
+	Send_buffer[4] = 0x58;
+	Send_buffer[5] = ID_address;    // 数据开始
+	Send_buffer[6] = check_sum(Send_buffer+3,4);
+	send_message(Send_buffer,7);
+}
+
+void profile_answer(void)
+{
+	;
+}
+
+void battery_answer(void)
+{
+	;
+}
+
+void latch_answer(void)
+{
+
+}
+
+void profile_load(void)
+{
+	
+}
+
+void battery_load(void)
+{
+	int16_t current_temp = 0;
+	uint16_t V_temp = 0;
+	
+	battery_data[0] = 0x55;
+	battery_data[1] = ID_address;
+	battery_data[2] = Sequence_ID;
+	battery_data[3] = 49;
+	battery_data[4] = 0xD5;
+	battery_data[5] = Latch_id; // 数据开始 latch id
+	battery_data[6] = g_sys_cap.val.full_cap;//满充电容量
+	battery_data[7] = g_sys_cap.val.full_cap >> 8;	
+	battery_data[8] = g_sys_cap.val.cap_val;//剩余容量
+	battery_data[9] = g_sys_cap.val.cap_val>>8;
+	battery_data[10] = g_sys_cap.val.bat_cycle_cnt;//循环次数
+	battery_data[11] = g_sys_cap.val.bat_cycle_cnt>>8;
+	current_temp = nADC_CURRENT *1800/32768;//电流
+	battery_data[12] =  current_temp;
+	battery_data[13] =  current_temp>>8;
+	battery_data[14] =  ( TEMP_3_BAT + TEMP_4_BAT + TEMP_5_BAT )/3;//平均电池温度
+	battery_data[15] = nADC_TMONI_BAT_MIN;//最低电池温度
+	battery_data[16] = nADC_TMONI_BAT_MAX;//最高电池温度
+	battery_data[17] = 0; //检流电阻温度
+	battery_data[18] = 0; //连接部温度
+	V_temp = nADC_VPACK *6104 / 10000;
+	battery_data[19] = V_temp; // 电池组电压
+	battery_data[20] = V_temp >> 8;
+	V_temp = Total_VBAT *305 / 10000;
+	battery_data[21] = V_temp; // 平均电芯电压
+	battery_data[22] = V_temp >> 8;
+	V_temp = nADC_CELL_MIN *305 / 10000;
+	battery_data[23] = V_temp; // 最小电芯电压
+	battery_data[24] = V_temp >> 8;	
+	V_temp = nADC_CELL_MAX *305 / 10000;
+	battery_data[25] = V_temp; // 最大电芯电压
+	battery_data[26] = V_temp >> 8;
+	
+	battery_data[27] = 0;    //累积放电量
+	battery_data[28] = 0;
+	battery_data[29] = 0;
+	battery_data[30] = 0;
+	
+	battery_data[31] = 0;    //累积充电量
+	battery_data[32] = 0;
+	battery_data[33] = 0;
+	battery_data[34] = 0;	
+	
+	battery_data[35] = 0;    //累积利用时间
+	battery_data[36] = 0;
+	battery_data[37] = 0;
+	battery_data[38] = 0;	
+	
+	battery_data[39] = 0;    //电芯充电限制电压
+	battery_data[40] = 0;
+
+	battery_data[41] = 0;    //充电限制电流
+	battery_data[42] = 0;
+	
+	battery_data[43] = 0;    //放电限制电流
+	battery_data[44] = 0;
+	
+	battery_data[45] = 0;    //TD Flag
+	
+	battery_data[46] = 0;    //异常 Flag
+	battery_data[47] = 0;    //异常 Flag
+	battery_data[48] = 0;    //异常 Flag
+	
+	battery_data[49] = 0;    //电池状态
+	
+	battery_data[50] = 0;    //过冲电保护等级3电压
+	battery_data[51] = 0;
+	
+	battery_data[52] = 3445&0xff;    //电芯8%电压
+	battery_data[53] = 3445>>8;
+	
+	battery_data[54] = check_sum(battery_data+3,52);
 }
 

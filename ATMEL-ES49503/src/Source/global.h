@@ -222,6 +222,14 @@ typedef union
 
 #define BOOTLOADER_FLAG            0x0003fd00
 
+#define DCH_FLAG_START 0x3f700
+#define CHG_FLAG_START 0X3F900
+#define TIME_FLAG_START 0X3FB00
+
+#define  DCH_FLAG 1
+#define  CHG_FLAG 2
+#define  TIME_FLAG 3
+
 #include "usart.h"
 
 OS_EXT SystemFlags sys_flags;
@@ -257,9 +265,27 @@ OS_EXT volatile uint8_t AFE_OC_DELAY_CNT;
 OS_EXT volatile uint8_t AFE_SCD_DELAY_CNT;
 OS_EXT volatile uint8_t AFE_OCC_DELAY_CNT;
 
+OS_EXT int8_t TEMP_1_PCB;
+OS_EXT int8_t TEMP_2_PCB;
+OS_EXT int8_t TEMP_3_BAT;
+OS_EXT int8_t TEMP_4_BAT;
+OS_EXT int8_t TEMP_5_BAT;
+
+OS_EXT uint32_t DCH_Val;
+OS_EXT uint32_t CHG_Val;
+OS_EXT uint32_t Time_Val;
+OS_EXT uint32_t DCH_Val_Bak;
+OS_EXT uint32_t CHG_Val_Bak;
+OS_EXT uint32_t Time_Val_Bak;
+OS_EXT uint16_t nADC_VPACK;
 
 // for debug
 #define UartTxLength 68
 OS_EXT uint8_t TxBuffer[UartTxLength];
+OS_EXT uint8_t CanTxBuffer[256];
+
+OS_EXT uint8_t Latch_id;
+OS_EXT uint8_t ID_address;
+OS_EXT uint8_t Sequence_ID;
 
 #endif /* GLOBAL_H_ */
