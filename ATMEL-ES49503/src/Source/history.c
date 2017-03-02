@@ -319,18 +319,15 @@ uint32_t Read_Time_or_mAh(uint8_t type)
 			for (i=0;i<32;i++)
 			{
 				Bsp_Read_Buffer(address+(i<<3),buff,8);
-				if (buff[0] == 0xff || i == 31)
+				if (buff[0] == 0xff)
 				{
-					if (i == 31)
-					{
-						Bsp_Read_Buffer(address+(i<<3),buff,8);
-					}
-					else
-					{
-						Bsp_Read_Buffer(address+((i-1)<<3),buff,8);
-					}
+					Bsp_Read_Buffer(address+((i-1)<<3),buff,8);
 					break;
 				}
+			}
+			if (i == 32)
+			{
+				Bsp_Read_Buffer(address+((i-1)<<3),buff,8);
 			}
 		}
 	}
@@ -352,3 +349,20 @@ uint32_t Read_Time_or_mAh(uint8_t type)
 	
 	return val_temp;
 }
+
+void Time_update(void)
+{
+	static cal_ms = 0;
+	cal_ms++;
+	if (cal_ms >= 4)
+	{
+		cal_ms = 0;
+		Time_Val++;
+		if (Time_Val - Time_Val_Bak >= 60)
+		{
+			Write_Time_or_mAh(Time_Val,TIME_FLAG);
+			Time_Val_Bak = Time_Val;
+		}
+	}
+}
+

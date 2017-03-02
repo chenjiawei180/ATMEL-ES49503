@@ -10,6 +10,7 @@
 #include "ad_dat.h"
 #include "led.h"
 #include "soc.h"
+#include "history.h"
 
 
 uint16_t OCC_TIMEOUT = 0;
@@ -542,7 +543,26 @@ void SOC(void)
 	tmp_cap=(int)(g_sys_cap.val.cap_cnt/CAP_CNT_VAL);
 	g_sys_cap.val.cap_cnt=g_sys_cap.val.cap_cnt-(long)(tmp_cap)*CAP_CNT_VAL;
 	
-
+    //添加计算累积充电量和累积放电量
+	if (tmp_cap >= 0)
+	{
+		CHG_Val = CHG_Val + tmp_cap;
+		if (CHG_Val - CHG_Val_Bak >= 100 )
+		{
+			Write_Time_or_mAh(CHG_Val,CHG_FLAG);
+			CHG_Val_Bak = CHG_Val;
+		}
+	}
+	else
+	{
+		DCH_Val = DCH_Val - tmp_cap;
+		if (DCH_Val - DCH_Val_Bak >=100 )
+		{
+			Write_Time_or_mAh(DCH_Val,DCH_FLAG);
+			DCH_Val_Bak = DCH_Val;
+		}
+	}
+	
 	if(tmp_cap>-30)
 	{
 		g_sys_cap.val.cap_val+=tmp_cap;

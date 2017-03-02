@@ -41,14 +41,13 @@ void PowerOn_Init(void)
 	AFE_SCD_DELAY_CNT = 0;
 	AFE_OCC_DELAY_CNT = 0;
 	Latch_id = 0;
-	ID_address = 0;
-	Read_Time_or_mAh(DCH_FLAG);
-	Read_Time_or_mAh(CHG_FLAG);
-	Read_Time_or_mAh(TIME_FLAG);
+	ID_address = 0xff;
+	DCH_Val = Read_Time_or_mAh(DCH_FLAG);
+	CHG_Val = Read_Time_or_mAh(CHG_FLAG);
+	Time_Val = Read_Time_or_mAh(TIME_FLAG);
 	DCH_Val_Bak = DCH_Val;
 	CHG_Val_Bak = CHG_Val;
 	Time_Val_Bak = Time_Val;
-	
 	
     sys_states.val.sys_sw_nconnect_flag=1;//zzy20161021 初始值为断开连接
     g_sys_cap.val.cycle_record_flag =0;

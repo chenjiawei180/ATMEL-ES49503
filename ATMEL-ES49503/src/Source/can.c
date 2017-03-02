@@ -292,7 +292,8 @@ void send_message(uint8_t * buffer, uint8_t idx)
 		{
 			can_send_standard_message(CAN_RX_STANDARD_FILTER_ID_1,buffer+(i<<3),length);
 		}
-		delay_us(250);
+		//delay_us(250);
+		delay_us(500);
 	}
 }
 
@@ -345,6 +346,7 @@ void can_process(void)
 						{
 							case 0xCE:
 								Latch_id = buffer[2];
+								battery_load();
 								latch_answer();
 								break;
 							case 0xC5:
@@ -386,7 +388,7 @@ void profile_answer(void)
 
 void battery_answer(void)
 {
-	;
+	send_message(battery_data,55);
 }
 
 void latch_answer(void)
@@ -437,20 +439,20 @@ void battery_load(void)
 	battery_data[25] = V_temp; // 最大电芯电压
 	battery_data[26] = V_temp >> 8;
 	
-	battery_data[27] = 0;    //累积放电量
-	battery_data[28] = 0;
-	battery_data[29] = 0;
-	battery_data[30] = 0;
+	battery_data[27] = DCH_Val;    //累积放电量
+	battery_data[28] = DCH_Val>>8;
+	battery_data[29] = DCH_Val>>16;
+	battery_data[30] = DCH_Val>>24;
 	
-	battery_data[31] = 0;    //累积充电量
-	battery_data[32] = 0;
-	battery_data[33] = 0;
-	battery_data[34] = 0;	
+	battery_data[31] = CHG_Val;    //累积充电量
+	battery_data[32] = CHG_Val>>8;
+	battery_data[33] = CHG_Val>>16;
+	battery_data[34] = CHG_Val>>24;	
 	
-	battery_data[35] = 0;    //累积利用时间
-	battery_data[36] = 0;
-	battery_data[37] = 0;
-	battery_data[38] = 0;	
+	battery_data[35] = Time_Val;    //累积利用时间
+	battery_data[36] = Time_Val>>8;
+	battery_data[37] = Time_Val>>16;
+	battery_data[38] = Time_Val>>24;	
 	
 	battery_data[39] = 0;    //电芯充电限制电压
 	battery_data[40] = 0;
