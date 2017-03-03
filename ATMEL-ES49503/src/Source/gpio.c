@@ -22,7 +22,7 @@ void Configure_GPIO(void)
 	
 	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
 	port_pin_set_config(COM_RES_PIN, &pin_conf);
-	port_pin_set_output_level(COM_RES_PIN, true);
+	port_pin_set_output_level(COM_RES_PIN, false);
 	
 	pin_conf.direction  = PORT_PIN_DIR_INPUT;
 	port_pin_set_config(ID_IN_PIN, &pin_conf);

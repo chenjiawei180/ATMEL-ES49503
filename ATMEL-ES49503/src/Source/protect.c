@@ -47,7 +47,7 @@ void AFE_Control(void)
 	SoftwareProtection();//软件保护
 	SoftMeansureControl(); //软件采集保护
 
-	Cell_Balance(); //均衡
+	//Cell_Balance(); //均衡
 	//一切都正常,但是PCB过温了,说明可能出现了反接,充放电管都关闭,直到温度降低回85℃
 	PCB_Protect();
 }

@@ -98,7 +98,6 @@ int main (void)
 
 	system_interrupt_enable_global();
 
-	
 	/* 从EEPROM恢复各变量的值 */
 	SYS_EEPROM_Init();
 	g_sys_cap.val.full_cap = cap_update;
@@ -112,12 +111,16 @@ int main (void)
 	
 	Bsp_LED0_Off();
 	Bsp_LED1_On();
+
+	Address_Init(); //初始化设备地址
+	printf("address is %d. \r\n",ID_address);
 	
 	/* Insert application code here, after the board has been initialized. */
 	while (1)
 	{
 		can_process();
 		AFE_Reg_Read();
+
 		//printf("Cell 0 is %d. \r\n",nADC_Cell_Value[0]);
 	}
 }

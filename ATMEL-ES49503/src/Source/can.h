@@ -49,5 +49,8 @@ extern void latch_answer(void);
 extern void profile_load(void);
 extern void battery_load(void);
 
+extern void Address_Init(void);
+extern void Address_Send(void);
+
 
 #endif /* CAN_H_ */

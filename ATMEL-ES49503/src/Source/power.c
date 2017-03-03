@@ -70,3 +70,8 @@ void PowerOn_Init(void)
 	g_sys_history.val.vcell_max =0;
 	g_sys_history.val.vcell_min =0xffff;
 }
+
+
+
+
+

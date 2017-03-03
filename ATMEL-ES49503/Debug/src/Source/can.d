@@ -161,7 +161,7 @@ src/Source/can.d src/Source/can.o: ../src/Source/can.c \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h \
  ../src/ASF/sam0/drivers/wdt/wdt.h \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h ../src/Source/global.h \
- ../src/Source/usart.h
+ ../src/Source/usart.h ../src/Source/gpio.h
 
 ../src/Source/can.h:
 
@@ -504,3 +504,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/Source/global.h:
 
 ../src/Source/usart.h:
+
+../src/Source/gpio.h:

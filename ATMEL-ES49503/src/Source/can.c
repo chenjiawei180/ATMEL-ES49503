@@ -6,6 +6,7 @@
  */ 
 
 #include "can.h"
+#include "gpio.h"
 
 static struct can_module can_instance;
 
@@ -28,6 +29,9 @@ volatile static uint32_t readOffset, writeOffset;
 
 uint8_t battery_data[64] = {0};
 uint8_t profile_data[128] = {0};
+	
+uint8_t address_assign_flag = 1;
+uint8_t address_conflict = 0;
 
 void configure_can(void)
 {
@@ -345,18 +349,36 @@ void can_process(void)
 						switch(buffer[1])
 						{
 							case 0xCE:
-								Latch_id = buffer[2];
-								battery_load();
-								latch_answer();
+								if (address_assign_flag == 0)
+								{
+									Latch_id = buffer[2];
+									battery_load();
+									latch_answer();
+								}
 								break;
 							case 0xC5:
-								battery_answer();
+								if (address_assign_flag == 0)
+								{
+									battery_answer();
+								}
 								break;
 							case 0xC6:
-								profile_answer();
+								if (address_assign_flag == 0)
+								{
+									profile_answer();
+								}
 								break;
 							case 0x48:
-								address_answer();
+								if (address_assign_flag == 0)
+								{
+									address_answer();
+								}
+								break;
+							case 0x58:
+								if ( buffer[2] == ID_address && address_assign_flag == 1)
+								{
+									address_conflict = 1;
+								}
 								break;
 							default:
 								break;
@@ -480,3 +502,57 @@ void battery_load(void)
 	battery_data[54] = check_sum(battery_data+3,52);
 }
 
+void Address_Init(void)
+{
+	static uint32_t time_count = 0;
+	if (ID_END_Read() == false)
+	{
+		ID_address = 0x01;
+		address_assign_flag = 0;
+		ID_OUT_Low();
+		COM_RES_Low();
+	}
+	else
+	{
+		while(ID_IN_Read() == true);//等待ID_IN 为低
+		delay_ms(10);
+		while(ID_IN_Read() == true);//确认ID_IN 为低
+		
+		ID_address = 0x01;
+		while( address_assign_flag == 1)
+		{
+			Address_Send();
+			time_count = 0;
+			address_conflict = 0;
+			while(address_conflict == 0)
+			{
+				can_process();
+				time_count++;
+				delay_ms(1);
+				if (time_count >= 50)
+				{
+					address_assign_flag = 0;
+					ID_OUT_Low();
+					break;
+				}
+			}
+			if (address_assign_flag == 1)
+			{
+				ID_address++;
+			}
+		}
+		
+	}
+}
+
+void Address_Send(void)
+{
+	uint8_t Send_buffer[10];
+	Send_buffer[0] = 0x55;
+	Send_buffer[1] = ID_address;
+	Send_buffer[2] = 0x00;
+	Send_buffer[3] = 0x00;
+	Send_buffer[4] = 0x48;
+	Send_buffer[5] = check_sum(Send_buffer+3,3);
+	send_message(Send_buffer,6);
+}
