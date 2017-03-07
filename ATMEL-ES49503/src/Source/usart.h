@@ -13,7 +13,7 @@
 #include "stdio_serial.h"
 #include "global.h"
 
-#define OS_DEBUG
+//#define OS_DEBUG
 
 #define USART1_MODULE              SERCOM3
 #define USART1_BAUD                19200

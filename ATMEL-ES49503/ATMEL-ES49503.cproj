@@ -536,7 +536,12 @@
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
   <armgcc.linker.memorysettings.ExternalRAM />
-  <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam0/utils/linker_scripts/samc21/gcc/samc21j18a_flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
+  <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam0/utils/linker_scripts/samc21/gcc/samc21j18a_flash.ld -Wl,--section-start=.text=0x4000</armgcc.linker.miscellaneous.LinkerFlags>
+  <armgcc.linker.miscellaneous.OtherOptions>
+    <ListValues>
+      <Value>--section-start=.physicalsection=0x3000</Value>
+    </ListValues>
+  </armgcc.linker.miscellaneous.OtherOptions>
   <armgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>../src/ASF/common/boards</Value>

@@ -85,9 +85,9 @@ void SPI_AllReg_WR(void)
     {
 		#ifdef OS_DEBUG
 		Usart_process();
-		//MCU_STOP_Toggle();
-		//ID_OUT_Toggle();
-		//COM_RES_Low();
+		MCU_STOP_Toggle();
+		ID_OUT_Toggle();
+		COM_RES_Low();
 		//if(ID_IN_Read()) printf("ID_IN ¸ß. \r\n");
 		//else printf("ID_IN µÍ. \r\n");
 		//if(ID_END_Read()) printf("ID_END ¸ß. \r\n");
