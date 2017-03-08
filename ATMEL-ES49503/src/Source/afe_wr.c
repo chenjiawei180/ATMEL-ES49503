@@ -88,15 +88,15 @@ void SPI_AllReg_WR(void)
 		MCU_STOP_Toggle();
 		ID_OUT_Toggle();
 		COM_RES_Low();
-		//if(ID_IN_Read()) printf("ID_IN 高. \r\n");
-		//else printf("ID_IN 低. \r\n");
-		//if(ID_END_Read()) printf("ID_END 高. \r\n");
-		//else printf("ID_END 低. \r\n");
-		//if(SOV_Read()) printf("SOV 高. \r\n");
-		//else printf("SOV 低. \r\n");
-		//uint16_t adc_value = 0;
-		//Adc_Read_AdcValue(&adc_value);
-		//printf("ADC = %d. \r\n",adc_value);
+		if(ID_IN_Read()) printf("ID_IN 高. \r\n");
+		else printf("ID_IN 低. \r\n");
+		if(ID_END_Read()) printf("ID_END 高. \r\n");
+		else printf("ID_END 低. \r\n");
+		if(SOV_Read()) printf("SOV 高. \r\n");
+		else printf("SOV 低. \r\n");
+		uint16_t adc_value = 0;
+		Adc_Read_AdcValue(&adc_value);
+		printf("ADC = %d. \r\n",adc_value);
 		#endif
 		Time_update();
 	    sys_flags.val.afe_adirq2_flag =0;
