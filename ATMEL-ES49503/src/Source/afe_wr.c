@@ -32,14 +32,16 @@ volatile uint16_t sw_change_lowpower_cnt=0;        //zzy20161101低功耗
 
 void AFE_Init(void)
 {
-    ucSPI_Write(MAC_SPI_DEV,LOCK_ADDR,AFE_UNLOCK);   //unlock IC
+    AFE_disconnect = ucSPI_Write(MAC_SPI_DEV,LOCK_ADDR,AFE_UNLOCK);   //unlock IC
     //上电清AD值
     //    ucSPI_Write(MAC_SPI_DEV,STAT_ADDR,AFE_VAD_DONE);   //clear VAD_DONE
     //    ucSPI_Write(MAC_SPI_DEV,OP_MODE_ADDR,AFE_AVD_LATCH);   //END AD
-    
-    ucSPI_Write(MAC_SPI_DEV,GPIO_CTRL4_ADDR,AFE_TM_PULLUP);   //set tm1~5 pullup
-    ucSPI_Write(MAC_SPI_DEV,GVSEL_ADDR,AFE_OTHER_AD_ALL_ON);   //enable other AD
-    ucSPI_Write(MAC_SPI_DEV,GPIO_CTRL1_ADDR,AFE_GPIO456_GPIO1_EN);   //enable GPIO1 INPUT GPIO5 OUTPUT
+    if (!AFE_disconnect)
+    AFE_disconnect = ucSPI_Write(MAC_SPI_DEV,GPIO_CTRL4_ADDR,AFE_TM_PULLUP);   //set tm1~5 pullup
+	if (!AFE_disconnect)
+    AFE_disconnect = ucSPI_Write(MAC_SPI_DEV,GVSEL_ADDR,AFE_OTHER_AD_ALL_ON);   //enable other AD
+	if (!AFE_disconnect)
+    AFE_disconnect = ucSPI_Write(MAC_SPI_DEV,GPIO_CTRL1_ADDR,AFE_GPIO456_GPIO1_EN);   //enable GPIO1 INPUT GPIO5 OUTPUT
     
     //    ucSPI_Write(MAC_SPI_DEV,GPIO_CTRL2_ADDR,0x0008);   //使能GPIO4下拉
     //    ucSPI_Write(MAC_SPI_DEV,GPIOSEL_ADDR,AFE_ADIQ2_EN);   //enable GPIO5 ADIR
@@ -47,9 +49,10 @@ void AFE_Init(void)
     //       ucSPI_Write(MAC_SPI_DEV,OUVCTL2_ADDR,AFE_ALARM_3V5);   //set Alarm Volt value
     
     //    ucSPI_Write(MAC_SPI_DEV,ADCTRL2_ADDR,AFE_ADIH_EN);   //enable High Speed Cur AD
-    ucSPI_Write(MAC_SPI_DEV,ADCTRL2_ADDR,AFE_ADIL_EN);   //enable low Speed Cur AD
-    
-    ucSPI_Write(MAC_SPI_DEV,LOCK_ADDR,AFE_LOCK);   //lock IC
+	if (!AFE_disconnect)
+    AFE_disconnect = ucSPI_Write(MAC_SPI_DEV,ADCTRL2_ADDR,AFE_ADIL_EN);   //enable low Speed Cur AD
+	if (!AFE_disconnect)
+    AFE_disconnect = ucSPI_Write(MAC_SPI_DEV,LOCK_ADDR,AFE_LOCK);   //lock IC
     //    ucSPI_Write(MAC_SPI_DEV,OP_MODE_ADDR,AFE_ADC_EN_TRG);   //enable AD one short
     //ucSPI_Read(MAC_SPI_DEV,ADCTRL2_ADDR,spi_read_value);        //zzy?
 }

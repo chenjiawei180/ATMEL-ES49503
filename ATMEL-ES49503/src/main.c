@@ -119,8 +119,14 @@ int main (void)
 	while (1)
 	{
 		can_process();
-		AFE_Reg_Read();
-
+		if (AFE_disconnect)
+		{
+			AFE_Init();
+		}
+		else
+		{
+			AFE_Reg_Read();	
+		}
 		//printf("Cell 0 is %d. \r\n",nADC_Cell_Value[0]);
 	}
 }

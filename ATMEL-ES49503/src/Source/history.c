@@ -352,7 +352,7 @@ uint32_t Read_Time_or_mAh(uint8_t type)
 
 void Time_update(void)
 {
-	static cal_ms = 0;
+	static uint8_t cal_ms = 0;
 	cal_ms++;
 	if (cal_ms >= 4)
 	{

@@ -288,4 +288,6 @@ OS_EXT uint8_t Latch_id;
 OS_EXT uint8_t ID_address;
 OS_EXT uint8_t Sequence_ID;
 
+OS_EXT uint8_t AFE_disconnect;
+
 #endif /* GLOBAL_H_ */

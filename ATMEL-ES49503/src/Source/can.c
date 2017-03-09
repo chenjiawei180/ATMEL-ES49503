@@ -307,8 +307,10 @@ void can_process(void)
 	uint8_t buffer[XMODEM_BUFLEN];
 	uint8_t ch;
 	uint8_t checksum = 0;
+	uint8_t broadcast = 0;
 	if (readOffset != writeOffset)
 	{
+		broadcast = 0;
 		CanTxBuffer[0] = 0x55;
 		read_bytes(&ch,1);
 		if (ch == 0x55)  //找到第一个字节 0x55
@@ -337,6 +339,10 @@ void can_process(void)
 			}
 			else if(ch == ID_address || ch == 0xff )  //地址
 			{
+				if (ch == 0xff)
+				{
+					broadcast = 1;
+				}
 				read_bytes(&Sequence_ID,1);   //取出定序ID
 				read_bytes(buffer,1);   //第四个字节 数据长
 
@@ -353,23 +359,26 @@ void can_process(void)
 								{
 									Latch_id = buffer[2];
 									battery_load();
-									latch_answer();
+									if ( broadcast == 0)
+									{
+										latch_answer();
+									}
 								}
 								break;
 							case 0xC5:
-								if (address_assign_flag == 0)
+								if (address_assign_flag == 0 && broadcast == 0)
 								{
 									battery_answer();
 								}
 								break;
 							case 0xC6:
-								if (address_assign_flag == 0)
+								if (address_assign_flag == 0 && broadcast == 0)
 								{
 									profile_answer();
 								}
 								break;
 							case 0x48:
-								if (address_assign_flag == 0)
+								if (address_assign_flag == 0 && broadcast == 0)
 								{
 									address_answer();
 								}
@@ -412,8 +421,8 @@ void profile_answer(void)
 	profile_data[4] = 0xd6;
 	profile_data[5] = 13;    //数据开始
 	profile_data[6] = 1;
-	profile_data[7] = 6300;    //额定容量
-	profile_data[8] = 6300>>8;
+	profile_data[7] = 6000;    //额定容量
+	profile_data[8] = 6000>>8;
 	profile_data[9] = 4800;    // 公称电压
 	profile_data[10] = 4800>>8;
 	profile_data[11] = 45;    //充电最高温度
@@ -544,7 +553,15 @@ void battery_answer(void)
 
 void latch_answer(void)
 {
-
+	uint8_t Send_buffer[10];
+	Send_buffer[0] = 0x55;
+	Send_buffer[1] = ID_address;
+	Send_buffer[2] = Sequence_ID;
+	Send_buffer[3] = 0x01;
+	Send_buffer[4] = 0x58;
+	Send_buffer[5] = Latch_id;    // 数据开始
+	Send_buffer[6] = check_sum(Send_buffer+3,4);
+	send_message(Send_buffer,7);
 }
 
 void profile_load(void)
@@ -556,6 +573,7 @@ void battery_load(void)
 {
 	int16_t current_temp = 0;
 	uint16_t V_temp = 0;
+	uint32_t DCH_CHG_temp = 0;
 	
 	battery_data[0] = 0x55;
 	battery_data[1] = ID_address;
@@ -590,15 +608,17 @@ void battery_load(void)
 	battery_data[25] = V_temp; // 最大电芯电压
 	battery_data[26] = V_temp >> 8;
 	
-	battery_data[27] = DCH_Val;    //累积放电量
-	battery_data[28] = DCH_Val>>8;
-	battery_data[29] = DCH_Val>>16;
-	battery_data[30] = DCH_Val>>24;
+	DCH_CHG_temp = DCH_Val/1000;
+	battery_data[27] = DCH_CHG_temp;    //累积放电量
+	battery_data[28] = DCH_CHG_temp>>8;
+	battery_data[29] = DCH_CHG_temp>>16;
+	battery_data[30] = DCH_CHG_temp>>24;
 	
-	battery_data[31] = CHG_Val;    //累积充电量
-	battery_data[32] = CHG_Val>>8;
-	battery_data[33] = CHG_Val>>16;
-	battery_data[34] = CHG_Val>>24;	
+	DCH_CHG_temp = CHG_Val/1000;
+	battery_data[31] = DCH_CHG_temp;    //累积充电量
+	battery_data[32] = DCH_CHG_temp>>8;
+	battery_data[33] = DCH_CHG_temp>>16;
+	battery_data[34] = DCH_CHG_temp>>24;	
 	
 	battery_data[35] = Time_Val;    //累积利用时间
 	battery_data[36] = Time_Val>>8;
