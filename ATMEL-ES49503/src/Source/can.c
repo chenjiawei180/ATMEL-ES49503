@@ -357,17 +357,25 @@ void can_process(void)
 							case 0xCE:
 								if (address_assign_flag == 0)
 								{
-									Latch_id = buffer[2];
-									battery_load();
-									if ( broadcast == 0)
+									if (Latch_id != 0x00 && Latch_id != 0xff )
 									{
-										latch_answer();
+										Latch_id = buffer[2];
+										battery_load();
+										if ( broadcast == 0)
+										{
+											latch_answer();
+										}
 									}
 								}
 								break;
 							case 0xC5:
 								if (address_assign_flag == 0 && broadcast == 0)
 								{
+									if (Latch_id != buffer[2])
+									{
+										Latch_id = 0xff;
+										battery_load();
+									}
 									battery_answer();
 								}
 								break;

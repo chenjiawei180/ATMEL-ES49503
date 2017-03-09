@@ -56,8 +56,8 @@
 #define	MAC_SPI_RW_READ			(uint8_t)0x01
 #define	MAC_SPI_TRANS_SINGLE	(uint8_t)0x00
 #define	MAC_SPI_TRANS_CONTINUE	(uint8_t)0x01
-#define	MAC_SPI_WRITE_RETRY		(uint8_t)0x01
-#define	MAC_SPI_READ_RETRY		(uint8_t)0x01
+#define	MAC_SPI_WRITE_RETRY		(uint8_t)0x02
+#define	MAC_SPI_READ_RETRY		(uint8_t)0x02
 
 extern void Configure_Spi_Master(void);
 extern void SPI_Write_Buff(uint8_t *buff,uint16_t length);
