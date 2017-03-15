@@ -52,5 +52,7 @@ extern void battery_load(void);
 extern void Address_Init(void);
 extern void Address_Send(void);
 
+extern void profile_init(void);
+extern void profile_save(void);
 
 #endif /* CAN_H_ */

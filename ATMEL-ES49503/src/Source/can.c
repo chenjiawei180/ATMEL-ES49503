@@ -713,3 +713,67 @@ void Address_Send(void)
 	Send_buffer[5] = check_sum(Send_buffer+3,3);
 	send_message(Send_buffer,6);
 }
+
+void profile_init(void)
+{
+	Series_num = 13;
+	Parallel_num = 1;
+	Rated_Capacity = 6300;
+	Nominal_voltage = 4800;
+	CHG_Max_temp = 45;
+	CHG_Min_temp = -10;
+	Manufacturing_Name[0] = 0;
+	Manufacturing_Name[1] = 0;
+	Manufacturing_Name[2] = 0;
+	Manufacturing_Name[3] = 0;
+	Manufacturing_Name[4] = 0;
+	Manufacturing_Name[5] = 0;
+	Manufacturing_Name[6] = 0;
+	Manufacturing_Name[7] = 0;
+	Device_Name[0] = 0;
+	Device_Name[1] = 0;
+	Device_Name[2] = 0;
+	Device_Name[3] = 0;
+	Device_Name[4] = 0;
+	Device_Name[5] = 0;
+	Device_Name[6] = 0;
+	Device_Name[7] = 0;
+	Manufacturing_Data = 0;
+	Manufacturing_SN = 0;
+	Commun_Ver = 0;
+	FW_Ver = 0;
+	Data_Ver = 0;
+	Protect_Rev = 0;
+	Release_SOC = 0;
+	CV_Control_Cell_V1 = 0;
+	CV_Control_Cell_V2 = 0;
+	CV_Control_Cell_V3 = 0;
+	CV_Control_Cell_V4 = 0;
+	DCH_Stop_Vol = 0;
+	OCHG_Protect_Vol = 0;
+	ODCH_Protect_Vol = 0;
+	OCHG_Protect_Vol_MJ = 0;
+	ODCH_Protect_Vol_MJ = 0;
+	MAX_CHG_Current = 0;
+	MAX_DCH_Current = 0;
+	CHG_Overcurrent = 0;
+	DCH_Overcurrent = 0;
+	Temp_Protect = 0;
+	Balance_Start_Vol = 0;
+	Balance_Stop_Vol = 0;
+	Stop_SOC = 0;
+	Current_1C = 0;
+	Max_CHG_Mag1 = 0;
+	Max_CHG_Mag2 = 0;
+	Max_CHG_Mag3 = 0;
+	Max_CHG_Mag4 = 0;
+	Max_DCH_Mag1 = 0;
+	Max_DCH_Mag2 = 0;
+	Max_DCH_Mag3 = 0;
+	Max_DCH_Mag4 = 0;
+	DOD1 = 0;
+	DOD2 = 0;
+	DOD3 = 0;
+	DOD4 = 0;
+	LotRank = 0;	
+}

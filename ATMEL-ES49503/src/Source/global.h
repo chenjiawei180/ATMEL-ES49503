@@ -290,4 +290,52 @@ OS_EXT uint8_t Sequence_ID;
 
 OS_EXT uint8_t AFE_disconnect;
 
+//开放profile变量
+OS_EXT uint8_t Series_num;
+OS_EXT uint8_t Parallel_num;
+OS_EXT uint16_t Rated_Capacity;
+OS_EXT uint16_t Nominal_voltage;
+OS_EXT uint8_t CHG_Max_temp;
+OS_EXT uint8_t CHG_Min_temp;
+OS_EXT uint8_t Manufacturing_Name[8];
+OS_EXT uint8_t Device_Name[8];
+OS_EXT uint16_t Manufacturing_Data;
+OS_EXT uint16_t Manufacturing_SN;
+OS_EXT uint8_t Commun_Ver;
+OS_EXT uint8_t FW_Ver;
+OS_EXT uint8_t Data_Ver;
+OS_EXT uint8_t Protect_Rev;
+OS_EXT uint16_t Release_SOC;
+OS_EXT uint16_t CV_Control_Cell_V1;
+OS_EXT uint16_t CV_Control_Cell_V2;
+OS_EXT uint16_t CV_Control_Cell_V3;
+OS_EXT uint16_t CV_Control_Cell_V4;
+OS_EXT uint16_t DCH_Stop_Vol;
+OS_EXT uint16_t OCHG_Protect_Vol;
+OS_EXT uint16_t ODCH_Protect_Vol;
+OS_EXT uint16_t OCHG_Protect_Vol_MJ;
+OS_EXT uint16_t ODCH_Protect_Vol_MJ;
+OS_EXT uint16_t MAX_CHG_Current;
+OS_EXT uint16_t MAX_DCH_Current;
+OS_EXT uint16_t CHG_Overcurrent;
+OS_EXT uint16_t DCH_Overcurrent;
+OS_EXT uint8_t Temp_Protect;
+OS_EXT uint8_t Balance_Start_Vol;
+OS_EXT uint8_t Balance_Stop_Vol;
+OS_EXT uint8_t Stop_SOC;
+OS_EXT uint16_t Current_1C;
+OS_EXT uint16_t Max_CHG_Mag1;
+OS_EXT uint16_t Max_CHG_Mag2;
+OS_EXT uint16_t Max_CHG_Mag3;
+OS_EXT uint16_t Max_CHG_Mag4;
+OS_EXT uint16_t Max_DCH_Mag1;
+OS_EXT uint16_t Max_DCH_Mag2;
+OS_EXT uint16_t Max_DCH_Mag3;
+OS_EXT uint16_t Max_DCH_Mag4;
+OS_EXT uint8_t DOD1;
+OS_EXT uint8_t DOD2;
+OS_EXT uint8_t DOD3;
+OS_EXT uint8_t DOD4;
+OS_EXT uint16_t LotRank;
+
 #endif /* GLOBAL_H_ */

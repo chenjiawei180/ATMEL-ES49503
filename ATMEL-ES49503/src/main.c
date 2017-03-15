@@ -111,6 +111,7 @@ int main (void)
 	
 	Bsp_LED0_Off();
 	Bsp_LED1_On();
+	profile_init();
 
 	Address_Init(); //初始化设备地址
 	//printf("address is %d. \r\n",ID_address);
