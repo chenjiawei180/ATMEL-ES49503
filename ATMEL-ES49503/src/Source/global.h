@@ -216,6 +216,45 @@ typedef union
 	uint16_t VAL;
 }Cell_Balanc_state;
 
+typedef union
+{
+	struct
+	{
+		uint8_t ActionState							   : 2;
+		uint8_t SocState                         	   : 2;
+		uint8_t CHG_Inhibit_Temp                       : 1;
+		uint8_t DCH_Inhibit_Temp                       : 1;
+		uint8_t BalanceState                           : 1;
+		uint8_t                                        : 1;
+	}val;
+	uint8_t VAL;
+}BatteryStateFlags;
+
+typedef union
+{
+	struct
+	{
+		uint32_t OCHG_Protect3							: 1; //过充电
+		uint32_t OCHG_Protect4                         	: 1;
+		uint32_t OCHG_Protect5                          : 1;
+		uint32_t ODCH_Protect3							: 1; //过放电
+		uint32_t ODCH_Protect4                         	: 1;
+		uint32_t ODCH_Protect5                          : 1;
+		uint32_t OCC_Protect3							: 1; //充电过流
+		uint32_t OCC_Protect4                         	: 1;
+		uint32_t OCC_Protect5                           : 1;
+		uint32_t ODC_Protect3							: 1; //放电过流
+		uint32_t ODC_Protect4                         	: 1;
+		uint32_t ODC_Protect5                           : 1;
+		uint32_t Over_Temp3                             : 1; //过温升
+		uint32_t Over_Temp4                             : 1;
+		uint32_t Over_Temp5                             : 1;
+		uint32_t Stop_Bit                               : 1;
+		uint32_t                                        : 16;
+	}val;
+	uint32_t VAL;
+}AbnormalStateFlags;
+
 #define		MAC_AN49503_READ_ADR		(uint8_t)0x01
 #define 	MAC_AN49503_READ_CNT        (uint8_t)0x56		/* from 0x00 to 0x100 */
 #define     MAC_SPI_DEV                 (uint8_t)0xE0
@@ -242,6 +281,9 @@ OS_EXT volatile __SYS_HISTORY g_sys_history;
 OS_EXT volatile __SYS_CAP g_sys_cap;
 OS_EXT Cell_Balanc_state g_bal_state;
 OS_EXT Cell_Balanc_state g_bal_need;
+
+OS_EXT BatteryStateFlags BatteryState;
+OS_EXT AbnormalStateFlags AbnormalState;
 
 #define EEPROM_SYS_DATA_LEN  26
 OS_EXT uint8_t flash_ram_buffer[EEPROM_SYS_DATA_LEN];
@@ -291,51 +333,51 @@ OS_EXT uint8_t Sequence_ID;
 OS_EXT uint8_t AFE_disconnect;
 
 //开放profile变量
-OS_EXT uint8_t Series_num;
-OS_EXT uint8_t Parallel_num;
-OS_EXT uint16_t Rated_Capacity;
-OS_EXT uint16_t Nominal_voltage;
-OS_EXT uint8_t CHG_Max_temp;
-OS_EXT uint8_t CHG_Min_temp;
-OS_EXT uint8_t Manufacturing_Name[8];
-OS_EXT uint8_t Device_Name[8];
-OS_EXT uint16_t Manufacturing_Data;
-OS_EXT uint16_t Manufacturing_SN;
-OS_EXT uint8_t Commun_Ver;
-OS_EXT uint8_t FW_Ver;
-OS_EXT uint8_t Data_Ver;
-OS_EXT uint8_t Protect_Rev;
-OS_EXT uint16_t Release_SOC;
-OS_EXT uint16_t CV_Control_Cell_V1;
-OS_EXT uint16_t CV_Control_Cell_V2;
-OS_EXT uint16_t CV_Control_Cell_V3;
-OS_EXT uint16_t CV_Control_Cell_V4;
-OS_EXT uint16_t DCH_Stop_Vol;
-OS_EXT uint16_t OCHG_Protect_Vol;
-OS_EXT uint16_t ODCH_Protect_Vol;
-OS_EXT uint16_t OCHG_Protect_Vol_MJ;
-OS_EXT uint16_t ODCH_Protect_Vol_MJ;
-OS_EXT uint16_t MAX_CHG_Current;
-OS_EXT uint16_t MAX_DCH_Current;
-OS_EXT uint16_t CHG_Overcurrent;
-OS_EXT uint16_t DCH_Overcurrent;
-OS_EXT uint8_t Temp_Protect;
-OS_EXT uint8_t Balance_Start_Vol;
-OS_EXT uint8_t Balance_Stop_Vol;
-OS_EXT uint8_t Stop_SOC;
-OS_EXT uint16_t Current_1C;
-OS_EXT uint16_t Max_CHG_Mag1;
-OS_EXT uint16_t Max_CHG_Mag2;
-OS_EXT uint16_t Max_CHG_Mag3;
-OS_EXT uint16_t Max_CHG_Mag4;
-OS_EXT uint16_t Max_DCH_Mag1;
-OS_EXT uint16_t Max_DCH_Mag2;
-OS_EXT uint16_t Max_DCH_Mag3;
-OS_EXT uint16_t Max_DCH_Mag4;
-OS_EXT uint8_t DOD1;
-OS_EXT uint8_t DOD2;
-OS_EXT uint8_t DOD3;
-OS_EXT uint8_t DOD4;
-OS_EXT uint16_t LotRank;
+//OS_EXT uint8_t Series_num;
+//OS_EXT uint8_t Parallel_num;
+//OS_EXT uint16_t Rated_Capacity;
+//OS_EXT uint16_t Nominal_voltage;
+//OS_EXT uint8_t CHG_Max_temp;
+//OS_EXT uint8_t CHG_Min_temp;
+//OS_EXT uint8_t Manufacturing_Name[8];
+//OS_EXT uint8_t Device_Name[8];
+//OS_EXT uint16_t Manufacturing_Data;
+//OS_EXT uint16_t Manufacturing_SN;
+//OS_EXT uint8_t Commun_Ver;
+//OS_EXT uint8_t FW_Ver;
+//OS_EXT uint8_t Data_Ver;
+//OS_EXT uint8_t Protect_Rev;
+//OS_EXT uint16_t Release_SOC;
+//OS_EXT uint16_t CV_Control_Cell_V1;
+//OS_EXT uint16_t CV_Control_Cell_V2;
+//OS_EXT uint16_t CV_Control_Cell_V3;
+//OS_EXT uint16_t CV_Control_Cell_V4;
+//OS_EXT uint16_t DCH_Stop_Vol;
+//OS_EXT uint16_t OCHG_Protect_Vol;
+//OS_EXT uint16_t ODCH_Protect_Vol;
+//OS_EXT uint16_t OCHG_Protect_Vol_MJ;
+//OS_EXT uint16_t ODCH_Protect_Vol_MJ;
+//OS_EXT uint16_t MAX_CHG_Current;
+//OS_EXT uint16_t MAX_DCH_Current;
+//OS_EXT uint16_t CHG_Overcurrent;
+//OS_EXT uint16_t DCH_Overcurrent;
+//OS_EXT uint8_t Temp_Protect;
+//OS_EXT uint8_t Balance_Start_Vol;
+//OS_EXT uint8_t Balance_Stop_Vol;
+//OS_EXT uint8_t Stop_SOC;
+//OS_EXT uint16_t Current_1C;
+//OS_EXT uint16_t Max_CHG_Mag1;
+//OS_EXT uint16_t Max_CHG_Mag2;
+//OS_EXT uint16_t Max_CHG_Mag3;
+//OS_EXT uint16_t Max_CHG_Mag4;
+//OS_EXT uint16_t Max_DCH_Mag1;
+//OS_EXT uint16_t Max_DCH_Mag2;
+//OS_EXT uint16_t Max_DCH_Mag3;
+//OS_EXT uint16_t Max_DCH_Mag4;
+//OS_EXT uint8_t DOD1;
+//OS_EXT uint8_t DOD2;
+//OS_EXT uint8_t DOD3;
+//OS_EXT uint8_t DOD4;
+//OS_EXT uint16_t LotRank;
 
 #endif /* GLOBAL_H_ */
