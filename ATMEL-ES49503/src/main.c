@@ -113,6 +113,7 @@ int main (void)
 	Bsp_LED1_On();
 
 	Address_Init(); //初始化设备地址
+	BatteryState.val.ActionState = 1; // 电池状态设定为停止
 	//printf("address is %d. \r\n",ID_address);
 	
 	/* Insert application code here, after the board has been initialized. */

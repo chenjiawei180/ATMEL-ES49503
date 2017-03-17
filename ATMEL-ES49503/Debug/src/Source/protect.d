@@ -163,7 +163,7 @@ src/Source/protect.d src/Source/protect.o: ../src/Source/protect.c \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h ../src/Source/global.h \
  ../src/Source/usart.h ../src/Source/afe_wr.h ../src/Source/AN49503.h \
  ../src/Source/ad_dat.h ../src/Source/led.h ../src/Source/soc.h \
- ../src/Source/history.h
+ ../src/Source/history.h ../src/Source/gpio.h
 
 ../src/Source/protect.h:
 
@@ -518,3 +518,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/Source/soc.h:
 
 ../src/Source/history.h:
+
+../src/Source/gpio.h:

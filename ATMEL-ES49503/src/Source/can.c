@@ -429,8 +429,8 @@ void profile_answer(void)
 	profile_data[4] = 0xd6;
 	profile_data[5] = 13;    //数据开始
 	profile_data[6] = 1;
-	profile_data[7] = 6000;    //额定容量
-	profile_data[8] = 6000>>8;
+	profile_data[7] = 6300;    //额定容量
+	profile_data[8] = 6300>>8;
 	profile_data[9] = 4800;    // 公称电压
 	profile_data[10] = 4800>>8;
 	profile_data[11] = 45;    //充电最高温度
@@ -648,7 +648,7 @@ void battery_load(void)
 	battery_data[47] = 0;    //异常 Flag
 	battery_data[48] = 0;    //异常 Flag
 	
-	battery_data[49] = 0;    //电池状态
+	battery_data[49] = BatteryState.VAL;    //电池状态
 	
 	battery_data[50] = 0;    //过冲电保护等级3电压
 	battery_data[51] = 0;

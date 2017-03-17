@@ -14,6 +14,7 @@
 
 #define PROTECT_DELAY_1S  4
 #define PROTECT_DELAY_2S  8
+#define PROTECT_DELAY_3S  12
 #define PROTECT_DELAY_5S  20
 #define PROTECT_DELAY_10S  40
 #define PROTECT_DELAY_30S  120
@@ -47,18 +48,22 @@
 // I = V/R =Vx/0.001
 
 // TMONT(温度)公式=====5/2^14 = 5/16384     Vx = 5/16384*AD
-#define TEMP_DCH_LOW_PROTECT    -20         //67.2V
+#define TEMP_DCH_LOW_PROTECT    -10         //67.2V
 #define TEMP_DCH_LOW_ALARM      -10         //67.2V
-#define TEMP_DCH_HIGH_PROTECT   65         //67.2V
-#define TEMP_DCH_HIGH_ALARM     55         //67.2V
+#define TEMP_DCH_HIGH_PROTECT   45         //67.2V
+#define TEMP_DCH_HIGH_ALARM     45         //67.2V
 
 #define TEMP_PCB_PROTECT   110         //67.2V
 #define TEMP_PCB_PROTECT_CLEAR   85         //67.2V
 
-#define TEMP_CHG_LOW_PROTECT    -5         //67.2V
-#define TEMP_CHG_LOW_ALARM      5         //67.2V
-#define TEMP_CHG_HIGH_PROTECT   50         //67.2V
-#define TEMP_CHG_HIGH_ALARM     40         //67.2V
+#define TEMP_CHG_LOW_PROTECT    -10         //67.2V
+#define TEMP_CHG_LOW_ALARM      -10         //67.2V
+#define TEMP_CHG_HIGH_PROTECT   45         //67.2V
+#define TEMP_CHG_HIGH_ALARM     45         //67.2V
+
+#define OVER_TEMP_P3 1
+#define OVER_TEMP_P4 1
+#define OVER_TEMP_P5 1
 
 // VCELL公式=====5/2^14 = 5/16384     Vx = 5/16384*AD
 #define VCELL_HIGH_ERR        14090         //4.3V
@@ -66,6 +71,13 @@
 #define VCELL_HIGH_ALARM      13860         //13433         //4.1V  保护值改为4.3V
 //#define VCELL_BALANCE         164          //50mV
 #define VCELL_LOW_ALARM       9830          //3.1V
+
+#define OCHG_P3_VOL 1
+#define OCHG_P4_VOL 1 
+#define OCHG_P5_VOL 1 
+#define ODCH_P3_VOL 1
+#define ODCH_P4_VOL 1
+#define ODCH_P5_VOL 1
 
 
 #define VCELL_LOW_PROTECT     9502         //2.9V
@@ -92,6 +104,13 @@
 #define CURRENT_DCH_STATE            ((uint16_t)-20)  // 0.1A
 #define CURRENT_CHG_STATE            ((uint16_t)20)  // 0.1A
 
+#define OCC_P3_AM 1
+#define OCC_P4_AM 1
+#define OCC_P5_AM 1
+#define ODC_P3_AM 1
+#define ODC_P4_AM 1
+#define ODC_P5_AM 1
+
 extern void AFE_Control(void);
 extern void Sys_250ms_tick(void);
 extern void HardwareProtection(void);
@@ -100,5 +119,15 @@ extern void SoftMeansureControl(void);
 extern void Cell_Balance(void);
 extern void PCB_Protect(void);
 extern void SOC(void);
+extern void Flag_Process(void);
+
+extern void SOC_Flag(void);
+extern void Abnormal_Flag(void);
+extern void OCHG_Flag(void);
+extern void ODCH_Flag(void);
+extern void OCC_Flag(void);
+extern void ODC_Flag(void);
+extern void OTEMP_Flag(void);
+extern void Stop_Flag(void);
 
 #endif /* PROTECT_H_ */

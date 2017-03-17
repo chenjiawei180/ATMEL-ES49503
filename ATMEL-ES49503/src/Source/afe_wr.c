@@ -164,7 +164,8 @@ void SPI_AllReg_WR(void)
     
 	    NormalCapacityProc();//容量更新
 	    Sys_250ms_tick();    //系统250ms更新
-   
+		Flag_Process();     // 设置通信标志位信息
+		
 	    //        if(low_power_cnt>8)         //zzy20161101  运行3次（11-8）
 	    //            {
 	    //                low_power_cnt++;

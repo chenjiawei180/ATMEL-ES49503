@@ -11,14 +11,17 @@
 #include "led.h"
 #include "soc.h"
 #include "history.h"
+#include "gpio.h"
 
 
 uint16_t OCC_TIMEOUT = 0;
 uint16_t OCD_TIMEOUT = 0;
 
 uint8_t soft_cp_cnt = 0;
+uint8_t soft_cp_dis_cnt = 0;
 uint8_t soft_occ_cnt = 0;
 uint8_t soft_dp_cnt = 0;
+uint8_t soft_dp_dis_cnt = 0;
 uint8_t soft_ocd_cnt=0;
 
 volatile uint16_t sys_250ms_cnt = 0;
@@ -32,6 +35,58 @@ volatile uint8_t Balanc_index = 0;
 uint8_t soft_pcb_ot_cnt =0;
 
 uint8_t advance_delay=0;
+
+//添加异常flag计数变量
+//过充电
+uint16_t OCHG_P3_cnt;
+uint16_t OCHG_P3_on_cnt;
+uint16_t OCHG_P3_off_cnt;
+uint16_t OCHG_P4_cnt;
+uint16_t OCHG_P4_on_cnt;
+uint16_t OCHG_P4_off_cnt;
+uint16_t OCHG_P5_cnt;
+uint16_t OCHG_P5_on_cnt;
+uint16_t OCHG_P5_off_cnt;
+//过放电
+uint16_t ODCH_P3_cnt;
+uint16_t ODCH_P3_on_cnt;
+uint16_t ODCH_P3_off_cnt;
+uint16_t ODCH_P4_cnt;
+uint16_t ODCH_P4_on_cnt;
+uint16_t ODCH_P4_off_cnt;
+uint16_t ODCH_P5_cnt;
+uint16_t ODCH_P5_on_cnt;
+uint16_t ODCH_P5_off_cnt;
+//充电过电流
+uint16_t OCC_P3_cnt;
+uint16_t OCC_P3_on_cnt;
+uint16_t OCC_P3_off_cnt;
+uint16_t OCC_P4_cnt;
+uint16_t OCC_P4_on_cnt;
+uint16_t OCC_P4_off_cnt;
+uint16_t OCC_P5_cnt;
+uint16_t OCC_P5_on_cnt;
+uint16_t OCC_P5_off_cnt;
+//放电过电流
+uint16_t ODC_P3_cnt;
+uint16_t ODC_P3_on_cnt;
+uint16_t ODC_P3_off_cnt;
+uint16_t ODC_P4_cnt;
+uint16_t ODC_P4_on_cnt;
+uint16_t ODC_P4_off_cnt;
+uint16_t ODC_P5_cnt;
+uint16_t ODC_P5_on_cnt;
+uint16_t ODC_P5_off_cnt;
+//过温
+uint16_t OTEMP_P3_cnt;
+uint16_t OTEMP_P3_on_cnt;
+uint16_t OTEMP_P3_off_cnt;
+uint16_t OTEMP_P4_cnt;
+uint16_t OTEMP_P4_on_cnt;
+uint16_t OTEMP_P4_off_cnt;
+uint16_t OTEMP_P5_cnt;
+uint16_t OTEMP_P5_on_cnt;
+uint16_t OTEMP_P5_off_cnt;
 
 /****************************************************************************
 FUNCTION		: AFE_Control
@@ -123,11 +178,12 @@ void SoftwareProtection(void)
 			if((nADC_TMONI_BAT_MAX > TEMP_CHG_HIGH_PROTECT)||(nADC_TMONI_BAT_MIN < TEMP_CHG_LOW_PROTECT))
 			{
 				soft_cp_cnt++;
-				if(soft_cp_cnt >PROTECT_DELAY_2S)  //循环8次,250*8 = 2S
+				if(soft_cp_cnt >PROTECT_DELAY_3S)  //循环8次,250*8 = 2S
 				{
 					soft_cp_cnt =0;
 					sys_states.val.soft_chg_protect =1;
 					sys_states.val.chg_temp_protect = 1;
+					BatteryState.val.CHG_Inhibit_Temp = 1; //设置 充电禁止温度 
 				}
 			}
 			else
@@ -172,6 +228,7 @@ void SoftwareProtection(void)
 	{
 		if(sys_states.val.sys_software_occ == 1)
 		{
+			soft_cp_dis_cnt = 0;
 			if(OCC_TIMEOUT >PROTECT_DELAY_5S) // 250ms * 4 = 1S 5S = 20
 			{
 				OCC_TIMEOUT =0;
@@ -185,6 +242,12 @@ void SoftwareProtection(void)
 			{
 				sys_states.val.soft_chg_protect =0;
 				sys_states.val.chg_temp_protect = 0;
+				soft_cp_dis_cnt++;
+				if (soft_cp_dis_cnt > PROTECT_DELAY_3S)
+				{
+					soft_cp_dis_cnt = 0;
+					BatteryState.val.CHG_Inhibit_Temp = 0; //解除 充电禁止温度 
+				}
 			}
 		}
 	}
@@ -197,11 +260,12 @@ void SoftwareProtection(void)
 			if((nADC_TMONI_BAT_MAX > TEMP_DCH_HIGH_PROTECT)||(nADC_TMONI_BAT_MIN < TEMP_DCH_LOW_PROTECT))
 			{
 				soft_dp_cnt++;
-				if(soft_dp_cnt >PROTECT_DELAY_2S) //防抖延迟2S
+				if(soft_dp_cnt >PROTECT_DELAY_3S) //防抖延迟2S
 				{
 					soft_dp_cnt =0;
 					sys_states.val.soft_dch_protect =1;
 					sys_states.val.dch_temp_protect = 1;
+					BatteryState.val.DCH_Inhibit_Temp = 1; //设置 放电禁止温度 
 				}
 			}
 			else
@@ -246,6 +310,7 @@ void SoftwareProtection(void)
 	{
 		if(sys_states.val.sys_software_odc == 1)
 		{
+			soft_dp_dis_cnt = 0;
 			if(OCD_TIMEOUT >PROTECT_DELAY_5S)// 250ms * 4 = 1S 5S = 20
 			{
 				OCD_TIMEOUT =0;
@@ -259,6 +324,12 @@ void SoftwareProtection(void)
 			{
 				sys_states.val.soft_dch_protect =0;
 				sys_states.val.dch_temp_protect = 0;
+				soft_dp_dis_cnt++ ;
+				if (soft_dp_dis_cnt > PROTECT_DELAY_3S)
+				{
+					soft_dp_dis_cnt = 0;
+					BatteryState.val.DCH_Inhibit_Temp = 0; //解除 放电禁止温度 
+				}
 			}
 		}
 	}
@@ -279,6 +350,7 @@ void SoftMeansureControl(void)
 	uint16_t cell_err_on_cnt;
 	uint16_t cell_err2_on_cnt;
 	uint16_t cell_err3_on_cnt;
+		
 	// 压差超过500mV提示电芯故障
 	if((nADC_CELL_MAX - nADC_CELL_MIN)>VCELL_SUB_0V5)
 	{
@@ -356,9 +428,12 @@ void SoftMeansureControl(void)
 	else
 	{
 		sys_flags.val.cell_high_alarm_flag = 0;
-		cell_alarm_cnt = sys_250ms_cnt;
+		
 	}
 
+	//添加异常flag计数函数
+	Abnormal_Flag();
+	
 }
 
 /****************************************************************************
@@ -377,6 +452,7 @@ void Cell_Balance(void)
     if((nADC_CELL_MAX > VCELL_BALANCE_Open) && (nADC_CELL_MAX-nADC_CELL_MIN > VCELL_BALANCE_START))
     {
         afe_flags.val.afe_CellBalance = 1;  //开启均衡标志
+		BatteryState.val.BalanceState = 1 ; // 电池状态设定为均衡模式开
     }
     //关闭均衡状态：最高电压小于关闭电压4.0V、压差小于结束压差、处于放电状态
     if((nADC_CELL_MAX < VCELL_BALANCE_Close) 
@@ -384,6 +460,7 @@ void Cell_Balance(void)
         ||(sys_states.val.sys_dch_state == 1) )
     {
         afe_flags.val.afe_CellBalance = 0;  //关闭均衡标志
+		BatteryState.val.BalanceState = 0 ; // 电池状态设定为均衡模式关
     }
     if(afe_flags.val.afe_CellBalance == 1)
     {
@@ -547,20 +624,22 @@ void SOC(void)
 	if (tmp_cap >= 0)
 	{
 		CHG_Val = CHG_Val + tmp_cap;
-		if (CHG_Val - CHG_Val_Bak >= 100 )
+		if (CHG_Val - CHG_Val_Bak >= 1000 )
 		{
 			Write_Time_or_mAh(CHG_Val,CHG_FLAG);
 			CHG_Val_Bak = CHG_Val;
 		}
+		BatteryState.val.ActionState = 2; // 电池状态设定为充电
 	}
 	else
 	{
 		DCH_Val = DCH_Val - tmp_cap;
-		if (DCH_Val - DCH_Val_Bak >=100 )
+		if (DCH_Val - DCH_Val_Bak >=1000 )
 		{
 			Write_Time_or_mAh(DCH_Val,DCH_FLAG);
 			DCH_Val_Bak = DCH_Val;
 		}
+		BatteryState.val.ActionState = 3; // 电池状态设定为放电
 	}
 	
 	if(tmp_cap>-30)
@@ -584,5 +663,401 @@ void SOC(void)
 		{
 			g_sys_cap.val.cap_val3  = -1200;
 		}
+	}
+}
+
+
+void Flag_Process(void)
+{
+	SOC_Flag();    //更新SOC标志位
+		
+}
+
+void SOC_Flag(void)
+{
+	//更新SOC状态
+	if ( g_sys_cap.val.re_cap_rate == 100 )
+	{
+		BatteryState.val.SocState = 1 ; //SOC状态设置为满充电
+	}
+	else if ( g_sys_cap.val.re_cap_rate == 0 )
+	{
+		BatteryState.val.SocState = 2 ; //SOC状态设置放电终止
+	}
+	else 
+	{
+		if ( BatteryState.val.SocState == 1 )
+		{
+			if (g_sys_cap.val.re_cap_rate < 95)
+			{
+				BatteryState.val.SocState = 0 ; //SOC状态设置为其他
+			} 
+		}
+		else
+		{
+			BatteryState.val.SocState = 0 ; //SOC状态设置为其他
+		}
+	}
+}
+
+
+void Abnormal_Flag(void)
+{
+	OCHG_Flag();
+	ODCH_Flag();
+	OCC_Flag();
+	ODC_Flag();
+	OTEMP_Flag();	
+	Stop_Flag();
+}
+
+void OCHG_Flag(void)
+{
+	if (nADC_CELL_MAX > OCHG_P3_VOL)    //过充电保护3
+	{
+		OCHG_P3_off_cnt = sys_250ms_cnt;
+		OCHG_P3_cnt = sys_250ms_cnt - OCHG_P3_on_cnt;
+		if (OCHG_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.OCHG_Protect3 = 1;
+		}
+	}
+	else
+	{
+		OCHG_P3_on_cnt = sys_250ms_cnt;
+		OCHG_P3_cnt = sys_250ms_cnt - OCHG_P3_off_cnt;
+		if (OCHG_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.OCHG_Protect3 = 0;
+		}
+	}
+	
+	if (nADC_CELL_MAX > OCHG_P4_VOL)    //过充电保护4
+	{
+		OCHG_P4_off_cnt = sys_250ms_cnt;
+		OCHG_P4_cnt = sys_250ms_cnt - OCHG_P4_on_cnt;
+		if (OCHG_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.OCHG_Protect4 = 1;
+		}
+	}
+	else
+	{
+		OCHG_P4_on_cnt = sys_250ms_cnt;
+		OCHG_P4_cnt = sys_250ms_cnt - OCHG_P4_off_cnt;
+		if (OCHG_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.OCHG_Protect4 = 0;
+		}
+	}
+	
+	if (nADC_CELL_MAX > OCHG_P5_VOL)    //过充电保护5
+	{
+		OCHG_P5_off_cnt = sys_250ms_cnt;
+		OCHG_P5_cnt = sys_250ms_cnt - OCHG_P5_on_cnt;
+		if (OCHG_P5_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.OCHG_Protect5 = 1;
+		}
+	}
+	else
+	{
+		OCHG_P5_on_cnt = sys_250ms_cnt;
+		OCHG_P5_cnt = sys_250ms_cnt - OCHG_P5_off_cnt;
+		if (OCHG_P5_cnt > PROTECT_DELAY_3S)
+		{
+			//AbnormalState.val.OCHG_Protect5 = 0;
+		}
+	}
+	
+}
+
+void ODCH_Flag(void)
+{
+	if (nADC_CELL_MIN < ODCH_P3_VOL)    //过放电保护3
+	{
+		ODCH_P3_off_cnt = sys_250ms_cnt;
+		ODCH_P3_cnt = sys_250ms_cnt - ODCH_P3_on_cnt;
+		if (ODCH_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODCH_Protect3 = 1;
+		}
+	}
+	else
+	{
+		ODCH_P3_on_cnt = sys_250ms_cnt;
+		ODCH_P3_cnt = sys_250ms_cnt - ODCH_P3_off_cnt;
+		if (ODCH_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODCH_Protect3 = 0;
+		}
+	}
+	
+	if (nADC_CELL_MIN < ODCH_P4_VOL)    //过放电保护4
+	{
+		ODCH_P4_off_cnt = sys_250ms_cnt;
+		ODCH_P4_cnt = sys_250ms_cnt - ODCH_P4_on_cnt;
+		if (ODCH_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODCH_Protect4 = 1;
+		}
+	}
+	else
+	{
+		ODCH_P4_on_cnt = sys_250ms_cnt;
+		ODCH_P4_cnt = sys_250ms_cnt - ODCH_P4_off_cnt;
+		if (ODCH_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODCH_Protect4 = 0;
+		}
+	}
+	
+	if (nADC_CELL_MIN < ODCH_P5_VOL)    //过放电保护5
+	{
+		ODCH_P5_off_cnt = sys_250ms_cnt;
+		ODCH_P5_cnt = sys_250ms_cnt - ODCH_P5_on_cnt;
+		if (ODCH_P5_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODCH_Protect5 = 1;
+		}
+	}
+	else
+	{
+		ODCH_P5_on_cnt = sys_250ms_cnt;
+		ODCH_P5_cnt = sys_250ms_cnt - ODCH_P5_off_cnt;
+		if (ODCH_P5_cnt > PROTECT_DELAY_3S)
+		{
+			//AbnormalState.val.ODCH_Protect5 = 0;
+		}
+	}
+}
+
+void OCC_Flag(void)
+{
+	if (nADC_CURRENT > OCC_P3_AM )    //充电过电流保护3
+	{
+		OCC_P3_off_cnt = sys_250ms_cnt;
+		OCC_P3_cnt = sys_250ms_cnt - OCC_P3_on_cnt;
+		if (OCC_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.OCC_Protect3 = 1;
+		}
+	}
+	else
+	{
+		OCC_P3_on_cnt = sys_250ms_cnt;
+		OCC_P3_cnt = sys_250ms_cnt - OCC_P3_off_cnt;
+		if (OCC_P3_cnt > PROTECT_DELAY_3S && nADC_CURRENT <= 0 )
+		{
+			AbnormalState.val.OCC_Protect3 = 0;
+		}
+	}
+	
+	if (nADC_CURRENT > OCC_P4_AM )    //充电过电流保护4
+	{
+		OCC_P4_off_cnt = sys_250ms_cnt;
+		OCC_P4_cnt = sys_250ms_cnt - OCC_P4_on_cnt;
+		if (OCC_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.OCC_Protect4 = 1;
+		}
+	}
+	else
+	{
+		OCC_P4_on_cnt = sys_250ms_cnt;
+		OCC_P4_cnt = sys_250ms_cnt - OCC_P4_off_cnt;
+		if (OCC_P4_cnt > PROTECT_DELAY_3S && nADC_CURRENT <= 0 )
+		{
+			AbnormalState.val.OCC_Protect4 = 0;
+		}
+	}
+
+	if (nADC_CURRENT > OCC_P5_AM )    //充电过电流保护5
+	{
+		OCC_P5_off_cnt = sys_250ms_cnt;
+		OCC_P5_cnt = sys_250ms_cnt - OCC_P5_on_cnt;
+		if (OCC_P5_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.OCC_Protect5 = 1;
+		}
+	}
+	else
+	{
+		OCC_P5_on_cnt = sys_250ms_cnt;
+		OCC_P5_cnt = sys_250ms_cnt - OCC_P5_off_cnt;
+		if (OCC_P5_cnt > PROTECT_DELAY_3S && nADC_CURRENT <= 0)
+		{
+			AbnormalState.val.OCC_Protect5 = 0;
+		}
+	}
+
+}
+
+void ODC_Flag(void)
+{
+	if (nADC_CURRENT < ODC_P3_AM )    //放电过电流保护3
+	{
+		ODC_P3_off_cnt = sys_250ms_cnt;
+		ODC_P3_cnt = sys_250ms_cnt - ODC_P3_on_cnt;
+		if (ODC_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODC_Protect3 = 1;
+		}
+	}
+	else
+	{
+		ODC_P3_on_cnt = sys_250ms_cnt;
+		ODC_P3_cnt = sys_250ms_cnt - ODC_P3_off_cnt;
+		if (ODC_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODC_Protect3 = 0;
+		}
+	}
+
+	if (nADC_CURRENT < ODC_P4_AM )    //放电过电流保护4
+	{
+		ODC_P4_off_cnt = sys_250ms_cnt;
+		ODC_P4_cnt = sys_250ms_cnt - ODC_P4_on_cnt;
+		if (ODC_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODC_Protect4 = 1;
+		}
+	}
+	else
+	{
+		ODC_P4_on_cnt = sys_250ms_cnt;
+		ODC_P4_cnt = sys_250ms_cnt - ODC_P4_off_cnt;
+		if (ODC_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODC_Protect4 = 0;
+		}
+	}	
+
+	if (nADC_CURRENT < ODC_P5_AM )    //放电过电流保护5
+	{
+		ODC_P5_off_cnt = sys_250ms_cnt;
+		ODC_P5_cnt = sys_250ms_cnt - ODC_P5_on_cnt;
+		if (ODC_P5_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODC_Protect5 = 1;
+		}
+	}
+	else
+	{
+		ODC_P5_on_cnt = sys_250ms_cnt;
+		ODC_P5_cnt = sys_250ms_cnt - ODC_P5_off_cnt;
+		if (ODC_P5_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.ODC_Protect5 = 0;
+		}
+	}
+	
+}
+
+void OTEMP_Flag(void)
+{
+	if (nADC_TMONI_BAT_MAX > OVER_TEMP_P3 )    //放温保护3
+	{
+		OTEMP_P3_off_cnt = sys_250ms_cnt;
+		OTEMP_P3_cnt = sys_250ms_cnt - OTEMP_P3_on_cnt;
+		if (OTEMP_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.Over_Temp3 = 1;
+		}
+	}
+	else
+	{
+		OTEMP_P3_on_cnt = sys_250ms_cnt;
+		OTEMP_P3_cnt = sys_250ms_cnt - OTEMP_P3_off_cnt;
+		if (OTEMP_P3_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.Over_Temp3 = 0;
+		}
+	}
+	
+	if (nADC_TMONI_BAT_MAX > OVER_TEMP_P4 )    //放温保护4
+	{
+		OTEMP_P4_off_cnt = sys_250ms_cnt;
+		OTEMP_P4_cnt = sys_250ms_cnt - OTEMP_P4_on_cnt;
+		if (OTEMP_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.Over_Temp4 = 1;
+		}
+	}
+	else
+	{
+		OTEMP_P4_on_cnt = sys_250ms_cnt;
+		OTEMP_P4_cnt = sys_250ms_cnt - OTEMP_P4_off_cnt;
+		if (OTEMP_P4_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.Over_Temp4 = 0;
+		}
+	}	
+
+	if (nADC_TMONI_BAT_MAX > OVER_TEMP_P5 )    //放温保护3
+	{
+		OTEMP_P5_off_cnt = sys_250ms_cnt;
+		OTEMP_P5_cnt = sys_250ms_cnt - OTEMP_P5_on_cnt;
+		if (OTEMP_P5_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.Over_Temp5 = 1;
+		}
+	}
+	else
+	{
+		OTEMP_P5_on_cnt = sys_250ms_cnt;
+		OTEMP_P5_cnt = sys_250ms_cnt - OTEMP_P5_off_cnt;
+		if (OTEMP_P5_cnt > PROTECT_DELAY_3S)
+		{
+			AbnormalState.val.Over_Temp5 = 0;
+		}
+	}	
+
+}
+
+void Stop_Flag(void)
+{
+	if (AbnormalState.val.OCHG_Protect4 ||
+		AbnormalState.val.OCHG_Protect5 ||
+		AbnormalState.val.ODCH_Protect4 ||
+		AbnormalState.val.ODCH_Protect5 ||
+		AbnormalState.val.OCC_Protect4  ||
+		AbnormalState.val.OCC_Protect5  ||
+		AbnormalState.val.ODC_Protect4  ||
+		AbnormalState.val.ODC_Protect5  ||
+		AbnormalState.val.Over_Temp4    ||
+		AbnormalState.val.Over_Temp5    
+	)
+	{
+		MCU_STOP_Low();
+	}
+	else if ( (nADC_CURRENT > 0)  && 
+			(	
+				AbnormalState.val.OCHG_Protect3 || 
+				AbnormalState.val.OCC_Protect3  || 
+				AbnormalState.val.Over_Temp3    || 
+				BatteryState.val.CHG_Inhibit_Temp
+			)
+	)
+	{
+		MCU_STOP_Low();
+	}
+	else if ( nADC_CURRENT < 0  && AbnormalState.val.ODCH_Protect3	)
+	{
+		MCU_STOP_Low();
+	}
+	else if ( (nADC_CURRENT < CURRENT_DCH_05A) && 
+			(
+				AbnormalState.val.ODCH_Protect3  ||
+				AbnormalState.val.Over_Temp3     || 
+				BatteryState.val.DCH_Inhibit_Temp
+			)
+	)
+	{
+		MCU_STOP_Low();
+	}
+	else
+	{
+		MCU_STOP_High();
 	}
 }
