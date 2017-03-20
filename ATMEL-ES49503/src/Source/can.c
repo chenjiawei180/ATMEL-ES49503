@@ -644,9 +644,9 @@ void battery_load(void)
 	
 	battery_data[45] = 0;    //TD Flag
 	
-	battery_data[46] = 0;    //异常 Flag
-	battery_data[47] = 0;    //异常 Flag
-	battery_data[48] = 0;    //异常 Flag
+	battery_data[46] = (AbnormalState.VAL);    //异常 Flag
+	battery_data[47] = (AbnormalState.VAL)>>8;    //异常 Flag
+	battery_data[48] = (AbnormalState.VAL)>>16;    //异常 Flag
 	
 	battery_data[49] = BatteryState.VAL;    //电池状态
 	
