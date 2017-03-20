@@ -88,6 +88,13 @@ uint16_t OTEMP_P5_cnt;
 uint16_t OTEMP_P5_on_cnt;
 uint16_t OTEMP_P5_off_cnt;
 
+uint16_t DCH_Inhibit_Temp_cnt;
+uint16_t DCH_Inhibit_Temp_on_cnt;
+uint16_t DCH_Inhibit_Temp_off_cnt;
+uint16_t CHG_Inhibit_Temp_cnt;
+uint16_t CHG_Inhibit_Temp_on_cnt;
+uint16_t CHG_Inhibit_Temp_off_cnt;
+
 /****************************************************************************
 FUNCTION		: AFE_Control
 DESCRIPTION		: AFE信息处理控制
@@ -183,7 +190,7 @@ void SoftwareProtection(void)
 					soft_cp_cnt =0;
 					sys_states.val.soft_chg_protect =1;
 					sys_states.val.chg_temp_protect = 1;
-					BatteryState.val.CHG_Inhibit_Temp = 1; //设置 充电禁止温度 
+					//BatteryState.val.CHG_Inhibit_Temp = 1; //设置 充电禁止温度 
 				}
 			}
 			else
@@ -246,7 +253,7 @@ void SoftwareProtection(void)
 				if (soft_cp_dis_cnt > PROTECT_DELAY_3S)
 				{
 					soft_cp_dis_cnt = 0;
-					BatteryState.val.CHG_Inhibit_Temp = 0; //解除 充电禁止温度 
+					//BatteryState.val.CHG_Inhibit_Temp = 0; //解除 充电禁止温度 
 				}
 			}
 		}
@@ -265,7 +272,7 @@ void SoftwareProtection(void)
 					soft_dp_cnt =0;
 					sys_states.val.soft_dch_protect =1;
 					sys_states.val.dch_temp_protect = 1;
-					BatteryState.val.DCH_Inhibit_Temp = 1; //设置 放电禁止温度 
+					//BatteryState.val.DCH_Inhibit_Temp = 1; //设置 放电禁止温度 
 				}
 			}
 			else
@@ -328,7 +335,7 @@ void SoftwareProtection(void)
 				if (soft_dp_dis_cnt > PROTECT_DELAY_3S)
 				{
 					soft_dp_dis_cnt = 0;
-					BatteryState.val.DCH_Inhibit_Temp = 0; //解除 放电禁止温度 
+					//BatteryState.val.DCH_Inhibit_Temp = 0; //解除 放电禁止温度 
 				}
 			}
 		}
@@ -709,6 +716,7 @@ void Abnormal_Flag(void)
 	ODC_Flag();
 	OTEMP_Flag();	
 	Stop_Flag();
+	Inhibit_Flag();
 }
 
 void OCHG_Flag(void)
@@ -1154,4 +1162,60 @@ void Stop_Flag(void)
 	{
 		MCU_STOP_High();
 	}
+}
+
+void Inhibit_Flag(void)
+{
+	if (nADC_TMONI_BAT_MAX > CHG_Inhibit_Temp_H || nADC_TMONI_BAT_MIN < CHG_Inhibit_Temp_L)    //充电温度异常
+	{
+		CHG_Inhibit_Temp_cnt = sys_250ms_cnt - CHG_Inhibit_Temp_on_cnt;
+		if (CHG_Inhibit_Temp_cnt > PROTECT_DELAY_3S)
+		{
+			BatteryState.val.CHG_Inhibit_Temp = 1; //设置 充电禁止温度
+		}
+	}
+	else
+	{
+		CHG_Inhibit_Temp_on_cnt = sys_250ms_cnt;
+	}
+
+	if (nADC_TMONI_BAT_MAX < CHG_Inhibit_Temp_HR && nADC_TMONI_BAT_MIN > CHG_Inhibit_Temp_LR )    //充电温度正常
+	{
+		CHG_Inhibit_Temp_cnt = sys_250ms_cnt - CHG_Inhibit_Temp_off_cnt;
+		if (CHG_Inhibit_Temp_cnt > PROTECT_DELAY_3S)
+		{
+			BatteryState.val.CHG_Inhibit_Temp = 0; //解除 充电禁止温度
+		}
+	}
+	else
+	{
+		CHG_Inhibit_Temp_off_cnt = sys_250ms_cnt;
+	}
+	
+	if (nADC_TMONI_BAT_MAX > DCH_Inhibit_Temp_H || nADC_TMONI_BAT_MIN < DCH_Inhibit_Temp_L)    //放电温度异常
+	{
+		DCH_Inhibit_Temp_cnt = sys_250ms_cnt - DCH_Inhibit_Temp_on_cnt;
+		if (DCH_Inhibit_Temp_cnt > PROTECT_DELAY_3S)
+		{
+			BatteryState.val.DCH_Inhibit_Temp = 1; //设置 充电禁止温度
+		}
+	}
+	else
+	{
+		DCH_Inhibit_Temp_on_cnt = sys_250ms_cnt;
+	}
+
+	if (nADC_TMONI_BAT_MAX < DCH_Inhibit_Temp_HR && nADC_TMONI_BAT_MIN > DCH_Inhibit_Temp_LR )    //充电温度正常
+	{
+		DCH_Inhibit_Temp_cnt = sys_250ms_cnt - DCH_Inhibit_Temp_off_cnt;
+		if (DCH_Inhibit_Temp_cnt > PROTECT_DELAY_3S)
+		{
+			BatteryState.val.DCH_Inhibit_Temp = 0; //解除 充电禁止温度
+		}
+	}
+	else
+	{
+		CHG_Inhibit_Temp_off_cnt = sys_250ms_cnt;
+	}
+	
 }

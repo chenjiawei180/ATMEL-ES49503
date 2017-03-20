@@ -292,9 +292,9 @@ OS_EXT volatile uint8_t sleep_delay_cycle;
 
 OS_EXT uint8_t	 ucSPI_Conti_RecvData[MAC_AN49503_READ_CNT*2+3];	/* receive continuous data 174byte+CRC(1Byte)	 MAC_AN49503_READ_CNT*2+1 */
 OS_EXT uint16_t  AVE_CURRENT[4];
-OS_EXT uint16_t nADC_TMONI_PCB_MAX;
-OS_EXT uint16_t nADC_TMONI_BAT_MAX;
-OS_EXT uint16_t nADC_TMONI_BAT_MIN;
+OS_EXT int8_t nADC_TMONI_PCB_MAX;
+OS_EXT int8_t nADC_TMONI_BAT_MAX;
+OS_EXT int8_t nADC_TMONI_BAT_MIN;
 OS_EXT uint16_t nADC_CELL_MAX;
 OS_EXT uint16_t nADC_CELL_MIN;
 OS_EXT int16_t nADC_CURRENT;

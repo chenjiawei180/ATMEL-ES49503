@@ -313,18 +313,18 @@ void vAPI_CalcTempture(void)
             nADC_TMONI_BAT_MAX = TEMP_5_BAT;
         }
     }
-    if (TEMP_3_BAT <-28) 
-	{
-        TEMP_3_BAT = TEMP_4_BAT;
-    }
-    if (TEMP_4_BAT <-28) 
-	{
-        TEMP_4_BAT = TEMP_5_BAT;
-    }
-    if (TEMP_5_BAT <-28) 
-	{
-        TEMP_5_BAT = TEMP_4_BAT;
-    }
+    //if (TEMP_3_BAT <-28) 
+	//{
+        //TEMP_3_BAT = TEMP_4_BAT;
+    //}
+    //if (TEMP_4_BAT <-28) 
+	//{
+        //TEMP_4_BAT = TEMP_5_BAT;
+    //}
+    //if (TEMP_5_BAT <-28) 
+	//{
+        //TEMP_5_BAT = TEMP_4_BAT;
+    //}
     if (TEMP_3_BAT < TEMP_4_BAT) 
 	{
         if (TEMP_3_BAT < TEMP_5_BAT) 

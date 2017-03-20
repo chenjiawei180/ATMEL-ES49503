@@ -357,7 +357,7 @@ void can_process(void)
 							case 0xCE:
 								if (address_assign_flag == 0)
 								{
-									if (Latch_id != 0x00 && Latch_id != 0xff )
+									if (buffer[2] != 0x00 && buffer[2] != 0xff )
 									{
 										Latch_id = buffer[2];
 										battery_load();

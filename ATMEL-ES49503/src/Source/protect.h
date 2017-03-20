@@ -68,6 +68,16 @@
 #define OVER_TEMP_D4 40
 #define OVER_TEMP_D5 42
 
+#define CHG_Inhibit_Temp_H 45
+#define CHG_Inhibit_Temp_L -10
+#define CHG_Inhibit_Temp_HR 40
+#define CHG_Inhibit_Temp_LR -5
+
+#define DCH_Inhibit_Temp_H 45
+#define DCH_Inhibit_Temp_L -10
+#define DCH_Inhibit_Temp_HR 40
+#define DCH_Inhibit_Temp_LR -5
+
 // VCELL公式=====5/2^14 = 5/16384     Vx = 5/16384*AD
 #define VCELL_HIGH_ERR        14090         //4.3V
 #define VCELL_HIGH_PROTECT    13760         //4.2V  无用？
@@ -140,5 +150,6 @@ extern void OCC_Flag(void);
 extern void ODC_Flag(void);
 extern void OTEMP_Flag(void);
 extern void Stop_Flag(void);
+extern void Inhibit_Flag(void);
 
 #endif /* PROTECT_H_ */
