@@ -683,7 +683,7 @@ void Flag_Process(void)
 void SOC_Flag(void)
 {
 	//更新SOC状态
-	if ( g_sys_cap.val.re_cap_rate == 100 )
+	if ( g_sys_cap.val.re_cap_rate >= 98 )
 	{
 		BatteryState.val.SocState = 1 ; //SOC状态设置为满充电
 	}
@@ -695,10 +695,17 @@ void SOC_Flag(void)
 	{
 		if ( BatteryState.val.SocState == 1 )
 		{
-			if (g_sys_cap.val.re_cap_rate < 95)
+			if (g_sys_cap.val.re_cap_rate < (98-5))
 			{
 				BatteryState.val.SocState = 0 ; //SOC状态设置为其他
 			} 
+		}
+		else if (BatteryState.val.SocState == 2)
+		{
+			if (g_sys_cap.val.re_cap_rate > 5)
+			{
+				BatteryState.val.SocState = 0 ; //SOC状态设置为其他
+			}
 		}
 		else
 		{
@@ -724,7 +731,7 @@ void OCHG_Flag(void)
 	if (nADC_CELL_MAX > OCHG_P3_VOL)    //过充电保护3
 	{
 		OCHG_P3_cnt = sys_250ms_cnt - OCHG_P3_on_cnt;
-		if (OCHG_P3_cnt > PROTECT_DELAY_3S)
+		if (OCHG_P3_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.OCHG_Protect3 = 1;
 		}
@@ -752,7 +759,7 @@ void OCHG_Flag(void)
 	if (nADC_CELL_MAX > OCHG_P4_VOL)    //过充电保护4
 	{
 		OCHG_P4_cnt = sys_250ms_cnt - OCHG_P4_on_cnt;
-		if (OCHG_P4_cnt > PROTECT_DELAY_3S)
+		if (OCHG_P4_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.OCHG_Protect4 = 1;
 		}
@@ -780,7 +787,7 @@ void OCHG_Flag(void)
 	{
 		//OCHG_P5_off_cnt = sys_250ms_cnt;
 		OCHG_P5_cnt = sys_250ms_cnt - OCHG_P5_on_cnt;
-		if (OCHG_P5_cnt > PROTECT_DELAY_3S)
+		if (OCHG_P5_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.OCHG_Protect5 = 1;
 		}
@@ -801,7 +808,7 @@ void ODCH_Flag(void)
 	if (nADC_CELL_MIN < ODCH_P3_VOL)    //过放电保护3
 	{
 		ODCH_P3_cnt = sys_250ms_cnt - ODCH_P3_on_cnt;
-		if (ODCH_P3_cnt > PROTECT_DELAY_3S)
+		if (ODCH_P3_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.ODCH_Protect3 = 1;
 		}
@@ -827,7 +834,7 @@ void ODCH_Flag(void)
 	if (nADC_CELL_MIN < ODCH_P4_VOL)    //过放电保护4
 	{
 		ODCH_P4_cnt = sys_250ms_cnt - ODCH_P4_on_cnt;
-		if (ODCH_P4_cnt > PROTECT_DELAY_3S)
+		if (ODCH_P4_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.ODCH_Protect4 = 1;
 		}
@@ -854,7 +861,7 @@ void ODCH_Flag(void)
 	{
 		//ODCH_P5_off_cnt = sys_250ms_cnt;
 		ODCH_P5_cnt = sys_250ms_cnt - ODCH_P5_on_cnt;
-		if (ODCH_P5_cnt > PROTECT_DELAY_3S)
+		if (ODCH_P5_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.ODCH_Protect5 = 1;
 		}
@@ -872,10 +879,30 @@ void ODCH_Flag(void)
 
 void OCC_Flag(void)
 {
-	if (nADC_CURRENT > OCC_P3_AM )    //充电过电流保护3
+	int8_t temp = ( TEMP_3_BAT + TEMP_4_BAT + TEMP_5_BAT )/3 ;
+	uint16_t Limit_Current = 0;
+	if (temp > 10)
+	{
+		Limit_Current = CURRENT_CHG1A * 30;
+	}
+	else if (temp > 0)
+	{
+		Limit_Current = CURRENT_CHG1A * 15;
+	}
+	else if (temp > -10)
+	{
+		Limit_Current = CURRENT_CHG1A * 10;
+	}
+	else
+	{
+		Limit_Current = CURRENT_CHG1A * 10;
+	}
+	
+	
+	if (nADC_CURRENT > ( Limit_Current *12 / 10 ) )    //充电过电流保护3
 	{
 		OCC_P3_cnt = sys_250ms_cnt - OCC_P3_on_cnt;
-		if (OCC_P3_cnt > PROTECT_DELAY_3S)
+		if (OCC_P3_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.OCC_Protect3 = 1;
 		}
@@ -886,7 +913,7 @@ void OCC_Flag(void)
 
 	}
 	
-	if (nADC_CURRENT <= 0)    //解除充电过电流保护3
+	if (nADC_CURRENT <= ( Limit_Current *11 / 10 ) )    //解除充电过电流保护3
 	{
 		OCC_P3_cnt = sys_250ms_cnt - OCC_P3_off_cnt;
 		if (OCC_P3_cnt > PROTECT_DELAY_3S )
@@ -899,10 +926,10 @@ void OCC_Flag(void)
 		OCC_P3_off_cnt = sys_250ms_cnt;
 	}
 	
-	if (nADC_CURRENT > OCC_P4_AM )    //充电过电流保护4
+	if (nADC_CURRENT > ( Limit_Current *13 / 10 ) )    //充电过电流保护4
 	{
 		OCC_P4_cnt = sys_250ms_cnt - OCC_P4_on_cnt;
-		if (OCC_P4_cnt > PROTECT_DELAY_3S)
+		if (OCC_P4_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.OCC_Protect4 = 1;
 		}
@@ -913,7 +940,7 @@ void OCC_Flag(void)
 
 	}
 	
-	if (nADC_CURRENT <= 0)    //解除充电过电流保护4
+	if (nADC_CURRENT <= ( Limit_Current *12 / 10 ))    //解除充电过电流保护4
 	{
 		OCC_P4_cnt = sys_250ms_cnt - OCC_P4_off_cnt;
 		if ( OCC_P4_cnt > PROTECT_DELAY_3S )
@@ -926,10 +953,10 @@ void OCC_Flag(void)
 		OCC_P4_off_cnt = sys_250ms_cnt;
 	}
 
-	if (nADC_CURRENT > OCC_P5_AM )    //充电过电流保护5
+	if (nADC_CURRENT > ( Limit_Current *15 / 10 ) )    //充电过电流保护5
 	{
 		OCC_P5_cnt = sys_250ms_cnt - OCC_P5_on_cnt;
-		if (OCC_P5_cnt > PROTECT_DELAY_3S)
+		if (OCC_P5_cnt > PROTECT_DELAY_2S)
 		{
 			AbnormalState.val.OCC_Protect5 = 1;
 		}
@@ -939,18 +966,19 @@ void OCC_Flag(void)
 		OCC_P5_on_cnt = sys_250ms_cnt;
 	}
 
-	if (nADC_CURRENT <= 0)    //解除充电过电流保护5
-	{
-		OCC_P5_cnt = sys_250ms_cnt - OCC_P5_off_cnt;
-		if (OCC_P5_cnt > PROTECT_DELAY_3S )
-		{
-			AbnormalState.val.OCC_Protect5 = 0;
-		}
-	}
-	else
-	{
-		OCC_P5_off_cnt = sys_250ms_cnt;
-	}
+	//if (nADC_CURRENT <= 0)    //解除充电过电流保护5
+	//{
+		//OCC_P5_cnt = sys_250ms_cnt - OCC_P5_off_cnt;
+		//if (OCC_P5_cnt > PROTECT_DELAY_3S )
+		//{
+			//AbnormalState.val.OCC_Protect5 = 0;
+		//}
+	//}
+	//else
+	//{
+		//OCC_P5_off_cnt = sys_250ms_cnt;
+	//}
+	
 }
 
 void ODC_Flag(void)
@@ -1020,18 +1048,18 @@ void ODC_Flag(void)
 		ODC_P5_on_cnt = sys_250ms_cnt;
 	}
 	
-	if (nADC_CURRENT > ODC_D5_AM )    //解除放电过电流保护5
-	{
-		ODC_P5_cnt = sys_250ms_cnt - ODC_P5_off_cnt;
-		if (ODC_P5_cnt > PROTECT_DELAY_3S)
-		{
-			AbnormalState.val.ODC_Protect5 = 0;
-		}
-	}
-	else
-	{
-		ODC_P5_off_cnt = sys_250ms_cnt;
-	}
+	//if (nADC_CURRENT > ODC_D5_AM )    //解除放电过电流保护5
+	//{
+		//ODC_P5_cnt = sys_250ms_cnt - ODC_P5_off_cnt;
+		//if (ODC_P5_cnt > PROTECT_DELAY_3S)
+		//{
+			//AbnormalState.val.ODC_Protect5 = 0;
+		//}
+	//}
+	//else
+	//{
+		//ODC_P5_off_cnt = sys_250ms_cnt;
+	//}
 	
 }
 
@@ -1089,10 +1117,10 @@ void OTEMP_Flag(void)
 		OTEMP_P4_off_cnt = sys_250ms_cnt;
 	}
 
-	if (nADC_TMONI_BAT_MAX > OVER_TEMP_P5 )    //过温保护3
+	if (nADC_TMONI_BAT_MAX > OVER_TEMP_P5 )    //过温保护5
 	{
 		OTEMP_P5_cnt = sys_250ms_cnt - OTEMP_P5_on_cnt;
-		if (OTEMP_P5_cnt > PROTECT_DELAY_3S)
+		if (OTEMP_P5_cnt > PROTECT_DELAY_5S)
 		{
 			AbnormalState.val.Over_Temp5 = 1;
 		}
@@ -1102,18 +1130,18 @@ void OTEMP_Flag(void)
 		OTEMP_P5_on_cnt = sys_250ms_cnt;
 	}	
 
-	if (nADC_TMONI_BAT_MAX < OVER_TEMP_D5 )    //解除过温保护3
-	{
-		OTEMP_P5_cnt = sys_250ms_cnt - OTEMP_P5_off_cnt;
-		if (OTEMP_P5_cnt > PROTECT_DELAY_3S)
-		{
-			AbnormalState.val.Over_Temp5 = 0;
-		}
-	}
-	else
-	{
-		OTEMP_P5_off_cnt = sys_250ms_cnt;
-	}
+	//if (nADC_TMONI_BAT_MAX < OVER_TEMP_D5 )    //解除过温保护3
+	//{
+		//OTEMP_P5_cnt = sys_250ms_cnt - OTEMP_P5_off_cnt;
+		//if (OTEMP_P5_cnt > PROTECT_DELAY_3S)
+		//{
+			//AbnormalState.val.Over_Temp5 = 0;
+		//}
+	//}
+	//else
+	//{
+		//OTEMP_P5_off_cnt = sys_250ms_cnt;
+	//}
 
 }
 

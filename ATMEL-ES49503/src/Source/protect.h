@@ -61,12 +61,11 @@
 #define TEMP_CHG_HIGH_PROTECT   45         //67.2V
 #define TEMP_CHG_HIGH_ALARM     45         //67.2V
 
-#define OVER_TEMP_P3 40
-#define OVER_TEMP_P4 43
-#define OVER_TEMP_P5 45
-#define OVER_TEMP_D3 37
-#define OVER_TEMP_D4 40
-#define OVER_TEMP_D5 42
+#define OVER_TEMP_P3 45
+#define OVER_TEMP_P4 50
+#define OVER_TEMP_P5 55
+#define OVER_TEMP_D3 42
+#define OVER_TEMP_D4 45
 
 #define CHG_Inhibit_Temp_H 45
 #define CHG_Inhibit_Temp_L -10
@@ -85,17 +84,17 @@
 //#define VCELL_BALANCE         164          //50mV
 #define VCELL_LOW_ALARM       9830          //3.1V
 
-#define OCHG_P3_VOL 13599  //4.15V 
-#define OCHG_P4_VOL 13763  //4.20V
-#define OCHG_P5_VOL 13926  //4.25V
-#define OCHG_D3_VOL 13435  //4.10V
-#define OCHG_D4_VOL 13599  //4.15V
+#define OCHG_P3_VOL 13631  //4.16V 
+#define OCHG_P4_VOL 13926  //4.25V
+#define OCHG_P5_VOL 14090  //4.30V
+#define OCHG_D3_VOL 13500  //4.12V
+#define OCHG_D4_VOL 13763  //4.20V
 
 #define ODCH_P3_VOL 9830   //3.0V
-#define ODCH_P4_VOL 8847   //2.7V
+#define ODCH_P4_VOL 9175   //2.8V
 #define ODCH_P5_VOL 8192   //2.5V
 #define ODCH_D3_VOL 10486  //3.2V
-#define ODCH_D4_VOL 9503   //2.9V
+#define ODCH_D4_VOL 10486  //3.2V
 
 #define VCELL_LOW_PROTECT     9502         //2.9V
 #define VCELL_SUB_0V5         1638         //0.5V
@@ -118,19 +117,21 @@
 #define CURRENT_CHG1A                ((uint16_t)182)  // 1A
 #define CURRENT_CHG2A                ((uint16_t)364)  // 2A
 #define CURRENT_DCH_05A              ((uint16_t)-91)  // 0.5A
+#define CURRENT_DCH1A                ((uint16_t)-182)  // 0.5A
+#define CURRENT_DCH30A                ((uint16_t)-5460)  // 0.5A
 #define CURRENT_DCH_STATE            ((uint16_t)-20)  // 0.1A
 #define CURRENT_CHG_STATE            ((uint16_t)20)  // 0.1A
 
-#define OCC_P3_AM 5096 //28A
-#define OCC_P4_AM 5278 //29A
-#define OCC_P5_AM 5460 //30A
-
-#define ODC_P3_AM -5096 //-28A
-#define ODC_P4_AM -5278 //-29A
-#define ODC_P5_AM -5460 //-30A
-#define ODC_D3_AM -4550 //-25A
-#define ODC_D4_AM -4732 //-26A
-#define ODC_D5_AM -4916 //-27A
+//#define OCC_P3_AM 5096 //28A
+//#define OCC_P4_AM 5278 //29A
+//#define OCC_P5_AM 5460 //30A
+//
+#define ODC_P3_AM (CURRENT_DCH30A*12/10)
+#define ODC_P4_AM (CURRENT_DCH30A*13/10)
+#define ODC_P5_AM (CURRENT_DCH30A*15/10)
+#define ODC_D3_AM (CURRENT_DCH30A*11/10)
+#define ODC_D4_AM (CURRENT_DCH30A*12/10)
+#define ODC_D5_AM (CURRENT_DCH30A*12/10)
 
 extern void AFE_Control(void);
 extern void Sys_250ms_tick(void);
