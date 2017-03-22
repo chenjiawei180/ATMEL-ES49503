@@ -112,15 +112,15 @@
 
 //#define CURRENT_DCHOC_PROTECT        ((SHORT)-9100)  // 50A
 //#define CURRENT_CHGOC_PROTECT        ((SHORT)6370)  // 35A
-#define CURRENT_DCHOC_PROTECT        ((uint16_t)-7282)  //40 25A  zzy20161020
-#define CURRENT_CHGOC_PROTECT        ((uint16_t)5097)  //28A zzy20161026 25A4550  zzy20161020
-#define CURRENT_CHG1A                ((uint16_t)182)  // 1A
-#define CURRENT_CHG2A                ((uint16_t)364)  // 2A
-#define CURRENT_DCH_05A              ((uint16_t)-91)  // 0.5A
-#define CURRENT_DCH1A                ((uint16_t)-182)  // 0.5A
-#define CURRENT_DCH30A                ((uint16_t)-5460)  // 0.5A
-#define CURRENT_DCH_STATE            ((uint16_t)-20)  // 0.1A
-#define CURRENT_CHG_STATE            ((uint16_t)20)  // 0.1A
+#define CURRENT_DCHOC_PROTECT        ((int16_t)-7282)  //40 25A  zzy20161020
+#define CURRENT_CHGOC_PROTECT        ((int16_t)5097)  //28A zzy20161026 25A4550  zzy20161020
+#define CURRENT_CHG1A                ((int16_t)182)  // 1A
+#define CURRENT_CHG2A                ((int16_t)364)  // 2A
+#define CURRENT_DCH_05A              ((int16_t)-91)  // 0.5A
+#define CURRENT_DCH1A                ((int16_t)-182)  // 0.5A
+#define CURRENT_DCH30A                ((int16_t)-5460)  // 0.5A
+#define CURRENT_DCH_STATE            ((int16_t)-20)  // 0.1A
+#define CURRENT_CHG_STATE            ((int16_t)20)  // 0.1A
 
 //#define OCC_P3_AM 5096 //28A
 //#define OCC_P4_AM 5278 //29A
@@ -152,5 +152,6 @@ extern void ODC_Flag(void);
 extern void OTEMP_Flag(void);
 extern void Stop_Flag(void);
 extern void Inhibit_Flag(void);
+extern void Action_Flag(void);
 
 #endif /* PROTECT_H_ */

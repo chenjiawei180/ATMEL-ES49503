@@ -14,7 +14,7 @@ void Configure_GPIO(void)
 	
 	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
 	port_pin_set_config(MCU_STOP_PIN, &pin_conf);
-	port_pin_set_output_level(MCU_STOP_PIN, true);
+	port_pin_set_output_level(MCU_STOP_PIN, false);
 	
 	pin_conf.direction  = PORT_PIN_DIR_OUTPUT;
 	port_pin_set_config(ID_OUT_PIN, &pin_conf);

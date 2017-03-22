@@ -636,7 +636,7 @@ void SOC(void)
 			Write_Time_or_mAh(CHG_Val,CHG_FLAG);
 			CHG_Val_Bak = CHG_Val;
 		}
-		BatteryState.val.ActionState = 2; // 电池状态设定为充电
+		//BatteryState.val.ActionState = 2; // 电池状态设定为充电
 	}
 	else
 	{
@@ -646,7 +646,7 @@ void SOC(void)
 			Write_Time_or_mAh(DCH_Val,DCH_FLAG);
 			DCH_Val_Bak = DCH_Val;
 		}
-		BatteryState.val.ActionState = 3; // 电池状态设定为放电
+		//BatteryState.val.ActionState = 3; // 电池状态设定为放电
 	}
 	
 	if(tmp_cap>-30)
@@ -724,6 +724,7 @@ void Abnormal_Flag(void)
 	OTEMP_Flag();	
 	Stop_Flag();
 	Inhibit_Flag();
+	Action_Flag();
 }
 
 void OCHG_Flag(void)
@@ -1159,7 +1160,8 @@ void Stop_Flag(void)
 		AbnormalState.val.Over_Temp5    
 	)
 	{
-		MCU_STOP_Low();
+		MCU_STOP_High();
+		AbnormalState.val.Stop_Bit = 1;
 	}
 	else if ( (nADC_CURRENT > 0)  && 
 			(	
@@ -1170,11 +1172,13 @@ void Stop_Flag(void)
 			)
 	)
 	{
-		MCU_STOP_Low();
+		MCU_STOP_High();
+		AbnormalState.val.Stop_Bit = 1;
 	}
 	else if ( nADC_CURRENT < 0  && AbnormalState.val.ODCH_Protect3	)
 	{
-		MCU_STOP_Low();
+		MCU_STOP_High();
+		AbnormalState.val.Stop_Bit = 1;
 	}
 	else if ( (nADC_CURRENT < CURRENT_DCH_05A) && 
 			(
@@ -1184,11 +1188,13 @@ void Stop_Flag(void)
 			)
 	)
 	{
-		MCU_STOP_Low();
+		MCU_STOP_High();
+		AbnormalState.val.Stop_Bit = 1;
 	}
 	else
 	{
-		MCU_STOP_High();
+		MCU_STOP_Low();
+		AbnormalState.val.Stop_Bit = 0;
 	}
 }
 
@@ -1246,4 +1252,20 @@ void Inhibit_Flag(void)
 		CHG_Inhibit_Temp_off_cnt = sys_250ms_cnt;
 	}
 	
+}
+
+void Action_Flag(void)
+{
+	if(nADC_CURRENT > CURRENT_CHG_STATE)
+	{
+		BatteryState.val.ActionState = 2; // 电池状态设定为充电
+	}
+	else if (nADC_CURRENT < CURRENT_DCH_STATE)
+	{
+		BatteryState.val.ActionState = 3; // 电池状态设定为放电
+	}
+	else
+	{
+		BatteryState.val.ActionState = 1; // 电池状态设定为停止
+	}
 }
