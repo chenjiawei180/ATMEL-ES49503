@@ -2,6 +2,10 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\ASF\sam0\drivers\tc\tc_interrupt.c
+
+src\ASF\sam0\drivers\tc\tc_sam_l_c\tc.c
+
 src\ASF\sam0\drivers\wdt\wdt_callback.c
 
 src\Source\adc.c
@@ -21,6 +25,8 @@ src\Source\history.c
 src\Source\power.c
 
 src\Source\protect.c
+
+src\Source\simulation.c
 
 src\Source\soc.c
 

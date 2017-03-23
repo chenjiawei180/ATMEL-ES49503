@@ -605,7 +605,7 @@ void Sys_250ms_tick(void)
 		OCC_TIMEOUT =0;
 	}
 	
-	SysLED_Display();
+	//SysLED_Display();
 }
 
 /****************************************************************************
@@ -880,8 +880,9 @@ void ODCH_Flag(void)
 
 void OCC_Flag(void)
 {
-	int8_t temp = ( TEMP_3_BAT + TEMP_4_BAT + TEMP_5_BAT )/3 ;
-	uint16_t Limit_Current = 0;
+	//int8_t temp = ( TEMP_3_BAT + TEMP_4_BAT + TEMP_5_BAT )/3 ;
+	int8_t temp = ( nADC_TMONI_BAT_MAX + nADC_TMONI_BAT_MIN )/2;
+	int16_t Limit_Current = 0;
 	if (temp > 10)
 	{
 		Limit_Current = CURRENT_CHG1A * 30;

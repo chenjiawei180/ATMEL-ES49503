@@ -269,6 +269,8 @@ typedef union
 #define  CHG_FLAG 2
 #define  TIME_FLAG 3
 
+#define SIMULATION_AFE
+
 #include "usart.h"
 
 OS_EXT SystemFlags sys_flags;

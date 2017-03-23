@@ -156,7 +156,9 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/sam0/utils/stdio/stdio_serial/stdio_serial.h \
  ../src/ASF/common/services/serial/serial.h \
  ../src/ASF/common/services/serial/sam0_usart/usart_serial.h \
- ../src/ASF/sam0/drivers/wdt/wdt.h \
+ ../src/ASF/sam0/drivers/tc/tc.h \
+ ../src/ASF/sam0/drivers/tc/tc_interrupt.h \
+ ../src/ASF/sam0/drivers/tc/tc.h ../src/ASF/sam0/drivers/wdt/wdt.h \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h \
  ../src/ASF/sam0/drivers/wdt/wdt.h \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h ../src/Source/global.h \
@@ -164,7 +166,7 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/Source/led.h ../src/Source/wdt.h ../src/Source/spi.h \
  ../src/Source/flash.h ../src/Source/power.h ../src/Source/afe_wr.h \
  ../src/Source/AN49503.h ../src/Source/adc.h ../src/Source/gpio.h \
- ../src/Source/can.h ../src/Source/history.h
+ ../src/Source/can.h ../src/Source/history.h ../src/Source/simulation.h
 
 ../src/asf.h:
 
@@ -494,6 +496,12 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/common/services/serial/sam0_usart/usart_serial.h:
 
+../src/ASF/sam0/drivers/tc/tc.h:
+
+../src/ASF/sam0/drivers/tc/tc_interrupt.h:
+
+../src/ASF/sam0/drivers/tc/tc.h:
+
 ../src/ASF/sam0/drivers/wdt/wdt.h:
 
 ../src/ASF/sam0/drivers/wdt/wdt_callback.h:
@@ -531,3 +539,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/Source/can.h:
 
 ../src/Source/history.h:
+
+../src/Source/simulation.h:

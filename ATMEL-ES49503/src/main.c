@@ -44,6 +44,7 @@
 #include "Source/gpio.h"
 #include "Source/can.h"
 #include "Source/history.h"
+#include "Source/simulation.h"
 
 static volatile unsigned char flash_data[] __attribute__((section(".physicalsection")))={"const data"};
 
@@ -116,18 +117,29 @@ int main (void)
 	BatteryState.val.ActionState = 1; // 电池状态设定为停止
 	//printf("address is %d. \r\n",ID_address);
 	
+#ifdef SIMULATION_AFE
+	Configure_Tc();
+	nADC_CELL_MAX = (uint16_t)(12000);
+	nADC_CELL_MIN = (uint16_t)(12000);
+	nADC_CURRENT  = (int16_t)(0);
+	nADC_TMONI_BAT_MAX = (int8_t)24;
+	nADC_TMONI_BAT_MIN = (int8_t)24;
+	g_sys_cap.val.re_cap_rate = (uint8_t)50;
+#endif
+	
 	/* Insert application code here, after the board has been initialized. */
 	while (1)
 	{
 		can_process();
-		if (AFE_disconnect)
-		{
-			AFE_Init();
-		}
-		else
-		{
-			AFE_Reg_Read();	
-		}
+		//if (AFE_disconnect)
+		//{
+			//AFE_Init();
+		//}
+		//else
+		//{
+			//AFE_Reg_Read();
+		//}
+		Sim_process();
 		//printf("Cell 0 is %d. \r\n",nADC_Cell_Value[0]);
 	}
 }

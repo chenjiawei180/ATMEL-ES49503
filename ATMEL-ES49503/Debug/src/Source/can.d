@@ -157,11 +157,13 @@ src/Source/can.d src/Source/can.o: ../src/Source/can.c \
  ../src/ASF/sam0/utils/stdio/stdio_serial/stdio_serial.h \
  ../src/ASF/common/services/serial/serial.h \
  ../src/ASF/common/services/serial/sam0_usart/usart_serial.h \
- ../src/ASF/sam0/drivers/wdt/wdt.h \
+ ../src/ASF/sam0/drivers/tc/tc.h \
+ ../src/ASF/sam0/drivers/tc/tc_interrupt.h \
+ ../src/ASF/sam0/drivers/tc/tc.h ../src/ASF/sam0/drivers/wdt/wdt.h \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h \
  ../src/ASF/sam0/drivers/wdt/wdt.h \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h ../src/Source/global.h \
- ../src/Source/usart.h ../src/Source/gpio.h
+ ../src/Source/usart.h ../src/Source/gpio.h ../src/Source/simulation.h
 
 ../src/Source/can.h:
 
@@ -493,6 +495,12 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/common/services/serial/sam0_usart/usart_serial.h:
 
+../src/ASF/sam0/drivers/tc/tc.h:
+
+../src/ASF/sam0/drivers/tc/tc_interrupt.h:
+
+../src/ASF/sam0/drivers/tc/tc.h:
+
 ../src/ASF/sam0/drivers/wdt/wdt.h:
 
 ../src/ASF/sam0/drivers/wdt/wdt_callback.h:
@@ -506,3 +514,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/Source/usart.h:
 
 ../src/Source/gpio.h:
+
+../src/Source/simulation.h:

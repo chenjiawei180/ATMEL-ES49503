@@ -61,21 +61,21 @@
 #define TEMP_CHG_HIGH_PROTECT   45         //67.2V
 #define TEMP_CHG_HIGH_ALARM     45         //67.2V
 
-#define OVER_TEMP_P3 45
-#define OVER_TEMP_P4 50
-#define OVER_TEMP_P5 55
-#define OVER_TEMP_D3 42
-#define OVER_TEMP_D4 45
+#define OVER_TEMP_P3 (int8_t)45
+#define OVER_TEMP_P4 (int8_t)50
+#define OVER_TEMP_P5 (int8_t)55
+#define OVER_TEMP_D3 (int8_t)42
+#define OVER_TEMP_D4 (int8_t)45
 
-#define CHG_Inhibit_Temp_H 45
-#define CHG_Inhibit_Temp_L -10
-#define CHG_Inhibit_Temp_HR 40
-#define CHG_Inhibit_Temp_LR -5
+#define CHG_Inhibit_Temp_H (int8_t)45
+#define CHG_Inhibit_Temp_L (int8_t)-10
+#define CHG_Inhibit_Temp_HR (int8_t)40
+#define CHG_Inhibit_Temp_LR (int8_t)-5
 
-#define DCH_Inhibit_Temp_H 45
-#define DCH_Inhibit_Temp_L -10
-#define DCH_Inhibit_Temp_HR 40
-#define DCH_Inhibit_Temp_LR -5
+#define DCH_Inhibit_Temp_H (int8_t)45
+#define DCH_Inhibit_Temp_L (int8_t)-10
+#define DCH_Inhibit_Temp_HR (int8_t)40
+#define DCH_Inhibit_Temp_LR (int8_t)-5
 
 // VCELL¹«Ê½=====5/2^14 = 5/16384     Vx = 5/16384*AD
 #define VCELL_HIGH_ERR        14090         //4.3V
@@ -126,12 +126,12 @@
 //#define OCC_P4_AM 5278 //29A
 //#define OCC_P5_AM 5460 //30A
 //
-#define ODC_P3_AM (CURRENT_DCH30A*12/10)
-#define ODC_P4_AM (CURRENT_DCH30A*13/10)
-#define ODC_P5_AM (CURRENT_DCH30A*15/10)
-#define ODC_D3_AM (CURRENT_DCH30A*11/10)
-#define ODC_D4_AM (CURRENT_DCH30A*12/10)
-#define ODC_D5_AM (CURRENT_DCH30A*12/10)
+#define ODC_P3_AM (int16_t)(CURRENT_DCH30A*12/10)
+#define ODC_P4_AM (int16_t)(CURRENT_DCH30A*13/10)
+#define ODC_P5_AM (int16_t)(CURRENT_DCH30A*15/10)
+#define ODC_D3_AM (int16_t)(CURRENT_DCH30A*11/10)
+#define ODC_D4_AM (int16_t)(CURRENT_DCH30A*12/10)
+#define ODC_D5_AM (int16_t)(CURRENT_DCH30A*12/10)
 
 extern void AFE_Control(void);
 extern void Sys_250ms_tick(void);

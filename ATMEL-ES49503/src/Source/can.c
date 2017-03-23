@@ -7,6 +7,7 @@
 
 #include "can.h"
 #include "gpio.h"
+#include "simulation.h"
 
 static struct can_module can_instance;
 
@@ -346,7 +347,7 @@ void can_process(void)
 				read_bytes(&Sequence_ID,1);   //取出定序ID
 				read_bytes(buffer,1);   //第四个字节 数据长
 
-				if(buffer[0] <= 4)
+				if(buffer[0] <= 9)
 				{
 					read_bytes(buffer+1,buffer[0]+2);
 					checksum = check_sum(buffer,buffer[0]+3);
@@ -397,6 +398,11 @@ void can_process(void)
 									address_conflict = 1;
 								}
 								break;
+#ifdef SIMULATION_AFE 
+							case 0x38:
+								Can_var(buffer);
+								break;
+#endif							
 							default:
 								break;
 						}	
@@ -429,9 +435,9 @@ void profile_answer(void)
 	profile_data[4] = 0xd6;
 	profile_data[5] = 13;    //数据开始
 	profile_data[6] = 1;
-	profile_data[7] = 6300;    //额定容量
+	profile_data[7] = 6300&0Xff;    //额定容量
 	profile_data[8] = 6300>>8;
-	profile_data[9] = 4800;    // 公称电压
+	profile_data[9] = 4800&0xff;    // 公称电压
 	profile_data[10] = 4800>>8;
 	profile_data[11] = 45;    //充电最高温度
 	profile_data[12] = -10;    //充电最低温度
