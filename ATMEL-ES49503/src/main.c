@@ -133,19 +133,23 @@ int main (void)
 	while (1)
 	{
 		can_process();
-		//if (AFE_disconnect)
-		//{
-			//AFE_Init();
-		//}
-		//else
-		//{
-			//AFE_Reg_Read();
-		//}
+		if (AFE_disconnect)
+		{
+			AFE_Init();
+		}
+		else
+		{
+			AFE_Reg_Read();
+		}
+		
+#ifdef SIMULATION_AFE
 		if ( TC_250ms_flag == 1 && address_assign_flag == 0)
 		{
 			Sim_process();
 			TC_250ms_flag = 0;
 		}
+		tc_switch();
+#endif
 		//printf("Cell 0 is %d. \r\n",nADC_Cell_Value[0]);
 	}
 }

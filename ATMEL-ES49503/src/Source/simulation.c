@@ -26,7 +26,7 @@ void Configure_Tc(void)
 	//config_tc.counter_8_bit.compare_capture_channel[1] = 54;
 	
 	tc_init(&tc_instance, TC0, &config_tc);
-	tc_enable(&tc_instance);
+
 	Configure_Tc_Callbacks();
 }
 
@@ -59,6 +59,21 @@ void Can_var(uint8_t* buff)
 	nADC_TMONI_BAT_MAX = (int8_t)buff[8];
 	nADC_TMONI_BAT_MIN = (int8_t)buff[9];
 	g_sys_cap.val.re_cap_rate = (uint8_t)buff[10];	
+}
+
+void tc_switch(void)
+{
+	static uint8_t tc_on_flag = 0;
+	if ( AFE_disconnect == 1 && tc_on_flag == 0)
+	{
+		tc_enable(&tc_instance);
+		tc_on_flag = 1;
+	}
+	else if( AFE_disconnect == 0 && tc_on_flag == 1)
+	{
+		tc_disable(&tc_instance);
+		tc_on_flag = 0;
+	}
 }
 
 #endif

@@ -17,6 +17,7 @@ extern void Configure_Tc_Callbacks(void);
 extern void tc_callback_to_toggle_led(struct tc_module *const module_inst);
 extern void Can_var(uint8_t* buff);
 extern void Sim_process(void);
+extern void tc_switch(void);
 
 
 #endif /* SIMULATION_H_ */
