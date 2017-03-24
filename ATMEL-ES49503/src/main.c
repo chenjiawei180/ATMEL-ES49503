@@ -113,11 +113,7 @@ int main (void)
 	Bsp_LED0_Off();
 	Bsp_LED1_On();
 
-	Address_Init(); //初始化设备地址
-	BatteryState.val.ActionState = 1; // 电池状态设定为停止
-	//printf("address is %d. \r\n",ID_address);
-	
-#ifdef SIMULATION_AFE
+	#ifdef SIMULATION_AFE
 	Configure_Tc();
 	nADC_CELL_MAX = (uint16_t)(12000);
 	nADC_CELL_MIN = (uint16_t)(12000);
@@ -125,7 +121,13 @@ int main (void)
 	nADC_TMONI_BAT_MAX = (int8_t)24;
 	nADC_TMONI_BAT_MIN = (int8_t)24;
 	g_sys_cap.val.re_cap_rate = (uint8_t)50;
-#endif
+	TC_250ms_flag = 0;
+	#endif
+
+	address_assign_flag = 1;
+	Address_Init(); //初始化设备地址
+	BatteryState.val.ActionState = 1; // 电池状态设定为停止
+	//printf("address is %d. \r\n",ID_address);
 	
 	/* Insert application code here, after the board has been initialized. */
 	while (1)
@@ -139,7 +141,11 @@ int main (void)
 		//{
 			//AFE_Reg_Read();
 		//}
-		Sim_process();
+		if ( TC_250ms_flag == 1 && address_assign_flag == 0)
+		{
+			Sim_process();
+			TC_250ms_flag = 0;
+		}
 		//printf("Cell 0 is %d. \r\n",nADC_Cell_Value[0]);
 	}
 }

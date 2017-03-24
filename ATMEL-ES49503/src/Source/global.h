@@ -333,6 +333,8 @@ OS_EXT uint8_t ID_address;
 OS_EXT uint8_t Sequence_ID;
 
 OS_EXT uint8_t AFE_disconnect;
+OS_EXT uint8_t TC_250ms_flag;
+OS_EXT uint8_t address_assign_flag;
 
 //开放profile变量
 //OS_EXT uint8_t Series_num;

@@ -31,7 +31,6 @@ volatile static uint32_t readOffset, writeOffset;
 uint8_t battery_data[64] = {0};
 uint8_t profile_data[128] = {0};
 	
-uint8_t address_assign_flag = 1;
 uint8_t address_conflict = 0;
 
 void configure_can(void)

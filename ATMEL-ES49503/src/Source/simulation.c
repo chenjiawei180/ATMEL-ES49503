@@ -40,6 +40,7 @@ void tc_callback_to_toggle_led(
 struct tc_module *const module_inst)
 {
 	Sys_250ms_tick();
+	TC_250ms_flag = 1;
 	Bsp_LED0_Toggle();
 	Bsp_LED1_Toggle();
 }
