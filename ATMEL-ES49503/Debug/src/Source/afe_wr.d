@@ -165,7 +165,7 @@ src/Source/afe_wr.d src/Source/afe_wr.o: ../src/Source/afe_wr.c \
  ../src/ASF/sam0/drivers/wdt/wdt_callback.h ../src/Source/global.h \
  ../src/Source/usart.h ../src/Source/AN49503.h ../src/Source/spi.h \
  ../src/Source/ad_dat.h ../src/Source/protect.h ../src/Source/soc.h \
- ../src/Source/wdt.h ../src/Source/history.h
+ ../src/Source/wdt.h ../src/Source/history.h ../src/Source/led.h
 
 ../src/Source/afe_wr.h:
 
@@ -528,3 +528,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/Source/wdt.h:
 
 ../src/Source/history.h:
+
+../src/Source/led.h:

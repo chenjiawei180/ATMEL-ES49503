@@ -12,6 +12,7 @@
 #include "soc.h"
 #include "wdt.h"
 #include "history.h"
+#include "led.h"
 
 #ifdef OS_DEBUG
 #include "adc.h"
@@ -32,7 +33,10 @@ volatile uint16_t sw_change_lowpower_cnt=0;        //zzy20161101低功耗
 
 void AFE_Init(void)
 {
+	Bsp_LED0_Off();
+	Bsp_LED0_On();
     AFE_disconnect = ucSPI_Write(MAC_SPI_DEV,LOCK_ADDR,AFE_UNLOCK);   //unlock IC
+	Bsp_LED0_Off();
     //上电清AD值
     //    ucSPI_Write(MAC_SPI_DEV,STAT_ADDR,AFE_VAD_DONE);   //clear VAD_DONE
     //    ucSPI_Write(MAC_SPI_DEV,OP_MODE_ADDR,AFE_AVD_LATCH);   //END AD

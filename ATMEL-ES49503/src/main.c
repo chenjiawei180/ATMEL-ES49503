@@ -53,6 +53,7 @@ int main (void)
 {
 	uint16_t temp = flash_data[0] ;
 	temp = temp;
+	static uint32_t afeerr_cnt = 0;
 	
 	system_init();
 	
@@ -113,6 +114,8 @@ int main (void)
 	Bsp_LED0_Off();
 	Bsp_LED1_On();
 
+	profile_answer();
+
 	#ifdef SIMULATION_AFE
 	Configure_Tc();
 	nADC_CELL_MAX = (uint16_t)(12000);
@@ -127,15 +130,20 @@ int main (void)
 	address_assign_flag = 1;
 	Address_Init(); //初始化设备地址
 	BatteryState.val.ActionState = 1; // 电池状态设定为停止
+
 	//printf("address is %d. \r\n",ID_address);
 	
 	/* Insert application code here, after the board has been initialized. */
 	while (1)
 	{
 		can_process();
+		afeerr_cnt++;
 		if (AFE_disconnect)
 		{
-			AFE_Init();
+			if(afeerr_cnt&0xff == 0)
+			{
+				AFE_Init();
+			}
 		}
 		else
 		{

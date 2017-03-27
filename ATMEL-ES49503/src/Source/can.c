@@ -189,14 +189,16 @@ void read_bytes(uint8_t * buffer, uint32_t byteCount)
 	while(currentBytesRead != byteCount)
 	{
 		//wdt_reset_count();
+		delay_us(1);
 		i++;
-		if (i == 10000)
+		if (i > 1000)
 		{
 			break;
 		}
 		
 		if (readOffset != writeOffset)
 		{
+			i = 0;
 			buffer[currentBytesRead++] = callback_buffer[readOffset++];
 			readOffset &= XMODEM_BUFLEN - 1;
 		}
@@ -382,7 +384,7 @@ void can_process(void)
 							case 0xC6:
 								if (address_assign_flag == 0 && broadcast == 0)
 								{
-									profile_answer();
+									send_message(profile_data,96);
 								}
 								break;
 							case 0x48:
@@ -556,7 +558,6 @@ void profile_answer(void)
 	profile_data[94] = 0;
 	
 	profile_data[95] = check_sum(profile_data+3,93);
-	send_message(profile_data,96);
 }
 
 void battery_answer(void)
