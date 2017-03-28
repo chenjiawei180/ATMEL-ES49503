@@ -33,10 +33,7 @@ volatile uint16_t sw_change_lowpower_cnt=0;        //zzy20161101低功耗
 
 void AFE_Init(void)
 {
-	Bsp_LED0_Off();
-	Bsp_LED0_On();
     AFE_disconnect = ucSPI_Write(MAC_SPI_DEV,LOCK_ADDR,AFE_UNLOCK);   //unlock IC
-	Bsp_LED0_Off();
     //上电清AD值
     //    ucSPI_Write(MAC_SPI_DEV,STAT_ADDR,AFE_VAD_DONE);   //clear VAD_DONE
     //    ucSPI_Write(MAC_SPI_DEV,OP_MODE_ADDR,AFE_AVD_LATCH);   //END AD
@@ -88,6 +85,7 @@ DATE			: 2016/06/24
 
 void SPI_AllReg_WR(void)
 {
+	static uint32_t com_err_cnt = 0;
     if(sys_flags.val.afe_adirq2_flag == 1)
     {
 		#ifdef OS_DEBUG
@@ -108,6 +106,7 @@ void SPI_AllReg_WR(void)
 		Time_update();
 	    sys_flags.val.afe_adirq2_flag =0;
 	    sys_flags.val.afe_connect_flag =0;
+		com_err_cnt = 0;
 	    //Wdt_Clear(); //应该在AFE响应一次以后喂狗，以防AFE复位导致芯片无法跟AFE契合工作
 		STB_Low();
 		SPI_Slave_High();		//开启通信需要延迟2ms以上
@@ -175,6 +174,15 @@ void SPI_AllReg_WR(void)
 	    //                low_power_cnt++;
 	    //            }
     }
+	else
+	{
+		delay_ms(1);
+		com_err_cnt++;
+		if(com_err_cnt > 2000)
+		{
+			AFE_disconnect = 1;
+		}
+	}
 }
 
 /****************************************************************************

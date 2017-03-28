@@ -64,7 +64,7 @@ void Can_var(uint8_t* buff)
 void tc_switch(void)
 {
 	static uint8_t tc_on_flag = 0;
-	static uint32_t com_err_cnt = 0;
+
 	if ( AFE_disconnect == 1 && tc_on_flag == 0)
 	{
 		tc_enable(&tc_instance);
@@ -75,22 +75,6 @@ void tc_switch(void)
 		tc_disable(&tc_instance);
 		tc_on_flag = 0;
 	}
-	
-	
-	if ( sys_flags.val.afe_adirq2_flag == 0 && AFE_disconnect == 0 )
-	{
-		com_err_cnt++;
-		delay_ms(1);
-		if (com_err_cnt > 1000)
-		{
-			AFE_disconnect = 1;
-		}
-	} 
-	else
-	{
-		com_err_cnt = 0;
-	}
-	
 }
 
 #endif

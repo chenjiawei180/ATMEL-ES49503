@@ -250,7 +250,11 @@ typedef union
 		uint32_t Over_Temp4                             : 1;
 		uint32_t Over_Temp5                             : 1;
 		uint32_t Stop_Bit                               : 1;
-		uint32_t                                        : 16;
+		uint32_t									    : 1;
+		uint32_t									    : 1;
+		uint32_t									    : 1;
+		uint32_t IC_communication_err				    : 1;
+		uint32_t                                        : 12;
 	}val;
 	uint32_t VAL;
 }AbnormalStateFlags;
@@ -268,6 +272,8 @@ typedef union
 #define  DCH_FLAG 1
 #define  CHG_FLAG 2
 #define  TIME_FLAG 3
+
+#define CHG_Release_Soc 2
 
 #define SIMULATION_AFE
 

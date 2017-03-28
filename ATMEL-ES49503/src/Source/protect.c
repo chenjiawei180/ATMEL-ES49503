@@ -683,7 +683,7 @@ void Flag_Process(void)
 void SOC_Flag(void)
 {
 	//更新SOC状态
-	if ( g_sys_cap.val.re_cap_rate >= 98 )
+	if ( g_sys_cap.val.re_cap_rate == 100 )
 	{
 		BatteryState.val.SocState = 1 ; //SOC状态设置为满充电
 	}
@@ -695,7 +695,7 @@ void SOC_Flag(void)
 	{
 		if ( BatteryState.val.SocState == 1 )
 		{
-			if (g_sys_cap.val.re_cap_rate < (98-5))
+			if (g_sys_cap.val.re_cap_rate < (100-CHG_Release_Soc))
 			{
 				BatteryState.val.SocState = 0 ; //SOC状态设置为其他
 			} 

@@ -114,8 +114,6 @@ int main (void)
 	Bsp_LED0_Off();
 	Bsp_LED1_On();
 
-	profile_answer();
-
 	#ifdef SIMULATION_AFE
 	Configure_Tc();
 	nADC_CELL_MAX = (uint16_t)(12000);
@@ -140,13 +138,15 @@ int main (void)
 		afeerr_cnt++;
 		if (AFE_disconnect)
 		{
-			if(afeerr_cnt&0xff == 0)
+			AbnormalState.val.IC_communication_err = 1;
+			if( (afeerr_cnt&0xff) == 0)
 			{
 				AFE_Init();
 			}
 		}
 		else
 		{
+			AbnormalState.val.IC_communication_err = 0;
 			AFE_Reg_Read();
 		}
 		

@@ -373,6 +373,7 @@ void can_process(void)
 							case 0xC5:
 								if (address_assign_flag == 0 && broadcast == 0)
 								{
+									battery_data[2] = Sequence_ID;
 									if (Latch_id != buffer[2])
 									{
 										Latch_id = 0xff;
@@ -384,7 +385,7 @@ void can_process(void)
 							case 0xC6:
 								if (address_assign_flag == 0 && broadcast == 0)
 								{
-									send_message(profile_data,96);
+									profile_answer();
 								}
 								break;
 							case 0x48:
@@ -438,126 +439,128 @@ void profile_answer(void)
 	profile_data[6] = 1;
 	profile_data[7] = 6300&0Xff;    //额定容量
 	profile_data[8] = 6300>>8;
-	profile_data[9] = 4800&0xff;    // 公称电压
-	profile_data[10] = 4800>>8;
+	profile_data[9] = 4810&0xff;    // 公称电压
+	profile_data[10] = 4810>>8;
 	profile_data[11] = 45;    //充电最高温度
 	profile_data[12] = -10;    //充电最低温度
 	
-	profile_data[13] = 0;    //制造公司名
-	profile_data[14] = 0;
-	profile_data[15] = 0;
-	profile_data[16] = 0;
-	profile_data[17] = 0;
-	profile_data[18] = 0;
-	profile_data[19] = 0;
-	profile_data[20] = 0;
+	profile_data[13] = 'S';    //制造公司名
+	profile_data[14] = 'C';
+	profile_data[15] = 'U';
+	profile_data[16] = 'D';
+	profile_data[17] = 'D';
+	profile_data[18] = 'L';
+	profile_data[19] = 'K';
+	profile_data[20] = 'J';
 	
-	profile_data[21] = 0;    //模组名
-	profile_data[22] = 0;
-	profile_data[23] = 0;
-	profile_data[24] = 0;
-	profile_data[25] = 0;
-	profile_data[26] = 0;
-	profile_data[27] = 0;
-	profile_data[28] = 0;	
+	profile_data[21] = 'E';    //模组名
+	profile_data[22] = 'S';
+	profile_data[23] = '4';
+	profile_data[24] = '8';
+	profile_data[25] = '6';
+	profile_data[26] = '3';
+	profile_data[27] = ' ';
+	profile_data[28] = ' ';	
 	
-	profile_data[29] = 0;    //制造日
-	profile_data[30] = 0;
+	profile_data[29] = 8807&0xff;    //制造日 2017.3.7
+	profile_data[30] = 8807>>8;
 	
-	profile_data[31] = 0;    //制造S/N
-	profile_data[32] = 0;
+	profile_data[31] = 0x48;    //制造S/N
+	profile_data[32] = 0x63;
 	
-	profile_data[33] = 0;    //通信协议
-	profile_data[34] = 0;    //F/W version
-	profile_data[35] = 0;    //数据 version
-	profile_data[36] = 0;    //保护板version
+	profile_data[33] = 1;    //通信协议
+	profile_data[34] = 1;    //F/W version
+	profile_data[35] = 1;    //数据 version
+	profile_data[36] = 1;    //保护板version
 	
-	profile_data[37] = 0;    //满充电解除SOC
-	profile_data[38] = 0;	
+	profile_data[37] = CHG_Release_Soc&0xff;    //满充电解除SOC
+	profile_data[38] = CHG_Release_Soc>>8;	
 	
-	profile_data[39] = 0;    //充电完成解除SOC
+	profile_data[39] = 5;    //充电完成解除SOC
 	profile_data[40] = 0;
 		
-	profile_data[41] = 0;    //CV控制开始电芯电压1
-	profile_data[42] = 0;
+	profile_data[41] = 412&0xff;    //CV控制开始电芯电压1
+	profile_data[42] = 412>>8;
 		
-	profile_data[43] = 0;    //CV控制开始电芯电压2
-	profile_data[44] = 0;		
+	profile_data[43] = 410&0xff;    //CV控制开始电芯电压2
+	profile_data[44] = 410>>8;		
 
-	profile_data[45] = 0;    //CV控制开始电芯电压3
-	profile_data[46] = 0;
+	profile_data[45] = 408&0xff;    //CV控制开始电芯电压3
+	profile_data[46] = 408>>8;
 
-	profile_data[47] = 0;    //CV控制开始电芯电压4
-	profile_data[48] = 0;
+	profile_data[47] = 412&0xff;    //CV控制开始电芯电压4
+	profile_data[48] = 412>>8;
 
-	profile_data[49] = 0;    //放电中止电压
-	profile_data[50] = 0;
+	profile_data[49] = 300&0xff;    //放电中止电压
+	profile_data[50] = 300>>8;
 	
-	profile_data[51] = 0;    //过充电保护电压1
-	profile_data[52] = 0;
+	profile_data[51] = 5408&0xff;    //过充电保护电压1
+	profile_data[52] = 5408>>8;
 	
-	profile_data[53] = 0;    //过放电保护电压1
-	profile_data[54] = 0;
+	profile_data[53] = 3900&0xff;    //过放电保护电压1
+	profile_data[54] = 3900>>8;
 
-	profile_data[55] = 0;    //过充电保护电压2
-	profile_data[56] = 0;
+	profile_data[55] = 5460&0xff;    //过充电保护电压2
+	profile_data[56] = 5460>>8;
 	
-	profile_data[57] = 0;    //过放电保护电压2
-	profile_data[58] = 0;	
+	profile_data[57] = 3640&0xff;    //过放电保护电压2
+	profile_data[58] = 3640>>8;	
 	
-	profile_data[59] = 0;    //最大充电电流限制值
-	profile_data[60] = 0;	
+	profile_data[59] = 300&0xff;    //最大充电电流限制值
+	profile_data[60] = 300>>8;	
 	
-	profile_data[61] = 0;    //最大放电电流限制值
-	profile_data[62] = 0;	
+	profile_data[61] = 300&0xff;    //最大放电电流限制值
+	profile_data[62] = 300>>8;	
 	
-	profile_data[63] = 0;    //充电过电流
-	profile_data[64] = 0;
+	profile_data[63] = 450&0xff;    //充电过电流
+	profile_data[64] = 450>>8;
 	
-	profile_data[65] = 0;    //充电放电流
-	profile_data[66] = 0;
+	profile_data[65] = 450&0xff;    //充电放电流
+	profile_data[66] = 450>>8;
 	
-	profile_data[67] = 0;    //过温升保护温度
-	profile_data[68] = 0;	 //均衡控制开始电压差
-	profile_data[69] = 0;    //均衡控制开始电压差
+	profile_data[67] = 50;    //过温升保护温度
+	profile_data[68] = 35;	 //均衡控制开始电压差
+	profile_data[69] = 15;    //均衡控制开始电压差
 	profile_data[70] = 0;    //满充电容量测定终止SOC
 	
-	profile_data[71] = 0;    //1C 充放电电流
-	profile_data[72] = 0;
+	profile_data[71] = 630&0xff;    //1C 充放电电流
+	profile_data[72] = 630>>8;
 	
-	profile_data[73] = 0;    //最大充电倍率设定1
-	profile_data[74] = 0;
+	profile_data[73] = 300&0xff;    //最大充电倍率设定1
+	profile_data[74] = 300>>8;
 
-	profile_data[75] = 0;    //最大充电倍率设定2
-	profile_data[76] = 0;
+	profile_data[75] = 200&0xff;    //最大充电倍率设定2
+	profile_data[76] = 200>>8;
 	
-	profile_data[77] = 0;    //最大充电倍率设定3
-	profile_data[78] = 0;
+	profile_data[77] = 150&0xff;    //最大充电倍率设定3
+	profile_data[78] = 150>>8;
 	
-	profile_data[79] = 0;    //最大充电倍率设定4
-	profile_data[80] = 0;
+	profile_data[79] = 150&0xff;    //最大充电倍率设定4
+	profile_data[80] = 150>>8;
 	
-	profile_data[81] = 0;    //最大放电倍率设定1
-	profile_data[82] = 0;
+	profile_data[81] = 300&0xff;    //最大放电倍率设定1
+	profile_data[82] = 300>>8;
 
-	profile_data[83] = 0;    //最大放电倍率设定2
-	profile_data[84] = 0;
+	profile_data[83] = 200&0xff;    //最大放电倍率设定2
+	profile_data[84] = 200>>8;
 	
-	profile_data[85] = 0;    //最大放电倍率设定3
-	profile_data[86] = 0;
+	profile_data[85] = 150&0xff;    //最大放电倍率设定3
+	profile_data[86] = 150>>8;
 	
-	profile_data[87] = 0;    //最大放电倍率设定4
-	profile_data[88] = 0;
+	profile_data[87] = 300&0xff;    //最大放电倍率设定4
+	profile_data[88] = 300>>8;
 	
-	profile_data[89] = 0;    //DOD设定1
-	profile_data[90] = 0;    //DOD设定2
-	profile_data[91] = 0;    //DOD设定3
-	profile_data[92] = 0;    //DOD设定4
+	profile_data[89] = 90;    //DOD设定1
+	profile_data[90] = 80;    //DOD设定2
+	profile_data[91] = 70;    //DOD设定3
+	profile_data[92] = 70;    //DOD设定4
 	
 	profile_data[93] = 0;    //电芯的lot rank
 	profile_data[94] = 0;
 	
 	profile_data[95] = check_sum(profile_data+3,93);
+	
+	send_message(profile_data,96);
 }
 
 void battery_answer(void)
@@ -591,7 +594,7 @@ void battery_load(void)
 	
 	battery_data[0] = 0x55;
 	battery_data[1] = ID_address;
-	battery_data[2] = Sequence_ID;
+	//battery_data[2] = Sequence_ID;
 	battery_data[3] = 49;
 	battery_data[4] = 0xD5;
 	battery_data[5] = Latch_id; // 数据开始 latch id
