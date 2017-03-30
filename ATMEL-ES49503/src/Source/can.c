@@ -482,11 +482,11 @@ void profile_answer(void)
 	profile_data[41] = 412&0xff;    //CV控制开始电芯电压1
 	profile_data[42] = 412>>8;
 		
-	profile_data[43] = 410&0xff;    //CV控制开始电芯电压2
-	profile_data[44] = 410>>8;		
+	profile_data[43] = 412&0xff;    //CV控制开始电芯电压2
+	profile_data[44] = 412>>8;		
 
-	profile_data[45] = 408&0xff;    //CV控制开始电芯电压3
-	profile_data[46] = 408>>8;
+	profile_data[45] = 412&0xff;    //CV控制开始电芯电压3
+	profile_data[46] = 412>>8;
 
 	profile_data[47] = 412&0xff;    //CV控制开始电芯电压4
 	profile_data[48] = 412>>8;
@@ -529,31 +529,31 @@ void profile_answer(void)
 	profile_data[73] = 300&0xff;    //最大充电倍率设定1
 	profile_data[74] = 300>>8;
 
-	profile_data[75] = 200&0xff;    //最大充电倍率设定2
-	profile_data[76] = 200>>8;
+	profile_data[75] = 300&0xff;    //最大充电倍率设定2
+	profile_data[76] = 300>>8;
 	
-	profile_data[77] = 150&0xff;    //最大充电倍率设定3
-	profile_data[78] = 150>>8;
+	profile_data[77] = 300&0xff;    //最大充电倍率设定3
+	profile_data[78] = 300>>8;
 	
-	profile_data[79] = 150&0xff;    //最大充电倍率设定4
-	profile_data[80] = 150>>8;
+	profile_data[79] = 300&0xff;    //最大充电倍率设定4
+	profile_data[80] = 300>>8;
 	
 	profile_data[81] = 300&0xff;    //最大放电倍率设定1
 	profile_data[82] = 300>>8;
 
-	profile_data[83] = 200&0xff;    //最大放电倍率设定2
-	profile_data[84] = 200>>8;
+	profile_data[83] = 300&0xff;    //最大放电倍率设定2
+	profile_data[84] = 300>>8;
 	
-	profile_data[85] = 150&0xff;    //最大放电倍率设定3
-	profile_data[86] = 150>>8;
+	profile_data[85] = 300&0xff;    //最大放电倍率设定3
+	profile_data[86] = 300>>8;
 	
 	profile_data[87] = 300&0xff;    //最大放电倍率设定4
 	profile_data[88] = 300>>8;
 	
-	profile_data[89] = 90;    //DOD设定1
-	profile_data[90] = 80;    //DOD设定2
-	profile_data[91] = 70;    //DOD设定3
-	profile_data[92] = 70;    //DOD设定4
+	profile_data[89] = 100;    //DOD设定1
+	profile_data[90] = 100;    //DOD设定2
+	profile_data[91] = 100;    //DOD设定3
+	profile_data[92] = 100;    //DOD设定4
 	
 	profile_data[93] = 0;    //电芯的lot rank
 	profile_data[94] = 0;

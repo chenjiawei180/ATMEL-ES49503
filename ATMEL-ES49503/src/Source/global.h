@@ -273,9 +273,9 @@ typedef union
 #define  CHG_FLAG 2
 #define  TIME_FLAG 3
 
-#define CHG_Release_Soc 2
+#define CHG_Release_Soc 5
 
-#define SIMULATION_AFE
+//#define SIMULATION_AFE
 
 #include "usart.h"
 
