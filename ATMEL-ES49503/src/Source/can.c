@@ -465,8 +465,8 @@ void profile_answer(void)
 	profile_data[29] = 8807&0xff;    //制造日 2017.3.7
 	profile_data[30] = 8807>>8;
 	
-	profile_data[31] = 0x48;    //制造S/N
-	profile_data[32] = 0x63;
+	profile_data[31] = 0x63;    //制造S/N
+	profile_data[32] = 0x48;
 	
 	profile_data[33] = 1;    //通信协议
 	profile_data[34] = 1;    //F/W version
@@ -521,7 +521,7 @@ void profile_answer(void)
 	profile_data[67] = 50;    //过温升保护温度
 	profile_data[68] = 35;	 //均衡控制开始电压差
 	profile_data[69] = 15;    //均衡控制开始电压差
-	profile_data[70] = 0;    //满充电容量测定终止SOC
+	profile_data[70] = 8;    //满充电容量测定终止SOC
 	
 	profile_data[71] = 630&0xff;    //1C 充放电电流
 	profile_data[72] = 630>>8;
@@ -575,7 +575,7 @@ void latch_answer(void)
 	Send_buffer[1] = ID_address;
 	Send_buffer[2] = Sequence_ID;
 	Send_buffer[3] = 0x01;
-	Send_buffer[4] = 0x58;
+	Send_buffer[4] = 0xfe;
 	Send_buffer[5] = Latch_id;    // 数据开始
 	Send_buffer[6] = check_sum(Send_buffer+3,4);
 	send_message(Send_buffer,7);

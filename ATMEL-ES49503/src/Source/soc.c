@@ -70,7 +70,7 @@ void NormalCapacityProc(void)
 				capacity_volt = (uint32_t)Total_VBAT * 5000 / 16384;
 				g_sys_cap.val.re_cap_rate = VbatToSoc((uint16_t)capacity_volt);
 
-				EEPROM_Write_DATA(EEPROM_INDEX_CAP_VAL, g_sys_cap.val.re_cap_rate, 0);
+				//EEPROM_Write_DATA(EEPROM_INDEX_CAP_VAL, g_sys_cap.val.re_cap_rate, 0);
 				g_sys_cap.val.re_cap_rate_old = g_sys_cap.val.re_cap_rate;
 				g_sys_cap.val.re_cap_rate_old2 = g_sys_cap.val.re_cap_rate;   //修正soc值20161010zzysoc3
 			}
@@ -457,7 +457,7 @@ void FullCap_Update(void)
 						{
 							g_sys_cap.val.full_cap = full_cap_temp;
 							
-							EEPROM_Write_DATA(EEPROM_INDEX_FULL_CAP,g_sys_cap.val.full_cap,1);
+							//EEPROM_Write_DATA(EEPROM_INDEX_FULL_CAP,g_sys_cap.val.full_cap,1);
 						}
 						else
 						{
@@ -472,7 +472,7 @@ void FullCap_Update(void)
 						if((g_sys_cap.val.full_cap - full_cap_temp) < BAT_CAP_3PS)
 						{
 							g_sys_cap.val.full_cap = full_cap_temp;
-							EEPROM_Write_DATA(EEPROM_INDEX_FULL_CAP,g_sys_cap.val.full_cap,1);
+							//EEPROM_Write_DATA(EEPROM_INDEX_FULL_CAP,g_sys_cap.val.full_cap,1);
 						}
 						else
 						{
@@ -518,7 +518,7 @@ void SOC_FLASH_Save(void)
 			cap_save_delay_cnt =0;
 
 			g_sys_cap.val.re_cap_rate_old = g_sys_cap.val.re_cap_rate;
-			EEPROM_Write_DATA(EEPROM_INDEX_CAP_VAL,g_sys_cap.val.re_cap_rate,0);
+			//EEPROM_Write_DATA(EEPROM_INDEX_CAP_VAL,g_sys_cap.val.re_cap_rate,0);
 		}
 	}
 	if((g_sys_cap.val.re_cap_rate < g_sys_cap.val.re_cap_rate_old)&&((g_sys_cap.val.re_cap_rate_old - g_sys_cap.val.re_cap_rate)>0))
@@ -528,7 +528,7 @@ void SOC_FLASH_Save(void)
 		{
 			cap_save_delay_cnt =0;
 			g_sys_cap.val.re_cap_rate_old = g_sys_cap.val.re_cap_rate;
-			EEPROM_Write_DATA(EEPROM_INDEX_CAP_VAL,g_sys_cap.val.re_cap_rate,0);
+			//EEPROM_Write_DATA(EEPROM_INDEX_CAP_VAL,g_sys_cap.val.re_cap_rate,0);
 		}
 	}
 }
@@ -569,7 +569,7 @@ void BatCycleProc(void)
 				//                soc_rate= g_sys_cap.val.re_cap_rate_sum/7;
 				g_sys_cap.val.bat_cycle_cnt+= 1;
 				g_sys_cap.val.re_cap_rate_sum =0;//除了上电不进行清0
-				EEPROM_Write_DATA(EEPROM_INDEX_CYCLE,g_sys_cap.val.bat_cycle_cnt,1);
+				//EEPROM_Write_DATA(EEPROM_INDEX_CYCLE,g_sys_cap.val.bat_cycle_cnt,1);
 				g_sys_cap.val.cycle_record_flag = g_sys_cap.val.re_cap_rate;//记录一次以后,不再记录,等待下次记录时机，为0也不担心
 			}
 		}
@@ -607,7 +607,7 @@ void BatCycleProc(void)
 		{
 			g_sys_cap.val.deep_dch_cycle_cnt++;
 			g_sys_cap.val.deep_rate_sum =0;//20160815  AID 增加清0
-			EEPROM_Write_DATA(EEPROM_INDEX_DEEP_DCH_CYCLE,g_sys_cap.val.deep_dch_cycle_cnt,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_DEEP_DCH_CYCLE,g_sys_cap.val.deep_dch_cycle_cnt,1);
 		}
 	}
 	else
@@ -630,7 +630,7 @@ void BatCycleProc(void)
 			{
 				g_sys_cap.val.deep_dch_volt_delay = 200;
 				g_sys_cap.val.deep_dch_cycle_cnt++;
-				EEPROM_Write_DATA(EEPROM_INDEX_DEEP_DCH_CYCLE,g_sys_cap.val.deep_dch_cycle_cnt,1);
+				//EEPROM_Write_DATA(EEPROM_INDEX_DEEP_DCH_CYCLE,g_sys_cap.val.deep_dch_cycle_cnt,1);
 			}
 		}
 	}
@@ -661,7 +661,7 @@ void BatCycleProc(void)
 		{
 			g_sys_cap.val.deep_chg_cycle_cnt++;
 			g_sys_cap.val.deep_rate_chgsum =0;//20160815  AID 增加清0
-			EEPROM_Write_DATA(EEPROM_INDEX_DEEP_CHG_CYCLE,g_sys_cap.val.deep_chg_cycle_cnt,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_DEEP_CHG_CYCLE,g_sys_cap.val.deep_chg_cycle_cnt,1);
 		}
 	}
 	else
@@ -685,7 +685,7 @@ void BatCycleProc(void)
 			{
 				g_sys_cap.val.deep_chg_volt_delay = 200;
 				g_sys_cap.val.deep_chg_cycle_cnt++;
-				EEPROM_Write_DATA(EEPROM_INDEX_DEEP_CHG_CYCLE,g_sys_cap.val.deep_chg_cycle_cnt,1);
+				//EEPROM_Write_DATA(EEPROM_INDEX_DEEP_CHG_CYCLE,g_sys_cap.val.deep_chg_cycle_cnt,1);
 			}
 		}
 	}

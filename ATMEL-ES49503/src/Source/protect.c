@@ -633,7 +633,7 @@ void SOC(void)
 		CHG_Val = CHG_Val + tmp_cap;
 		if (CHG_Val - CHG_Val_Bak >= 1000 )
 		{
-			Write_Time_or_mAh(CHG_Val,CHG_FLAG);
+			//Write_Time_or_mAh(CHG_Val,CHG_FLAG);
 			CHG_Val_Bak = CHG_Val;
 		}
 		//BatteryState.val.ActionState = 2; // 电池状态设定为充电
@@ -643,7 +643,7 @@ void SOC(void)
 		DCH_Val = DCH_Val - tmp_cap;
 		if (DCH_Val - DCH_Val_Bak >=1000 )
 		{
-			Write_Time_or_mAh(DCH_Val,DCH_FLAG);
+			//Write_Time_or_mAh(DCH_Val,DCH_FLAG);
 			DCH_Val_Bak = DCH_Val;
 		}
 		//BatteryState.val.ActionState = 3; // 电池状态设定为放电

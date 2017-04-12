@@ -430,7 +430,7 @@ void vAPI_ADC_Read_Data(void) {
     vAPI_CalcCell();
     vAPI_CalcTempture();
     //vAPI_Uart_Load();
-    His_Data_Save();
+    //His_Data_Save();
     //	vAPI_CalcFetTh();
 }
 

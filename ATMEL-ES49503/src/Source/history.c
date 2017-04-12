@@ -37,7 +37,7 @@ void His_Data_Save(void)
 		if(his_vcell_min_delay >10)
 		{
 			his_vcell_min_delay =0;
-			EEPROM_Write_DATA(EEPROM_INDEX_HIS_VCELLMIN,nADC_CELL_MIN,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_HIS_VCELLMIN,nADC_CELL_MIN,1);
 		}
 	}
 	else
@@ -51,7 +51,7 @@ void His_Data_Save(void)
 		if(his_vcell_max_delay >10)
 		{
 			his_vcell_max_delay =0;
-			EEPROM_Write_DATA(EEPROM_INDEX_HIS_VCELLMAX,nADC_CELL_MAX,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_HIS_VCELLMAX,nADC_CELL_MAX,1);
 		}
 	}
 	else
@@ -65,7 +65,7 @@ void His_Data_Save(void)
 		if(his_bat_temp_min_delay >10)
 		{
 			his_bat_temp_min_delay =0;
-			EEPROM_Write_DATA(EEPROM_INDEX_HIS_TEMPMIN,nADC_TMONI_BAT_MIN,0);
+			//EEPROM_Write_DATA(EEPROM_INDEX_HIS_TEMPMIN,nADC_TMONI_BAT_MIN,0);
 		}
 	}
 	else
@@ -79,7 +79,7 @@ void His_Data_Save(void)
 		if(his_bat_temp_max_delay >10)
 		{
 			his_bat_temp_max_delay =0;
-			EEPROM_Write_DATA(EEPROM_INDEX_HIS_TEMPMAX,nADC_TMONI_BAT_MAX,0);
+			//EEPROM_Write_DATA(EEPROM_INDEX_HIS_TEMPMAX,nADC_TMONI_BAT_MAX,0);
 		}
 	}
 	else
@@ -94,7 +94,7 @@ void His_Data_Save(void)
 		if(his_dch_cur_max_delay >10)
 		{
 			his_dch_cur_max_delay =0;
-			EEPROM_Write_DATA(EEPROM_INDEX_HIS_DCHCMAX,nADC_CURRENT,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_HIS_DCHCMAX,nADC_CURRENT,1);
 		}
 	}
 	else
@@ -109,7 +109,7 @@ void His_Data_Save(void)
 		if(his_chg_cur_max_delay >10)
 		{
 			his_chg_cur_max_delay =0;
-			EEPROM_Write_DATA(EEPROM_INDEX_HIS_CHGCMAX,nADC_CURRENT,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_HIS_CHGCMAX,nADC_CURRENT,1);
 		}
 	}
 	else
@@ -124,7 +124,7 @@ void His_Data_Save(void)
 		if(his_soc_delay >10)
 		{
 			his_soc_delay =0;
-			EEPROM_Write_DATA(EEPROM_INDEX_HIS_SOC_MAX,g_sys_cap.val.full_cap,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_HIS_SOC_MAX,g_sys_cap.val.full_cap,1);
 		}
 	}
 	else
@@ -139,7 +139,7 @@ void His_Data_Save(void)
 		if(his_pcb_temp_max_delay >10)
 		{
 			his_pcb_temp_max_delay =0;
-			EEPROM_Write_DATA(EEPROM_INDEX_HIS_PCBTEMPMAX,nADC_TMONI_PCB_MAX,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_HIS_PCBTEMPMAX,nADC_TMONI_PCB_MAX,1);
 		}
 	}
 	else
@@ -155,7 +155,7 @@ void His_Data_Save(void)
 		{
 			his_sys_err_flags_delay=0;
 			last_SYS_ERR_FLAGS_VAL=sys_err_flags.VAL;
-			EEPROM_Write_DATA(EEPROM_INDEX_SYS_ERR,sys_err_flags.VAL,1);
+			//EEPROM_Write_DATA(EEPROM_INDEX_SYS_ERR,sys_err_flags.VAL,1);
 			
 		}
 	}
@@ -360,7 +360,7 @@ void Time_update(void)
 		Time_Val++;
 		if (Time_Val - Time_Val_Bak >= 60)
 		{
-			Write_Time_or_mAh(Time_Val,TIME_FLAG);
+			//Write_Time_or_mAh(Time_Val,TIME_FLAG);
 			Time_Val_Bak = Time_Val;
 		}
 	}

@@ -119,8 +119,8 @@
 #define CURRENT_DCH_05A              ((int16_t)-91)  // 0.5A
 #define CURRENT_DCH1A                ((int16_t)-182)  // 0.5A
 #define CURRENT_DCH30A                ((int16_t)-5460)  // 0.5A
-#define CURRENT_DCH_STATE            ((int16_t)-20)  // 0.1A
-#define CURRENT_CHG_STATE            ((int16_t)20)  // 0.1A
+#define CURRENT_DCH_STATE            ((int16_t)-40)  // 0.1A
+#define CURRENT_CHG_STATE            ((int16_t)40)  // 0.1A
 
 //#define OCC_P3_AM 5096 //28A
 //#define OCC_P4_AM 5278 //29A
